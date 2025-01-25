@@ -17,6 +17,9 @@ class Conductor extends FlxBasic {
 	public var onBeatHit:FlxSignal;
 	public var onStepHit:FlxSignal;
 
+	public static var safeFrames:Int = 10;
+	public static var safeZoneOffset:Float = (safeFrames / 60) * 1000; // is calculated in create(), is safeFrames in milliseconds
+
 	public function new(bpm:Float = 100) {
 		super();
 		this.bpm = bpm;

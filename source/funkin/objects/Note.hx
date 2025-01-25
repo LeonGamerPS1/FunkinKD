@@ -1,6 +1,7 @@
 package funkin.objects;
 
 import flixel.FlxSprite;
+import funkin.backend.Conductor;
 
 class Note extends FlxSprite {
 	public static var directions:Array<String> = ["purple", "blue", "green", "red"];
@@ -9,12 +10,26 @@ class Note extends FlxSprite {
 	public var isPixel:Bool = false;
 
 	public var data:Int = 0;
+	public var time:Float = 0;
+	public var mustHit:Bool = false;
 
-	public function new(data:Int = 0, isPixel:Bool = false) {
+	public function canBeHit(conductor:Conductor):Bool {
+		if (!mustHit && time <= conductor.songPosition + 2)
+			return true;
+		else if (mustHit
+			&& time <= conductor.songPosition + (Conductor.safeZoneOffset * 0.5)
+			&& time <= conductor.songPosition - (Conductor.safeZoneOffset * 0.5))
+			return true;
+		else
+			return false;
+	}
+
+	public function new(time:Float = 0, data:Int = 0, ?isPixel:Bool = false) {
 		super();
 
 		this.data = data;
 		this.isPixel = isPixel;
+		this.time = time;
 		texture = "notes";
 		playAnim("arrow");
 	}
@@ -48,7 +63,7 @@ class Note extends FlxSprite {
 	function loadDefaultNoteAnims(tex:String) {
 		frames = Paths.getSparrowAtlas('noteSkins/$tex');
 
-		animation.addByPrefix('arrow', '${directions[data % directions.length]}', 24, false);
+		animation.addByPrefix('arrow', '${directions[data % directions.length]}0', 24, false);
 
 		setGraphicSize(width * 0.7);
 		updateHitbox();

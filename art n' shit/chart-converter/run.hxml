@@ -1,0 +1,5 @@
+-main Convert
+-L linc_dialogs
+--cmd haxelib git linc_dialogs https://github.com/snowkit/linc_dialogs
+-D no_console
+--cpp binaries_exporter/

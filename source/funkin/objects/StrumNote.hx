@@ -9,6 +9,7 @@ class StrumNote extends FlxSprite {
 	public var isPixel:Bool = false;
 
 	public var data:Int = 0;
+	public var resetTimer:Float = 0;
 
 	public function new(data:Int = 0, isPixel:Bool = false) {
 		super();
@@ -59,5 +60,16 @@ class StrumNote extends FlxSprite {
 	function set_texture(value:String):String {
 		reloadNote(value, isPixel);
 		return texture = value;
+	}
+
+	override function update(elapsed:Float):Void {
+		if (resetTimer > 0) {
+			resetTimer -= elapsed;
+			if (resetTimer < 0) {
+				playAnim("static", true);
+				resetTimer = 0;
+			}
+		}
+		super.update(elapsed);
 	}
 }

@@ -18,6 +18,7 @@
 		"flixel",
 		"funkin",
 		"haxe",
+		"KDFUNKIN",
 		"openfl"
 	],
 	"window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${profileName}${separator}${appName}${separator}[Branch: main]"
