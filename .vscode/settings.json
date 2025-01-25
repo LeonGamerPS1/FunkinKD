@@ -1,0 +1,24 @@
+{
+	"search.exclude": {
+		"export/**/*.hx": true
+	},
+	"[haxe]": {
+		"editor.formatOnSave": true,
+		"editor.formatOnPaste": true,
+		"editor.codeActionsOnSave": {
+			"source.sortImports": "explicit"
+		}
+	},
+	"haxe.enableExtendedIndentation": true,
+	"workbench.colorCustomizations": {
+		"titleBar.activeBackground": "#3d5750dd",
+		"activityBar.background": "#314b44aa"
+	},
+	"cSpell.words": [
+		"flixel",
+		"funkin",
+		"haxe",
+		"openfl"
+	],
+	"window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${profileName}${separator}${appName}${separator}[Branch: main]"
+}

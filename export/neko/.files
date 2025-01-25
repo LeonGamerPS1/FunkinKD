@@ -1,0 +1,11 @@
+export/neko/bin/assets/data/data-goes-here.txt
+export/neko/bin/assets/images/images-go-here.txt
+export/neko/bin/assets/music/music-goes-here.txt
+export/neko/bin/assets/sounds/sounds-go-here.txt
+export/neko/bin/flixel/sounds/beep.ogg
+export/neko/bin/flixel/sounds/flixel.ogg
+export/neko/bin/flixel/fonts/nokiafc22.ttf
+export/neko/bin/flixel/fonts/monsterrat.ttf
+export/neko/bin/flixel/images/ui/button.png
+export/neko/bin/flixel/images/logo/default.png
+export/neko/bin/manifest/default.json
