@@ -11,8 +11,8 @@
 	},
 	"haxe.enableExtendedIndentation": true,
 	"workbench.colorCustomizations": {
-		"titleBar.activeBackground": "#3d5750dd",
-		"activityBar.background": "#314b44aa"
+		"titleBar.activeBackground": "#575059dd",
+		"activityBar.background": "#4b444daa"
 	},
 	"cSpell.words": [
 		"flixel",
