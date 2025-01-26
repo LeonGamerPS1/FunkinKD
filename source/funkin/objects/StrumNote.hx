@@ -12,7 +12,7 @@ class StrumNote extends FlxSprite {
 	public var resetTimer:Float = 0;
 	public var downScroll:Bool = false;
 
-	public function new(data:Int = 0, isPixel:Bool = false) {
+	public function new(data:Int = 0, isPixel:Bool = true) {
 		super();
 		this.data = data;
 		this.isPixel = isPixel;

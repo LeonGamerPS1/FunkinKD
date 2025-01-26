@@ -87,7 +87,7 @@ class PlayState extends FlxState {
 
 				var oldNote:Note = unspawnNotes[unspawnNotes.length - 1];
 
-				var note:Note = new Note(time, data, false, false, oldNote, 1, conductor);
+				var note:Note = new Note(time, data, false, true, oldNote, 1, conductor);
 				note.mustHit = goodHit;
 				note.scrollSpeed = SONG.speed;
 				note.downscroll = ds;

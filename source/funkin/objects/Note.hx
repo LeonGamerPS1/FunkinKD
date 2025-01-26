@@ -31,13 +31,12 @@ class Note extends FlxSprite {
 
 	public static var swagWidth:Float = (160 / 2) * 0.7;
 
-	override  function set_clipRect(rect:FlxRect):FlxRect {
+	override function set_clipRect(rect:FlxRect):FlxRect {
 		clipRect = rect;
-		if(frames != null)
+		if (frames != null)
 			frame = frames.frames[animation.frameIndex];
 
 		return clipRect = rect;
-		
 	}
 
 	public function canBeHit(conductor:Conductor):Bool {
@@ -98,21 +97,36 @@ class Note extends FlxSprite {
 	}
 
 	function loadPixelNoteAnimations(tex:String, ?sustainSpeed:Float = 1) {
-		loadGraphic(Paths.image('noteSkins/pixel/$tex'), true, 17, 17);
+		if (!sustainNote) {
+			loadGraphic(Paths.image('noteSkins/pixel/$tex'), true, 17, 17);
 
-		animation.add('arrow', [data % 4 + 4], 12, false);
-		animation.add('hold', [data % 4 + 20], 12, false);
-		animation.add('end', [data % 4 + 24], 12, false);
-		setGraphicSize(width * 6);
+			animation.add('arrow', [data % 4 + 4], 12, false);
+			setGraphicSize(width * 6);
 
-		antialiasing = false;
-		updateHitbox();
-		if (sustainNote) {
+			antialiasing = false;
+			updateHitbox();
+		} else {
+			loadGraphic(Paths.image('noteSkins/pixel/${tex}ENDS'));
+			width = width / 4;
+			height = height / 5;
+			loadGraphic(Paths.image('noteSkins/pixel/${tex}ENDS'), true, 7, 6);
+
+			offsetX = Note.swagWidth / 2;
+	
+
+			animation.add('hold', [data], 12, false);
+			animation.add('end', [data + 4], 12, false);
+			setGraphicSize(width * 6);
+
+			updateHitbox();
 			playAnim("end");
 			updateHitbox();
+	
+		
+			offsetX -= Note.swagWidth / 4;
 			if (prevNote != null && prevNote.sustainNote) {
 				prevNote.playAnim("hold");
-				prevNote.scale.y = 6 * (conductor.stepLength / 100 * 1.074 * sustainSpeed);
+				prevNote.scale.y = 6 * (conductor.stepLength / 100 * 1.254 * sustainSpeed);
 				prevNote.updateHitbox();
 			}
 		}
@@ -166,8 +180,8 @@ class Note extends FlxSprite {
 		if (strum.downScroll && sustainNote) {
 			if (isPixel)
 				y += 30;
-			else 
-				y+= 15;
+			else
+				y += 15;
 
 			y -= (frameHeight * scale.y) - (swagWidth);
 		}
