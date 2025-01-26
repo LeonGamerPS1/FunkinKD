@@ -3,6 +3,11 @@ typedef SongData = {
 	var bpm:Float;
 	var speed:Float;
 	var sections:Array<Section>;
+
+
+	var player1:String;
+	var player2:String;
+	var gfVersion:String;
 }
 
 typedef Section = {

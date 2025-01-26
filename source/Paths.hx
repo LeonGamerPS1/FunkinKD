@@ -95,11 +95,11 @@ class Paths {
 
 	inline static public function inst(key:String) {
 		key = Paths.formatSongName(key.toLowerCase());
-		return getPath('data/$key/Inst.ogg', SOUND);
+		return getPath('songs/$key/Inst.ogg', SOUND);
 	}
 
 	inline static public function json(key:String, ?library:String) {
-		return getPath('data/$key.json', TEXT, library);
+		return getPath('songs/$key.json', TEXT, library);
 	}
 
 	static public function sound(key:String, ?library:String) {

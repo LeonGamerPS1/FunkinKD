@@ -1,7 +1,6 @@
 package funkin;
 
-import flixel.FlxG;
-import openfl.display.FPS;
+import funkin.debug.FPS;
 
 class Main extends Sprite {
 	public function new() {

@@ -31,6 +31,15 @@ class Note extends FlxSprite {
 
 	public static var swagWidth:Float = (160 / 2) * 0.7;
 
+	override  function set_clipRect(rect:FlxRect):FlxRect {
+		clipRect = rect;
+		if(frames != null)
+			frame = frames.frames[animation.frameIndex];
+
+		return clipRect = rect;
+		
+	}
+
 	public function canBeHit(conductor:Conductor):Bool {
 		if (mustHit
 			&& time > conductor.songPosition - (Conductor.safeZoneOffset)
@@ -157,6 +166,8 @@ class Note extends FlxSprite {
 		if (strum.downScroll && sustainNote) {
 			if (isPixel)
 				y += 30;
+			else 
+				y+= 15;
 
 			y -= (frameHeight * scale.y) - (swagWidth);
 		}

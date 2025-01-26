@@ -1,5 +1,6 @@
 package funkin.states;
 
+import flixel.math.FlxMath;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -86,7 +87,7 @@ class PlayState extends FlxState {
 
 				var oldNote:Note = unspawnNotes[unspawnNotes.length - 1];
 
-				var note:Note = new Note(time, data, false, true, oldNote, 1, conductor);
+				var note:Note = new Note(time, data, false, false, oldNote, 1, conductor);
 				note.mustHit = goodHit;
 				note.scrollSpeed = SONG.speed;
 				note.downscroll = ds;
@@ -107,6 +108,7 @@ class PlayState extends FlxState {
 				}
 			}
 		}
+	
 	}
 
 	public var uiGroup:FlxTypedGroup<FlxBasic> = new FlxTypedGroup<FlxBasic>();
@@ -147,6 +149,7 @@ class PlayState extends FlxState {
 				destroyNote(note);
 			}
 		});
+		camHUD.zoom = FlxMath.lerp(1,camHUD.zoom,Math.exp(-elapsed * 4));
 		super.update(elapsed);
 	}
 
@@ -261,5 +264,8 @@ class PlayState extends FlxState {
 			notes.sort(FlxSort.byY, FlxSort.ASCENDING);
 
 		noteKillOffset = Math.max(conductor.stepLength, 350 / SONG.speed);
+
+		if(conductor.curBeat % 4 == 0)
+			camHUD.zoom += 0.03;
 	}
 }

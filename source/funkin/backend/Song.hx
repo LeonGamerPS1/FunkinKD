@@ -10,6 +10,11 @@ typedef SongData = {
 	var bpm:Float;
 	var speed:Float;
 	var sections:Array<Section>;
+
+
+	var player1:String;
+	var player2:String;
+	var gfVersion:String;
 }
 
 typedef Section = {
@@ -24,6 +29,7 @@ typedef ChartNote = {
 	var noteData:Int;
 	var length:Float;
 }
+
 
 class Song {
 	public static inline function parseSong(songName:String = "tutorial", diff:String = "normal") {
