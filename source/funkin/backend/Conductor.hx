@@ -4,7 +4,7 @@ import flixel.FlxBasic;
 import flixel.util.FlxSignal;
 
 class Conductor extends FlxBasic {
-	public var songPosition:Float;
+	public var songPosition:Float = 0;
 	public var bpm(default, set):Float = 100;
 	public var beatLength:Float;
 	public var stepLength:Float;

@@ -1,35 +1,25 @@
 {
   "song": "tutorial",
   "bpm": 100,
-  "speed": 1,
+  "speed": 0.7,
   "sections": [
     {
       "cameraFacePlayer": true,
       "notes": [
         {
-          "time": 0,
+          "time": 1000,
           "noteData": 1,
+          "length": 5000
+        },
+        {
+          "time": 1100,
+          "noteData":  2,
           "length": 1000
         },
         {
-          "time": 2000,
-          "noteData": 2,
-          "length": 1000
-        }
-      ]
-    },
-    {
-      "cameraFacePlayer": false,
-      "notes": [
-        {
-          "time": 500,
-          "noteData": 1,
-          "length": 800
-        },
-        {
-          "time": 2500,
+          "time": 1200,
           "noteData": 3,
-          "length": 1200
+          "length": 1000
         }
       ]
     }

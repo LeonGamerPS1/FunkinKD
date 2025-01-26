@@ -44,7 +44,7 @@
 	<SubTexture name="left press0017" x="1117" y="470" width="146" height="149"/>
 	<SubTexture name="left press0018" x="1117" y="470" width="146" height="149"/>
 	<SubTexture name="left press0019" x="1117" y="470" width="146" height="149"/>
-	<SubTexture name="pruple end hold0000" x="1444" y="0" width="50" height="64"/>
+	<SubTexture name="purple hold end0000" x="1444" y="0" width="50" height="64"/>
 	<SubTexture name="purple0000" x="936" y="0" width="154" height="157"/>
 	<SubTexture name="purple hold piece0000" x="1494" y="0" width="50" height="44"/>
 	<SubTexture name="red0000" x="1090" y="0" width="154" height="157"/>

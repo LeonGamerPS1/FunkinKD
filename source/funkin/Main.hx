@@ -1,5 +1,6 @@
 package funkin;
 
+import flixel.FlxG;
 import openfl.display.FPS;
 
 class Main extends Sprite {
