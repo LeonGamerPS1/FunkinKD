@@ -1,11 +1,7 @@
 package funkin.objects;
 
-import flixel.FlxSprite;
-import flixel.math.FlxRect;
-import funkin.backend.Conductor;
-import funkin.backend.Song.SongData;
-
-class Note extends FlxSprite {
+class Note extends FlxSprite
+{
 	public static var directions:Array<String> = ["purple", "blue", "green", "red"];
 
 	public var texture(default, set):String;
@@ -31,15 +27,8 @@ class Note extends FlxSprite {
 
 	public static var swagWidth:Float = (160 / 2) * 0.7;
 
-	override function set_clipRect(rect:FlxRect):FlxRect {
-		clipRect = rect;
-		if (frames != null)
-			frame = frames.frames[animation.frameIndex];
-
-		return clipRect = rect;
-	}
-
-	public function canBeHit(conductor:Conductor):Bool {
+	public function canBeHit(conductor:Conductor):Bool
+	{
 		if (mustHit
 			&& time > conductor.songPosition - (Conductor.safeZoneOffset)
 			&& time < conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
@@ -49,7 +38,8 @@ class Note extends FlxSprite {
 	}
 
 	public function new(time:Float = 0, data:Int = 0, sustainNote:Bool = false, ?isPixel:Bool = false, ?prevNote:Note, ?sustainSpeed:Float = 1,
-			?conductor:Conductor) {
+			?conductor:Conductor)
+	{
 		super(0, -2000);
 
 		this.data = data;
@@ -64,27 +54,29 @@ class Note extends FlxSprite {
 			playAnim("arrow");
 	}
 
-	public function playAnim(s:String, force:Bool = false) {
+	public function playAnim(s:String, force:Bool = false)
+	{
 		animation.play(s, force);
 		centerOffsets();
 		centerOrigin();
 	}
 
-	function reloadNote(tex:String = "notes", isPixel:Bool, ?sustainSpeed:Float = 1) {
+	function reloadNote(tex:String = "notes", isPixel:Bool, ?sustainSpeed:Float = 1)
+	{
 		this.isPixel = isPixel;
 
 		if (!isPixel)
 			loadDefaultNoteAnims(tex, sustainSpeed);
 		else
 			loadPixelNoteAnimations(tex, sustainSpeed);
-
-		if (sustainNote)
-			multAlpha = 0.5;
 	}
 
-	override function update(elapsed:Float) {
-		if (!mustHit) {
-			if (!wasGoodHit && time <= conductor.songPosition) {
+	override function update(elapsed:Float)
+	{
+		if (!mustHit)
+		{
+			if (!wasGoodHit && time <= conductor.songPosition)
+			{
 				if (!sustainNote || (prevNote.wasGoodHit && !ignoreNote))
 					wasGoodHit = true;
 			}
@@ -92,12 +84,15 @@ class Note extends FlxSprite {
 		super.update(elapsed);
 	}
 
-	public function clipSustain(strum:StrumNote):Void {
+	public function clipSustain(strum:StrumNote):Void
+	{
 		// TODO: clip the sustain to the strum
 	}
 
-	function loadPixelNoteAnimations(tex:String, ?sustainSpeed:Float = 1) {
-		if (!sustainNote) {
+	function loadPixelNoteAnimations(tex:String, ?sustainSpeed:Float = 1)
+	{
+		if (!sustainNote)
+		{
 			loadGraphic(Paths.image('noteSkins/pixel/$tex'), true, 17, 17);
 
 			animation.add('arrow', [data % 4 + 4], 12, false);
@@ -105,26 +100,22 @@ class Note extends FlxSprite {
 
 			antialiasing = false;
 			updateHitbox();
-		} else {
+		}
+		else
+		{
 			loadGraphic(Paths.image('noteSkins/pixel/${tex}ENDS'));
 			width = width / 4;
 			height = height / 5;
 			loadGraphic(Paths.image('noteSkins/pixel/${tex}ENDS'), true, 7, 6);
 
-			offsetX = Note.swagWidth / 2;
-	
-
 			animation.add('hold', [data], 12, false);
 			animation.add('end', [data + 4], 12, false);
 			setGraphicSize(width * 6);
-
-			updateHitbox();
 			playAnim("end");
 			updateHitbox();
-	
-		
-			offsetX -= Note.swagWidth / 4;
-			if (prevNote != null && prevNote.sustainNote) {
+
+			if (prevNote != null && prevNote.sustainNote)
+			{
 				prevNote.playAnim("hold");
 				prevNote.scale.y = 6 * (conductor.stepLength / 100 * 1.254 * sustainSpeed);
 				prevNote.updateHitbox();
@@ -132,7 +123,8 @@ class Note extends FlxSprite {
 		}
 	}
 
-	function loadDefaultNoteAnims(tex:String, ?sustainSpeed:Float = 1) {
+	function loadDefaultNoteAnims(tex:String, ?sustainSpeed:Float = 1)
+	{
 		frames = Paths.getSparrowAtlas('noteSkins/$tex');
 
 		animation.addByPrefix('arrow', '${directions[data % directions.length]}0', 24, false);
@@ -142,13 +134,14 @@ class Note extends FlxSprite {
 		setGraphicSize(width * 0.7);
 		updateHitbox();
 
-		if (sustainNote) {
-			offsetX += swagWidth / 3;
+		if (sustainNote)
+		{
 			animation.play('end');
 			updateHitbox();
 
 			antialiasing = true;
-			if (prevNote != null && prevNote.sustainNote) {
+			if (prevNote != null && prevNote.sustainNote)
+			{
 				prevNote.animation.play("hold", true);
 				prevNote.scale.y = 0.7 * (conductor.stepLength / 100 * 1.465 * sustainSpeed);
 				prevNote.antialiasing = false;
@@ -158,7 +151,8 @@ class Note extends FlxSprite {
 		antialiasing = true;
 	}
 
-	function set_texture(value:String):String {
+	function set_texture(value:String):String
+	{
 		reloadNote(value, isPixel);
 		return texture = value;
 	}
@@ -166,9 +160,13 @@ class Note extends FlxSprite {
 	public var offsetY:Float = 0;
 	public var multAlpha:Float = 1;
 
-	public function followStrumNote(strum:StrumNote, conductor:Conductor, ?songSpeed:Float = 1) {
+	public function followStrumNote(strum:StrumNote, conductor:Conductor, ?songSpeed:Float = 1)
+	{
 		if (x != strum.x + offsetX)
 			x = strum.x + offsetX;
+
+		if (sustainNote)
+			x = strum.x + (strum.width / 2) - (width / 2);
 
 		alpha = strum.alpha * multAlpha;
 		y = strum.y + (time - conductor.songPosition) * 0.45 * (songSpeed * (!strum.downScroll ? 1 : -1)) + offsetY;
@@ -176,31 +174,39 @@ class Note extends FlxSprite {
 		if (flipY != strum.downScroll && sustainNote)
 			flipY = strum.downScroll;
 		downscroll = strum.downScroll;
+		
 
-		if (strum.downScroll && sustainNote) {
+		if (strum.downScroll && sustainNote)
+		{
 			if (isPixel)
 				y += 30;
 			else
-				y += 15;
+				y += 60;
 
 			y -= (frameHeight * scale.y) - (swagWidth);
 		}
 	}
 
-	inline public function clipToStrumNote(myStrum:StrumNote) {
+	inline public function clipToStrumNote(myStrum:StrumNote)
+	{
 		var center:Float = myStrum.y + myStrum.height / 2;
-		if ((mustHit || !mustHit) && (wasGoodHit || (prevNote.wasGoodHit && !canBeHit(conductor)))) {
+		if ((mustHit || !mustHit) && (wasGoodHit || (prevNote.wasGoodHit && !canBeHit(conductor))))
+		{
 			var swagRect:FlxRect = clipRect;
 			if (swagRect == null)
 				swagRect = new FlxRect(0, 0, frameWidth, frameHeight);
 
-			if (myStrum.downScroll) {
-				if (y - offset.y * scale.y + height >= center) {
+			if (myStrum.downScroll)
+			{
+				if (y - offset.y * scale.y + height >= center)
+				{
 					swagRect.width = frameWidth;
 					swagRect.height = (center - y) / scale.y;
 					swagRect.y = frameHeight - swagRect.height;
 				}
-			} else if (y + offset.y * scale.y <= center) {
+			}
+			else if (y + offset.y * scale.y <= center)
+			{
 				swagRect.y = (center - y) / scale.y;
 				swagRect.width = width / scale.x;
 				swagRect.height = (height / scale.y) - swagRect.y;
@@ -208,5 +214,12 @@ class Note extends FlxSprite {
 
 			clipRect = swagRect;
 		}
+	}
+
+	public function isEndNote():Bool
+	{
+		if (!sustainNote)
+			return false;
+		return (animation.curAnim != null) && (animation.curAnim.name == "end");
 	}
 }
