@@ -8,8 +8,9 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 	public var notes:NoteSpawner;
 	public var conductor:Conductor;
 
-	public var oppStrums:FlxTypedSpriteGroup<StrumNote> = new FlxTypedSpriteGroup(50, 50);
-	public var playerStrums:FlxTypedSpriteGroup<StrumNote> = new FlxTypedSpriteGroup(FlxG.width / 2 + (160 * 0.7), 50);
+	public var oppStrums:StrumLine;
+	public var playerStrums:StrumLine;
+
 	public var SONG:SongData;
 	public var controls:Controls;
 
@@ -26,29 +27,19 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		conductor.bpm = SONG.bpm;
 		add(conductor);
 
-		for (i in 0...4)
-		{
-			var strumNote:StrumNote = new StrumNote(i);
-			strumNote.downScroll = downScroll;
-			strumNote.x += (160 * 0.7) * i;
-			oppStrums.add(strumNote);
-		}
-		for (i in 0...4)
-		{
-			var strumNote:StrumNote = new StrumNote(i);
-			strumNote.x += (160 * 0.7) * i;
-			strumNote.downScroll = downScroll;
-			playerStrums.add(strumNote);
-		}
+		playerStrums = new StrumLine(downScroll, true);
+		oppStrums = new StrumLine(downScroll, false);
+
+		add(oppStrums);
+		add(playerStrums);
+
 		if (downScroll)
 			for (strumline in [playerStrums, oppStrums])
 				strumline.setPosition(strumline.x, FlxG.height - 150);
 
-		add(oppStrums);
-		add(playerStrums);
 		conductor.onBeatHit.add(beatHit);
 		notes = new NoteSpawner(conductor, SONG);
-        add(notes);
+		add(notes);
 	}
 
 	function destroyNote(note:Note)
