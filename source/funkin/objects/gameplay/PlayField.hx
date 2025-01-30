@@ -1,5 +1,6 @@
 package funkin.objects.gameplay;
 
+import flixel.text.FlxText;
 import funkin.controls.Action.Controls;
 
 class PlayField extends FlxTypedGroup<FlxBasic>
@@ -16,6 +17,15 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 
 	public var noteKillOffset:Float = 350;
 	public var time:Float = 0;
+	public var healthBar:Bar;
+	public var health(default, set):Float = 1;
+
+	public var iconP1:HealthIcon;
+	public var iconP2:HealthIcon;
+
+	public var score:FlxText;
+	public var misses:FlxText;
+	public var rating:FlxText;
 
 	public function new(SONG:SongData, controls:Controls)
 	{
@@ -33,11 +43,46 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		add(oppStrums);
 		add(playerStrums);
 
+		healthBar = new Bar(0, !downScroll ? FlxG.height - 100 : 100, 'healthBar', () ->
+		{
+			return health;
+		}, 0, 2);
+		healthBar.setColors(FlxColor.RED, FlxColor.LIME);
+		healthBar.leftToRight = false;
+		healthBar.screenCenter(X);
+		add(healthBar);
+
+		iconP1 = new HealthIcon("bf", true);
+		iconP2 = new HealthIcon("dad");
+		add(iconP1);
+		add(iconP2);
+
+		iconP1.y = iconP2.y = healthBar.y - 80;
+
+		score = new FlxText(healthBar.leftBar.x, healthBar.y + 45, 0, "Score: ?");
+		score.setFormat(Paths.font("vcr"), 20, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+		score.borderSize = 2;
+		add(score);
+
+		misses = new FlxText(healthBar.x, healthBar.y + 45, "Misses: ?");
+		misses.setFormat(Paths.font("vcr"), 20, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+		misses.screenCenter(X);
+		misses.borderSize = 2;
+		add(misses);
+
+		rating = new FlxText(misses.x + 230, healthBar.y + 45, 0, "Rating: ?");
+		rating.setFormat(Paths.font("vcr"), 20, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+		rating.borderSize = 2;
+		add(rating);
+
+		score.antialiasing = misses.antialiasing = rating.antialiasing = true;
+
 		if (downScroll)
 			for (strumline in [playerStrums, oppStrums])
 				strumline.setPosition(strumline.x, FlxG.height - 150);
 
 		conductor.onBeatHit.add(beatHit);
+		conductor.onStepHit.add(stepHit);
 		notes = new NoteSpawner(conductor, SONG);
 		add(notes);
 	}
@@ -151,18 +196,30 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 
 	function goodNoteHit(coolNote:Note)
 	{
+		var strum = playerStrums.members[coolNote.data];
 		if (coolNote.wasGoodHit)
 			return;
+
+		health += 0.04;
 		coolNote.wasGoodHit = true;
 		coolNote.wasHit = true;
 		playerStrums.members[coolNote.data].playAnim("confirm", true);
+		if (plrHitSignal != null)
+			plrHitSignal(coolNote.data, true);
+
 		if (!coolNote.sustainNote)
 			destroyNote(coolNote);
 	}
 
+	public var oppHitSignal:(data:Int, ?playAnim:Bool) -> Void;
+	public var plrHitSignal:(data:Int, ?playAnim:Bool) -> Void;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		iconP1.x = (healthBar.barCenter + (150 * iconP1.scale.x) / 2 - 150) + 50;
+		iconP2.x = (healthBar.barCenter - (150 * iconP1.scale.x) / 2) - 50;
+
 		notes.sort(FlxSort.byY, FlxSort.DESCENDING);
 		if (downScroll)
 			notes.sort(FlxSort.byY, FlxSort.ASCENDING);
@@ -183,8 +240,13 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			{
 				note.wasGoodHit = true;
 				note.wasHit = true;
+
 				strum.playAnim("confirm", true);
+
 				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
+				if (oppHitSignal != null)
+					oppHitSignal(note.data, true);
+
 				if (!note.sustainNote)
 					destroyNote(note);
 				return;
@@ -203,11 +265,24 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 
 	function noteMiss(shit:Int)
 	{
-		trace("miss " + shit);
+		health -= 0.04;
 	}
 
 	public function beatHit()
 	{
 		noteKillOffset = Math.max(conductor.stepLength, 350 / SONG.speed);
+	}
+
+	public function stepHit()
+	{
+		iconP1.stepHit(conductor.curStep);
+		iconP2.stepHit(conductor.curStep);
+	}
+
+	function set_health(value:Float):Float
+	{
+		value = FlxMath.bound(value, 0, 2);
+		health = value;
+		return value;
 	}
 }

@@ -1,5 +1,7 @@
 package funkin.objects;
 
+
+
 class Note extends FlxSprite
 {
 	public static var directions:Array<String> = ["purple", "blue", "green", "red"];
@@ -40,7 +42,7 @@ class Note extends FlxSprite
 	public function new(time:Float = 0, data:Int = 0, sustainNote:Bool = false, ?isPixel:Bool = false, ?prevNote:Note, ?sustainSpeed:Float = 1,
 			?conductor:Conductor)
 	{
-		super(0, -2000);
+		super(0,-2000);
 
 		this.data = data;
 		this.isPixel = isPixel;
@@ -50,8 +52,10 @@ class Note extends FlxSprite
 		this.conductor = conductor;
 		texture = "notes";
 		reloadNote(texture, isPixel, sustainSpeed);
+
 		if (!sustainNote)
 			playAnim("arrow");
+
 	}
 
 	public function playAnim(s:String, force:Bool = false)
@@ -84,13 +88,20 @@ class Note extends FlxSprite
 		super.update(elapsed);
 	}
 
-	public function clipSustain(strum:StrumNote):Void
+	override function set_clipRect(rect:FlxRect):FlxRect
 	{
-		// TODO: clip the sustain to the strum
+		clipRect = rect;
+
+		if (frames != null)
+			frame = frames.frames[animation.frameIndex];
+
+		return clipRect = rect;
 	}
 
 	function loadPixelNoteAnimations(tex:String, ?sustainSpeed:Float = 1)
 	{
+		pixelPerfectPosition = true;
+		pixelPerfectRender = true;
 		if (!sustainNote)
 		{
 			loadGraphic(Paths.image('noteSkins/pixel/$tex'), true, 17, 17);
@@ -114,6 +125,8 @@ class Note extends FlxSprite
 			playAnim("end");
 			updateHitbox();
 
+			scale.x = 5;
+			updateHitbox();
 			if (prevNote != null && prevNote.sustainNote)
 			{
 				prevNote.playAnim("hold");
@@ -136,6 +149,7 @@ class Note extends FlxSprite
 
 		if (sustainNote)
 		{
+			endBoi = true;
 			animation.play('end');
 			updateHitbox();
 
@@ -143,7 +157,8 @@ class Note extends FlxSprite
 			if (prevNote != null && prevNote.sustainNote)
 			{
 				prevNote.animation.play("hold", true);
-				prevNote.scale.y = 0.7 * (conductor.stepLength / 100 * 1.465 * sustainSpeed);
+				prevNote.endBoi = false;
+				prevNote.scale.y = 0.7 * (conductor.stepLength / 100 * 1.5 * sustainSpeed);
 				prevNote.antialiasing = false;
 				prevNote.updateHitbox();
 			}
@@ -174,7 +189,6 @@ class Note extends FlxSprite
 		if (flipY != strum.downScroll && sustainNote)
 			flipY = strum.downScroll;
 		downscroll = strum.downScroll;
-		
 
 		if (strum.downScroll && sustainNote)
 		{
@@ -190,19 +204,20 @@ class Note extends FlxSprite
 	inline public function clipToStrumNote(myStrum:StrumNote)
 	{
 		var center:Float = myStrum.y + myStrum.height / 2;
+
 		if ((mustHit || !mustHit) && (wasGoodHit || (prevNote.wasGoodHit && !canBeHit(conductor))))
 		{
-			var swagRect:FlxRect = clipRect;
-			if (swagRect == null)
-				swagRect = new FlxRect(0, 0, frameWidth, frameHeight);
+			var swagRect:FlxRect;
+
+			swagRect = FlxRect.get(0, 0, frameWidth, frameHeight);
 
 			if (myStrum.downScroll)
 			{
 				if (y - offset.y * scale.y + height >= center)
 				{
 					swagRect.width = frameWidth;
-					swagRect.height = (center - y) / scale.y;
-					swagRect.y = frameHeight - swagRect.height;
+					swagRect.height = Std.int((center - y) / scale.y);
+					swagRect.y = Std.int(frameHeight - swagRect.height);
 				}
 			}
 			else if (y + offset.y * scale.y <= center)
@@ -213,13 +228,15 @@ class Note extends FlxSprite
 			}
 
 			clipRect = swagRect;
+			swagRect.put();
 		}
 	}
 
+	public var endBoi = false;
 	public function isEndNote():Bool
 	{
 		if (!sustainNote)
 			return false;
-		return (animation.curAnim != null) && (animation.curAnim.name == "end");
+		return endBoi;
 	}
 }

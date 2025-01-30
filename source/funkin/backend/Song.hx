@@ -15,6 +15,7 @@ typedef SongData = {
 	var player1:String;
 	var player2:String;
 	var gfVersion:String;
+	var stage:String;
 }
 
 typedef Section = {
@@ -32,7 +33,7 @@ typedef ChartNote = {
 
 
 class Song {
-	public static inline function parseSong(songName:String = "tutorial", diff:String = "normal") {
+	public static inline function parseSong(songName:String = "high-school-conflict", diff:String = "normal") {
 		var song:SongData = cast Json.parse(Assets.getText(Paths.json('$songName/$diff')).trim().replace("\n", ""));
 
 		return song;

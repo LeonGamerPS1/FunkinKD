@@ -22,6 +22,25 @@ enum Action
 
 	@:inputs([FlxKey.RIGHT, FlxKey.D, DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, FlxVirtualPadInputID.RIGHT])
 	NOTE_RIGHT;
+
+	@:inputs([FlxKey.LEFT, FlxKey.A, DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, FlxVirtualPadInputID.LEFT])
+	UI_LEFT;
+
+	@:inputs([FlxKey.DOWN, FlxKey.S, DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, FlxVirtualPadInputID.DOWN])
+	UI_DOWN;
+
+	@:inputs([FlxKey.UP, FlxKey.W, DPAD_UP, LEFT_STICK_DIGITAL_UP, FlxVirtualPadInputID.UP])
+	UI_UP;
+
+	@:inputs([FlxKey.RIGHT, FlxKey.D, DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, FlxVirtualPadInputID.RIGHT])
+	UI_RIGHT;
+
+	@:inputs([FlxKey.BACKSPACE, FlxKey.ESCAPE, BACK])
+	UI_BACK;
+
+	@:inputs([FlxKey.ENTER, FlxKey.SPACE, FlxVirtualPadInputID.A])
+	UI_ACCEPT;
+
 }
 
 class Controls extends FlxControls<Action> {}
