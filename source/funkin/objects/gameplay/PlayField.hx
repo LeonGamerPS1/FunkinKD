@@ -3,13 +3,13 @@ package funkin.objects.gameplay;
 import flixel.text.FlxText;
 import funkin.controls.Action.Controls;
 
-class PlayField extends FlxTypedGroup<FlxBasic>
-{
+class PlayField extends FlxTypedGroup<FlxBasic> {
 	public var downScroll:Bool = false;
 	public var notes:NoteSpawner;
 	public var conductor:Conductor;
 
 	public var oppStrums:StrumLine;
+	public var songHits:Int = 0;
 	public var playerStrums:StrumLine;
 
 	public var SONG:SongData;
@@ -25,10 +25,11 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 
 	public var score:FlxText;
 	public var misses:FlxText;
-	public var rating:FlxText;
 
-	public function new(SONG:SongData, controls:Controls)
-	{
+	public var Imisses:Int = 0;
+	public var Fscore:Float = 0;
+
+	public function new(SONG:SongData, controls:Controls) {
 		super();
 		this.SONG = SONG;
 		this.controls = controls;
@@ -43,8 +44,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		add(oppStrums);
 		add(playerStrums);
 
-		healthBar = new Bar(0, !downScroll ? FlxG.height - 100 : 100, 'healthBar', () ->
-		{
+		healthBar = new Bar(0, !downScroll ? FlxG.height - 100 : 100, 'healthBar', () -> {
 			return health;
 		}, 0, 2);
 		healthBar.setColors(FlxColor.RED, FlxColor.LIME);
@@ -64,18 +64,13 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		score.borderSize = 2;
 		add(score);
 
-		misses = new FlxText(healthBar.x, healthBar.y + 45, "Misses: ?");
+		misses = new FlxText(healthBar.x + 230, healthBar.y + 45, "Misses: ?");
 		misses.setFormat(Paths.font("vcr"), 20, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
 		misses.screenCenter(X);
 		misses.borderSize = 2;
 		add(misses);
 
-		rating = new FlxText(misses.x + 230, healthBar.y + 45, 0, "Rating: ?");
-		rating.setFormat(Paths.font("vcr"), 20, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
-		rating.borderSize = 2;
-		add(rating);
-
-		score.antialiasing = misses.antialiasing = rating.antialiasing = true;
+		score.antialiasing = misses.antialiasing = true;
 
 		if (downScroll)
 			for (strumline in [playerStrums, oppStrums])
@@ -87,8 +82,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		add(notes);
 	}
 
-	function destroyNote(note:Note)
-	{
+	function destroyNote(note:Note) {
 		note.kill();
 		notes.remove(note, true);
 		note.destroy();
@@ -99,8 +93,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 	var directions:Array<Int> = [];
 	var dumbNotes:Array<Note> = [];
 
-	function keyPress()
-	{
+	function keyPress() {
 		hitNotes = []; // notes that can be hit
 		directions = []; // directions that the player is able to hit
 		dumbNotes = []; // notes to fuck off and kill later
@@ -123,49 +116,38 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			controls.pressed.NOTE_UP,
 			controls.pressed.NOTE_RIGHT,
 		];
-		playerStrums.forEach(function(strumNote)
-		{
+		playerStrums.forEach(function(strumNote) {
 			if (keyP[strumNote.data] && strumNote.animation.curAnim.name != "confirm")
 				strumNote.playAnim("pressed", true);
 			if (keyR[strumNote.data])
 				strumNote.playAnim("static");
 		});
 
-		notes.forEachAlive(function(note)
-		{
-			if (note.mustHit && note.canBeHit(conductor))
-			{
+		notes.forEachAlive(function(note) {
+			if (note.mustHit && note.canBeHit(conductor)) {
 				hitNotes.push(note);
 				hitNotes.sort((a, b) -> Std.int(a.time - b.time));
 			}
 		});
-		if (keyP.contains(true))
-		{
-			notes.forEachAlive(function(daNote:Note)
-			{
-				if (daNote.canBeHit(conductor) && daNote.mustHit && !daNote.wasHit)
-				{
-					if (directions.contains(daNote.data))
-					{
-						for (coolNote in hitNotes)
-						{
-							if (coolNote.data == daNote.data && Math.abs(daNote.time - coolNote.time) < 10)
-							{ // if it's the same note twice at < 10ms distance, just delete it
+		if (keyP.contains(true)) {
+			notes.forEachAlive(function(daNote:Note) {
+				if (daNote.canBeHit(conductor) && daNote.mustHit && !daNote.wasHit) {
+					if (directions.contains(daNote.data)) {
+						for (coolNote in hitNotes) {
+							if (coolNote.data == daNote.data
+								&& Math.abs(daNote.time - coolNote.time) < 10) { // if it's the same note twice at < 10ms distance, just delete it
 								// EXCEPT u cant delete it in this loop cuz it fucks with the collection lol
 								dumbNotes.push(daNote);
 								break;
-							}
-							else if (coolNote.data == daNote.data && daNote.time < coolNote.time)
-							{ // if daNote is earlier than existing note (coolNote), replace
+							} else
+								if (coolNote.data == daNote.data && daNote.time < coolNote.time) { // if daNote is earlier than existing note (coolNote), replace
 								hitNotes.remove(coolNote);
 								hitNotes.push(daNote);
 								trace("e");
 								break;
 							}
 						}
-					}
-					else
-					{
+					} else {
 						hitNotes.push(daNote);
 						directions.push(daNote.data);
 					}
@@ -176,8 +158,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 				destroyNote(coolNote);
 
 			hitNotes.sort((a, b) -> Std.int(a.time - b.time));
-			if (hitNotes.length > 0)
-			{
+			if (hitNotes.length > 0) {
 				for (shit in 0...keyP.length) // if a direction is hit that shouldn't be
 					if (keyP[shit] && !directions.contains(shit))
 						noteMiss(shit);
@@ -187,15 +168,13 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 						goodNoteHit(coolNote);
 			}
 		}
-		notes.forEachAlive(function(susNote:Note)
-		{
+		notes.forEachAlive(function(susNote:Note) {
 			if (susNote.sustainNote && susNote.canBeHit(conductor) && susNote.mustHit && susNote.parent.wasGoodHit && key[susNote.data])
 				goodNoteHit(susNote);
 		});
 	}
 
-	function goodNoteHit(coolNote:Note)
-	{
+	function goodNoteHit(coolNote:Note) {
 		var strum = playerStrums.members[coolNote.data];
 		if (coolNote.wasGoodHit)
 			return;
@@ -206,16 +185,17 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		playerStrums.members[coolNote.data].playAnim("confirm", true);
 		if (plrHitSignal != null)
 			plrHitSignal(coolNote.data, true);
-
-		if (!coolNote.sustainNote)
+		if (!coolNote.sustainNote) {
+			Fscore += 100.5;
+			score.text = 'Score: $Fscore';
 			destroyNote(coolNote);
+		}
 	}
 
 	public var oppHitSignal:(data:Int, ?playAnim:Bool) -> Void;
 	public var plrHitSignal:(data:Int, ?playAnim:Bool) -> Void;
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 		iconP1.x = (healthBar.barCenter + (150 * iconP1.scale.x) / 2 - 150) + 50;
 		iconP2.x = (healthBar.barCenter - (150 * iconP1.scale.x) / 2) - 50;
@@ -227,8 +207,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		conductor.songPosition = time;
 		keyPress();
 
-		notes.forEach(function(note)
-		{
+		notes.forEach(function(note) {
 			var strumGroup = note.mustHit ? playerStrums : oppStrums;
 			var strum:StrumNote = strumGroup.members[note.data];
 
@@ -236,8 +215,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			if (note.sustainNote)
 				note.clipToStrumNote(strum);
 
-			if (!note.mustHit && note.wasGoodHit && !note.wasHit)
-			{
+			if (!note.mustHit && note.wasGoodHit && !note.wasHit) {
 				note.wasGoodHit = true;
 				note.wasHit = true;
 
@@ -252,8 +230,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 				return;
 			}
 
-			if (conductor.songPosition - note.time > noteKillOffset)
-			{
+			if (conductor.songPosition - note.time > noteKillOffset) {
 				if (note.mustHit && !note.ignoreNote && !note.wasGoodHit)
 					noteMiss(note.data);
 
@@ -263,24 +240,26 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		});
 	}
 
-	function noteMiss(shit:Int)
-	{
+	function noteMiss(shit:Int) {
 		health -= 0.04;
+		FlxG.sound.play(Paths.soundRandom("missnote", 1, 3), 0.5);
+		Imisses++;
+		misses.text = 'Misses: $Imisses';
+		missCallback(shit);
 	}
 
-	public function beatHit()
-	{
+	public dynamic function missCallback(shit:Int) {}
+
+	public function beatHit() {
 		noteKillOffset = Math.max(conductor.stepLength, 350 / SONG.speed);
 	}
 
-	public function stepHit()
-	{
+	public function stepHit() {
 		iconP1.stepHit(conductor.curStep);
 		iconP2.stepHit(conductor.curStep);
 	}
 
-	function set_health(value:Float):Float
-	{
+	function set_health(value:Float):Float {
 		value = FlxMath.bound(value, 0, 2);
 		health = value;
 		return value;

@@ -20,8 +20,7 @@ class NoteSpawner extends FlxTypedGroup<Note>
 
 	override function update(elapsed:Float)
 	{
-		for (value in unspawnNotes)
-		{
+		if(unspawnNotes[0] != null)
 			if (value.time - conductor.songPosition < 1600 / song.speed)
 			{
 				unspawnNotes.remove(value);
@@ -45,7 +44,7 @@ class NoteSpawner extends FlxTypedGroup<Note>
 
 				var oldNote:Note = unspawnNotes[unspawnNotes.length - 1];
 
-				var note:Note = new Note(time, data, false, true, oldNote, 1, conductor);
+				var note:Note = new Note(time, data, false, PlayState.isPixelStage, oldNote, 1, conductor);
 				note.mustHit = goodHit;
 				note.scrollSpeed = song.speed;
 				note.length = length;

@@ -3,8 +3,7 @@ package funkin.states;
 import funkin.objects.Character;
 import funkin.objects.gameplay.PlayField;
 
-class PlayState extends MusicBeatState
-{
+class PlayState extends MusicBeatState {
 	public static var daPixelZoom(default, null):Float = 6;
 	public static var SONG:SongData;
 
@@ -24,8 +23,7 @@ class PlayState extends MusicBeatState
 	public var curStage:String = "";
 	public var defaultCamZoom:Null<Float> = 1;
 
-	override public function create()
-	{
+	override public function create() {
 		if (SONG == null)
 			SONG = Song.parseSong();
 
@@ -59,8 +57,7 @@ class PlayState extends MusicBeatState
 		inst = new FlxSound();
 		inst.loadEmbedded(Paths.inst(SONG.song));
 
-		if (Assets.exists(Paths.voices(SONG.song)))
-		{
+		if (Assets.exists(Paths.voices(SONG.song))) {
 			voices = new FlxSound();
 			voices.loadEmbedded(Paths.voices(SONG.song));
 			voices.play();
@@ -73,13 +70,24 @@ class PlayState extends MusicBeatState
 
 		playField.oppHitSignal = dad.confirmAnimation;
 		playField.plrHitSignal = boyfriend.confirmAnimation;
+
+		playField.missCallback = function(id:Int = 0) {
+			boyfriend.holdTimer = 0;
+			boyfriend.animation.curAnim.curFrame = 0;
+			if (boyfriend.hasAnimation(Character.singAnimations[id % Character.singAnimations.length] + "miss"))
+				boyfriend.playAnim(Character.singAnimations[id % Character.singAnimations.length] + "miss", true);
+		}
+		playField.conductor.onBeatHit.add(function() {
+			stagesFunc(function(s:BaseStage) {
+				s.beatHit();
+			});
+		});
 	}
 
 	public var camSPEED:Float = 1;
 	public var stageJson:StageFile;
 
-	function parseStage()
-	{
+	function parseStage() {
 		// path ??= "stage";
 		if (SONG.stage == null || SONG.stage.length < 1)
 			SONG.stage = StageUtil.vanillaSongStage(Paths.formatSongName(SONG.song));
@@ -93,18 +101,15 @@ class PlayState extends MusicBeatState
 			stageJson = cast Json.parse(Assets.getText('assets/stages/stage.json'));
 		if (stageJson.defaultCamZoom != null)
 			defaultCamZoom = stageJson.defaultCamZoom;
-		if (stageJson.bfOffsets != null && stageJson.bfOffsets.length > 1)
-		{
+		if (stageJson.bfOffsets != null && stageJson.bfOffsets.length > 1) {
 			BF_X = stageJson.bfOffsets[0];
 			BF_Y = stageJson.bfOffsets[1];
 		}
-		if (stageJson.dadOffsets != null && stageJson.dadOffsets.length > 1)
-		{
+		if (stageJson.dadOffsets != null && stageJson.dadOffsets.length > 1) {
 			DAD_X = stageJson.dadOffsets[0];
 			DAD_Y = stageJson.dadOffsets[1];
 		}
-		if (stageJson.gfOffsets != null && stageJson.gfOffsets.length > 1)
-		{
+		if (stageJson.gfOffsets != null && stageJson.gfOffsets.length > 1) {
 			GF_X = stageJson.gfOffsets[0];
 			GF_X = stageJson.gfOffsets[1];
 		}
@@ -117,8 +122,9 @@ class PlayState extends MusicBeatState
 		if (stageJson.camSPEED != null)
 			camSPEED = stageJson.camSPEED;
 
-		switch curStage.toLowerCase()
-		{
+		isPixelStage = stageJson.isPixel == true;
+
+		switch curStage.toLowerCase() {
 			case "stage":
 				add(new funkin.objects.gameplay.stages.StageWeek1(this, true));
 			case "school":
@@ -127,6 +133,9 @@ class PlayState extends MusicBeatState
 	}
 
 	public var BF_X:Float = 770;
+
+	public static var isPixelStage:Bool = false;
+
 	public var BF_Y:Float = 100;
 	public var DAD_X:Float = 100;
 	public var DAD_Y:Float = 100;
@@ -135,10 +144,8 @@ class PlayState extends MusicBeatState
 
 	public var voices:FlxSound;
 
-	function startCharacterPos(char:Character, ?gfCheck:Bool = false)
-	{
-		if (gfCheck && char.curCharacter.startsWith('gf'))
-		{ // IF DAD IS GIRLFRIEND, HE GOES TO HER POSITION
+	function startCharacterPos(char:Character, ?gfCheck:Bool = false) {
+		if (gfCheck && char.curCharacter.startsWith('gf')) { // IF DAD IS GIRLFRIEND, HE GOES TO HER POSITION
 			char.setPosition(GF_X, GF_Y);
 			char.scrollFactor.set(0.95, 0.95);
 			char.danceEveryNumBeats = 2;
@@ -152,8 +159,7 @@ class PlayState extends MusicBeatState
 	public var opponentCameraOffset:Array<Float> = [0, 0];
 	public var girlfriendCameraOffset:Array<Float> = [0, 0];
 
-	function initChars()
-	{
+	function initChars() {
 		boyfriend = new Character(SONG.player1, true);
 		dad = new Character(SONG.player2);
 		girlfriend = new Character(SONG.gfVersion);
@@ -171,8 +177,7 @@ class PlayState extends MusicBeatState
 		startCharacterPos(girlfriend);
 
 		var camPos:FlxPoint = FlxPoint.get(girlfriendCameraOffset[0], girlfriendCameraOffset[1]);
-		if (girlfriend != null)
-		{
+		if (girlfriend != null) {
 			camPos.x += girlfriend.getGraphicMidpoint().x + girlfriend.camera_position[0];
 			camPos.y += girlfriend.getGraphicMidpoint().y + girlfriend.camera_position[1];
 		}
@@ -183,20 +188,17 @@ class PlayState extends MusicBeatState
 		add(camFollow);
 		FlxG.camera.follow(camFollow, LOCKON, 0.04);
 		openfl.system.System.gc();
-
 		
 	}
 
-	public function playerDance():Void
-	{
+	public function playerDance():Void {
 		var anim:String = boyfriend.getAnimationName();
 		if (boyfriend.holdTimer > playField.conductor.stepLength * (0.0011 #if FLX_PITCH / inst.pitch #end) * boyfriend.singDuration
 			&& anim.startsWith('sing') && !anim.endsWith('miss'))
 			boyfriend.dance();
 	}
 
-	public function characterBopper(beat:Int):Void
-	{
+	public function characterBopper(beat:Int):Void {
 		if (girlfriend != null
 			&& beat % Math.round(1 * girlfriend.danceEveryNumBeats) == 0
 			&& !girlfriend.getAnimationName().startsWith('sing')
@@ -214,21 +216,18 @@ class PlayState extends MusicBeatState
 			playerDance();
 	}
 
-	function genSong(sections:Array<Section>)
-	{
+	function genSong(sections:Array<Section>) {
 		playField.notes.genSong(sections);
 	}
 
 	public var uiGroup:FlxTypedGroup<FlxBasic> = new FlxTypedGroup<FlxBasic>();
 
-	override public function update(elapsed:Float)
-	{
+	override public function update(elapsed:Float) {
 		camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, Math.exp(-elapsed * 4));
 		camUnderlay.zoom = FlxMath.lerp(1, camUnderlay.zoom, Math.exp(-elapsed * 4));
 		FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, Math.exp(-elapsed * 4));
 		playField.time = inst.time;
 		// add funny resync stuff:
-		
 
 		if (inst.playing && voices != null)
 			if (Math.abs(voices.time - inst.time) > 20)
@@ -236,16 +235,16 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	public  function new() {
+	public function new() {
 		super();
-		if(FlxG.sound.music != null) FlxG.sound.music.stop();
+		if (FlxG.sound.music != null)
+			FlxG.sound.music.stop();
 	}
 
-	function beatHit()
-	{
+	function beatHit() {
 		characterBopper(playField.conductor.curBeat);
-		if (playField.conductor.curBeat % 4 == 0)
-		{
+
+		if (playField.conductor.curBeat % 4 == 0) {
 			camHUD.zoom += 0.04;
 			camUnderlay.zoom += 0.04;
 			FlxG.camera.zoom += 0.03;
@@ -255,8 +254,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public function moveCameraSection(?sec:Null<Int>):Void
-	{
+	public function moveCameraSection(?sec:Null<Int>):Void {
 		if (sec == null)
 			sec = Std.int(playField.conductor.curStep / 16);
 		if (sec < 0)
@@ -269,18 +267,14 @@ class PlayState extends MusicBeatState
 		moveCamera(isDad);
 	}
 
-	public function moveCamera(isDad:Bool)
-	{
-		if (isDad)
-		{
+	public function moveCamera(isDad:Bool) {
+		if (isDad) {
 			if (dad == null)
 				return;
 			camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 			camFollow.x += dad.camera_position[0] + opponentCameraOffset[0];
 			camFollow.y += dad.camera_position[1] + opponentCameraOffset[1];
-		}
-		else
-		{
+		} else {
 			if (boyfriend == null)
 				return;
 
@@ -292,12 +286,9 @@ class PlayState extends MusicBeatState
 }
 
 @:publicFields
-class StageUtil
-{
-	static function vanillaGF(s:String):String
-	{
-		switch (s)
-		{
+class StageUtil {
+	static function vanillaGF(s:String):String {
+		switch (s) {
 			case "school":
 				return "gf-pixel";
 			case "schoolEvil":
@@ -320,10 +311,8 @@ class StageUtil
 		return 'gf';
 	}
 
-	public static function vanillaSongStage(songName):String
-	{
-		switch (songName)
-		{
+	public static function vanillaSongStage(songName):String {
+		switch (songName) {
 			case 'spookeez' | 'south' | 'monster':
 				return 'spooky';
 			case 'pico' | 'blammed' | 'philly' | 'philly-nice':

@@ -14,7 +14,7 @@ class StrumLine extends FlxTypedSpriteGroup<StrumNote>
 		this.player = player;
 		for (i in 0...4)
 		{
-			var strumNote:StrumNote = new StrumNote(i);
+			var strumNote:StrumNote = new StrumNote(i,PlayState.isPixelStage);
 			strumNote.downScroll = downScroll;
 			strumNote.x += (160 * 0.7) * i;
 			add(strumNote);

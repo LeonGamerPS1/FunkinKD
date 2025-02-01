@@ -12,7 +12,7 @@ class StrumNote extends FlxSprite {
 	public var resetTimer:Float = 0;
 	public var downScroll:Bool = false;
 
-	public function new(data:Int = 0, isPixel:Bool = true) {
+	public function new(data:Int = 0, isPixel:Bool = false) {
 		super();
 		this.data = data;
 		this.isPixel = isPixel;
@@ -40,8 +40,8 @@ class StrumNote extends FlxSprite {
 	function loadPixelNoteAnimations(tex:String = "notes") {
 		loadGraphic(Paths.image('noteSkins/pixel/$tex'), true, 17, 17);
 		animation.add('static', [data % 4], 12, false);
-		animation.add('pressed', [data % 4 + 4, data % 4 + 8], 12, false);
-		animation.add('confirm', confirm[data % confirm.length], 12, false);
+		animation.add('pressed', [data % 4 + 4, data % 4 + 8], 24, false);
+		animation.add('confirm', confirm[data % confirm.length], 24, false);
 		setGraphicSize(width * 6);
 		updateHitbox();
 	}

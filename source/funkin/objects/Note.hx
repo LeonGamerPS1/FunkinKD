@@ -1,9 +1,6 @@
 package funkin.objects;
 
-
-
-class Note extends FlxSprite
-{
+class Note extends FlxSprite {
 	public static var directions:Array<String> = ["purple", "blue", "green", "red"];
 
 	public var texture(default, set):String;
@@ -29,8 +26,7 @@ class Note extends FlxSprite
 
 	public static var swagWidth:Float = (160 / 2) * 0.7;
 
-	public function canBeHit(conductor:Conductor):Bool
-	{
+	public function canBeHit(conductor:Conductor):Bool {
 		if (mustHit
 			&& time > conductor.songPosition - (Conductor.safeZoneOffset)
 			&& time < conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
@@ -40,9 +36,8 @@ class Note extends FlxSprite
 	}
 
 	public function new(time:Float = 0, data:Int = 0, sustainNote:Bool = false, ?isPixel:Bool = false, ?prevNote:Note, ?sustainSpeed:Float = 1,
-			?conductor:Conductor)
-	{
-		super(0,-2000);
+			?conductor:Conductor) {
+		super(0, -2000);
 
 		this.data = data;
 		this.isPixel = isPixel;
@@ -55,18 +50,15 @@ class Note extends FlxSprite
 
 		if (!sustainNote)
 			playAnim("arrow");
-
 	}
 
-	public function playAnim(s:String, force:Bool = false)
-	{
+	public function playAnim(s:String, force:Bool = false) {
 		animation.play(s, force);
 		centerOffsets();
 		centerOrigin();
 	}
 
-	function reloadNote(tex:String = "notes", isPixel:Bool, ?sustainSpeed:Float = 1)
-	{
+	function reloadNote(tex:String = "notes", isPixel:Bool, ?sustainSpeed:Float = 1) {
 		this.isPixel = isPixel;
 
 		if (!isPixel)
@@ -75,12 +67,9 @@ class Note extends FlxSprite
 			loadPixelNoteAnimations(tex, sustainSpeed);
 	}
 
-	override function update(elapsed:Float)
-	{
-		if (!mustHit)
-		{
-			if (!wasGoodHit && time <= conductor.songPosition)
-			{
+	override function update(elapsed:Float) {
+		if (!mustHit) {
+			if (!wasGoodHit && time <= conductor.songPosition) {
 				if (!sustainNote || (prevNote.wasGoodHit && !ignoreNote))
 					wasGoodHit = true;
 			}
@@ -88,8 +77,7 @@ class Note extends FlxSprite
 		super.update(elapsed);
 	}
 
-	override function set_clipRect(rect:FlxRect):FlxRect
-	{
+	override function set_clipRect(rect:FlxRect):FlxRect {
 		clipRect = rect;
 
 		if (frames != null)
@@ -98,12 +86,10 @@ class Note extends FlxSprite
 		return clipRect = rect;
 	}
 
-	function loadPixelNoteAnimations(tex:String, ?sustainSpeed:Float = 1)
-	{
+	function loadPixelNoteAnimations(tex:String, ?sustainSpeed:Float = 1) {
 		pixelPerfectPosition = true;
 		pixelPerfectRender = true;
-		if (!sustainNote)
-		{
+		if (!sustainNote) {
 			loadGraphic(Paths.image('noteSkins/pixel/$tex'), true, 17, 17);
 
 			animation.add('arrow', [data % 4 + 4], 12, false);
@@ -111,9 +97,7 @@ class Note extends FlxSprite
 
 			antialiasing = false;
 			updateHitbox();
-		}
-		else
-		{
+		} else {
 			loadGraphic(Paths.image('noteSkins/pixel/${tex}ENDS'));
 			width = width / 4;
 			height = height / 5;
@@ -127,8 +111,7 @@ class Note extends FlxSprite
 
 			scale.x = 5;
 			updateHitbox();
-			if (prevNote != null && prevNote.sustainNote)
-			{
+			if (prevNote != null && prevNote.sustainNote) {
 				prevNote.playAnim("hold");
 				prevNote.scale.y = 6 * (conductor.stepLength / 100 * 1.254 * sustainSpeed);
 				prevNote.updateHitbox();
@@ -136,8 +119,7 @@ class Note extends FlxSprite
 		}
 	}
 
-	function loadDefaultNoteAnims(tex:String, ?sustainSpeed:Float = 1)
-	{
+	function loadDefaultNoteAnims(tex:String, ?sustainSpeed:Float = 1) {
 		frames = Paths.getSparrowAtlas('noteSkins/$tex');
 
 		animation.addByPrefix('arrow', '${directions[data % directions.length]}0', 24, false);
@@ -147,15 +129,13 @@ class Note extends FlxSprite
 		setGraphicSize(width * 0.7);
 		updateHitbox();
 
-		if (sustainNote)
-		{
+		if (sustainNote) {
 			endBoi = true;
 			animation.play('end');
 			updateHitbox();
 
 			antialiasing = true;
-			if (prevNote != null && prevNote.sustainNote)
-			{
+			if (prevNote != null && prevNote.sustainNote) {
 				prevNote.animation.play("hold", true);
 				prevNote.endBoi = false;
 				prevNote.scale.y = 0.7 * (conductor.stepLength / 100 * 1.5 * sustainSpeed);
@@ -166,8 +146,7 @@ class Note extends FlxSprite
 		antialiasing = true;
 	}
 
-	function set_texture(value:String):String
-	{
+	function set_texture(value:String):String {
 		reloadNote(value, isPixel);
 		return texture = value;
 	}
@@ -175,8 +154,7 @@ class Note extends FlxSprite
 	public var offsetY:Float = 0;
 	public var multAlpha:Float = 1;
 
-	public function followStrumNote(strum:StrumNote, conductor:Conductor, ?songSpeed:Float = 1)
-	{
+	public function followStrumNote(strum:StrumNote, conductor:Conductor, ?songSpeed:Float = 1) {
 		if (x != strum.x + offsetX)
 			x = strum.x + offsetX;
 
@@ -190,8 +168,7 @@ class Note extends FlxSprite
 			flipY = strum.downScroll;
 		downscroll = strum.downScroll;
 
-		if (strum.downScroll && sustainNote)
-		{
+		if (strum.downScroll && sustainNote) {
 			if (isPixel)
 				y += 30;
 			else
@@ -201,27 +178,21 @@ class Note extends FlxSprite
 		}
 	}
 
-	inline public function clipToStrumNote(myStrum:StrumNote)
-	{
+	inline public function clipToStrumNote(myStrum:StrumNote) {
 		var center:Float = myStrum.y + myStrum.height / 2;
 
-		if ((mustHit || !mustHit) && (wasGoodHit || (prevNote.wasGoodHit && !canBeHit(conductor))))
-		{
+		if ((mustHit || !mustHit) && (wasGoodHit || (prevNote.wasGoodHit && !canBeHit(conductor)))) {
 			var swagRect:FlxRect;
 
 			swagRect = FlxRect.get(0, 0, frameWidth, frameHeight);
 
-			if (myStrum.downScroll)
-			{
-				if (y - offset.y * scale.y + height >= center)
-				{
+			if (myStrum.downScroll) {
+				if (y - offset.y * scale.y + height >= center) {
 					swagRect.width = frameWidth;
 					swagRect.height = Std.int((center - y) / scale.y);
 					swagRect.y = Std.int(frameHeight - swagRect.height);
 				}
-			}
-			else if (y + offset.y * scale.y <= center)
-			{
+			} else if (y + offset.y * scale.y <= center) {
 				swagRect.y = (center - y) / scale.y;
 				swagRect.width = width / scale.x;
 				swagRect.height = (height / scale.y) - swagRect.y;
@@ -233,8 +204,8 @@ class Note extends FlxSprite
 	}
 
 	public var endBoi = false;
-	public function isEndNote():Bool
-	{
+
+	public function isEndNote():Bool {
 		if (!sustainNote)
 			return false;
 		return endBoi;

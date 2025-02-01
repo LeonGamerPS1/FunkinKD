@@ -35,10 +35,10 @@ enum Action
 	@:inputs([FlxKey.RIGHT, FlxKey.D, DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, FlxVirtualPadInputID.RIGHT])
 	UI_RIGHT;
 
-	@:inputs([FlxKey.BACKSPACE, FlxKey.ESCAPE, BACK])
+	@:inputs([FlxKey.BACKSPACE, FlxKey.ESCAPE,B, BACK])
 	UI_BACK;
 
-	@:inputs([FlxKey.ENTER, FlxKey.SPACE, FlxVirtualPadInputID.A])
+	@:inputs([FlxKey.ENTER, FlxKey.SPACE,A, FlxVirtualPadInputID.A])
 	UI_ACCEPT;
 
 }

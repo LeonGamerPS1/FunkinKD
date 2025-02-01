@@ -29,7 +29,7 @@
 	<haxelib name="flixel" />
 	<haxelib name="flixel-controls"/>
 	<haxelib name="polymod" />
-
+    <haxelib name="flixel-addons"/>
 
 	<!-- _______________________________ defines ______________________________ -->
 	<haxedef name="FLX_NO_MOUSE" if="mobile" />
