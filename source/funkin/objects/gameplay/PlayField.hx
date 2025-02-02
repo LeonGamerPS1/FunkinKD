@@ -226,7 +226,7 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 				&& strum.animation.curAnim.name != "confirm"
 				&& note.mustHit
 				&& note.sustain != null
-				&& !(_maxTime - (conductor.stepLength) < conductor.songPosition)) {
+				&& !(_maxTime - (conductor.stepLength / 2) < conductor.songPosition)) {
 				noteMiss(note.data);
 				destroyNote(note);
 				return;

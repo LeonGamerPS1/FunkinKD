@@ -67,92 +67,91 @@ class Sustain extends FlxTiledSprite {
 	var firstDraw:Bool = true;
 
 	override function draw() {
-		try {
-			var receptor:StrumNote = parent.strum;
-			var isDownscroll:Bool = parent.downscroll;
-			// P = Parent // R = Receptor
-			var sustainPos:{
-				xP:Float,
-				yP:Float,
-				xR:Float,
-				yR:Float
-			} = {
-				xP: parent.x + ((parent.width - width) * 0.5),
-				yP: parent.y + (parent.height * 0.5),
-				xR: receptor.x + ((parent.width - width) * 0.5),
-				yR: receptor.y + (parent.height * 0.5),
+		var receptor:StrumNote = parent.strum;
+		if(receptor == null)
+			return;
+		var isDownscroll:Bool = parent.downscroll;
+		// P = Parent // R = Receptor
+		var sustainPos:{
+			xP:Float,
+			yP:Float,
+			xR:Float,
+			yR:Float
+		} = {
+			xP: parent.x + ((parent.width - width) * 0.5),
+			yP: parent.y + (parent.height * 0.5),
+			xR: receptor.x + ((parent.width - width) * 0.5),
+			yR: receptor.y + (parent.height * 0.5),
+		}
+		var sustainHeight:Float = (parent.length * (parent.scrollSpeed * 1 * 0.45));
+
+		x = sustainPos.xP;
+		y = sustainPos.yP - (isDownscroll ? height : 0);
+		alpha = parent.alpha * 0.7;
+
+		width = scaleWidth;
+		if (isDownscroll)
+			ay = sustainPos.yP + parent.height / 2;
+		var clip:Float = sustainHeight;
+		if (parent.wasGoodHit) {
+			// Clipping Effect //
+			var lenDiff = (parent.length - (parent.conductor.songPosition - parent.time));
+			clip = FlxMath.bound(lenDiff * (parent.scrollSpeed * 0.45), -tailScaleHeight, sustainHeight);
+			height = Math.abs(clip);
+
+			// Lock Position //
+			var bound:{low:Null<Float>, high:Null<Float>} = {
+				low: !isDownscroll ? sustainPos.yR : null,
+				high: isDownscroll ? sustainPos.yR - height : null,
 			}
-			var sustainHeight:Float = (parent.length * (parent.scrollSpeed * 1 * 0.45));
-
-			x = sustainPos.xP;
-			y = sustainPos.yP - (isDownscroll ? height : 0);
-			alpha = parent.alpha * 0.7;
-
-			width = scaleWidth;
-			if(isDownscroll)
-                ay = sustainPos.yP + parent.height / 2;
-			var clip:Float = sustainHeight;
-			if (parent.wasGoodHit) {
-				// Clipping Effect //
-				var lenDiff = (parent.length - (parent.conductor.songPosition - parent.time));
-				clip = FlxMath.bound(lenDiff * (parent.scrollSpeed * 0.45), -tailScaleHeight, sustainHeight);
-				height = Math.abs(clip);
-
-				// Lock Position //
-				var bound:{low:Null<Float>, high:Null<Float>} = {
-					low: !isDownscroll ? sustainPos.yR : null,
-					high: isDownscroll ? sustainPos.yR - height : null,
-				}
-				var value:Float = sustainPos.yP - (isDownscroll ? height : 0);
-				y = FlxMath.bound(value, bound.low, bound.high);
-				if (clip < 0) {
-					y += isDownscroll ? height : -height;
-					visible = false;
-				}
-				
-				if (!isDownscroll)
-					scrollY = sustainPos.yP - y;
-			} else {
-				height = sustainHeight;
-			}
-
-			if (visible) {
-				cameras = parent.cameras;
-				super.draw();
-			}
-
-			tailEnd.x = x;
-			tailEnd.y = isDownscroll ? (clip > 0 ? y - tailEnd.height : y + height - tailEnd.height) : (clip > 0 ? y + height : y);
-			tailEnd.flipY = isDownscroll;
-			tailEnd.alpha = alpha;
-
+			var value:Float = sustainPos.yP - (isDownscroll ? height : 0);
+			y = FlxMath.bound(value, bound.low, bound.high);
 			if (clip < 0) {
-				var swagRect:FlxRect = tailEnd.clipRect;
-				if (swagRect == null)
-					swagRect = FlxRect.get(0, 0, isDownscroll ? tailEnd.frameWidth : tailEnd.width / tailEnd.scale.x, tailEnd.frameHeight);
-
-				if (isDownscroll) {
-					if (tailEnd.y + tailEnd.height >= sustainPos.yR) {
-						swagRect.height = (sustainPos.yR - tailEnd.y) / tailEnd.scale.y;
-						swagRect.y = tailEnd.frameHeight - swagRect.height;
-					}
-				} else {
-					if (tailEnd.y <= sustainPos.yR) {
-						swagRect.y = (sustainPos.yR - tailEnd.y) / tailEnd.scale.y;
-						swagRect.height = (tailEnd.height / tailEnd.scale.y) - swagRect.y;
-					}
-				}
-				tailEnd.clipRect = swagRect;
+				y += isDownscroll ? height : -height;
+				visible = false;
 			}
 
-			tailEnd.cameras = parent.cameras;
-			tailEnd.draw();
-		} catch (e:Dynamic) {}
+			if (!isDownscroll)
+				scrollY = sustainPos.yP - y;
+		} else {
+			height = sustainHeight;
+		}
+
+		if (visible) {
+			cameras = parent.cameras;
+			super.draw();
+		}
+
+		tailEnd.x = x;
+		tailEnd.y = isDownscroll ? (clip > 0 ? y - tailEnd.height : y + height - tailEnd.height) : (clip > 0 ? y + height : y);
+		tailEnd.flipY = isDownscroll;
+		tailEnd.alpha = alpha;
+
+		if (clip < 0) {
+			var swagRect:FlxRect = tailEnd.clipRect;
+			if (swagRect == null)
+				swagRect = FlxRect.get(0, 0, isDownscroll ? tailEnd.frameWidth : tailEnd.width / tailEnd.scale.x, tailEnd.frameHeight);
+
+			if (isDownscroll) {
+				if (tailEnd.y + tailEnd.height >= sustainPos.yR) {
+					swagRect.height = (sustainPos.yR - tailEnd.y) / tailEnd.scale.y;
+					swagRect.y = tailEnd.frameHeight - swagRect.height;
+				}
+			} else {
+				if (tailEnd.y <= sustainPos.yR) {
+					swagRect.y = (sustainPos.yR - tailEnd.y) / tailEnd.scale.y;
+					swagRect.height = (tailEnd.height / tailEnd.scale.y) - swagRect.y;
+				}
+			}
+			tailEnd.clipRect = swagRect;
+		}
+
+		tailEnd.cameras = parent.cameras;
+		tailEnd.draw();
 	}
 
 	override function update(elapsed:Float):Void {
 		super.update(elapsed);
-	
 	}
 
 	override function updateVerticesData():Void {

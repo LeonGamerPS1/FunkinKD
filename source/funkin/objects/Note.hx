@@ -127,11 +127,17 @@ class Note extends FlxSprite {
 		if (sustain != null && downscroll)
 			canDrawSustain = (y > 0);
 		else
+			
 			canDrawSustain = true;
 
+			try {
 		if (sustain != null)
 			sustain.draw();
-
+	}
+	catch(e)
+	{
+		trace(e);
+	}
 		if (!wasGoodHit)
 			super.draw();
 	}
