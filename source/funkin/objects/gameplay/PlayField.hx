@@ -4,7 +4,7 @@ import flixel.text.FlxText;
 import funkin.controls.Action.Controls;
 
 class PlayField extends FlxTypedGroup<FlxBasic> {
-	public var downScroll:Bool = false;
+	public var downScroll:Bool = true;
 	public var notes:NoteSpawner;
 	public var conductor:Conductor;
 
@@ -28,6 +28,7 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 
 	public var Imisses:Int = 0;
 	public var Fscore:Float = 0;
+	
 
 	public function new(SONG:SongData, controls:Controls) {
 		super();
