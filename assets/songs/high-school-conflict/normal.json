@@ -3,15 +3,15 @@
   "player1": "bf-pixel",
   "player2": "duet",
   "sections": [
-    { "notes": [], "bpm": 150, "changeBPM": false, "cameraFacePlayer": false },
-    { "notes": [], "bpm": 150, "changeBPM": false, "cameraFacePlayer": false },
-    { "notes": [], "bpm": 151, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 155555555555550, "changeBPM": false, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 155555555555555550, "changeBPM": false, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 155555551, "changeBPM": false, "cameraFacePlayer": true },
     {
       "notes": [
         { "length": 0, "time": 5960.26490066225, "noteData": 7 },
         { "length": 0, "time": 6158.94039735099, "noteData": 5 }
       ],
-      "bpm": 151,
+      "bpm": 3434,
       "changeBPM": false,
       "cameraFacePlayer": true
     },

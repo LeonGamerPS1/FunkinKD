@@ -72,8 +72,7 @@ class PlayState extends MusicBeatState {
 		playField.plrHitSignal = boyfriend.confirmAnimation;
 
 		playField.missCallback = function(id:Int = 0) {
-			boyfriend.holdTimer = 0;
-			boyfriend.animation.curAnim.curFrame = 0;
+	
 			if (boyfriend.hasAnimation(Character.singAnimations[id % Character.singAnimations.length] + "miss"))
 				boyfriend.playAnim(Character.singAnimations[id % Character.singAnimations.length] + "miss", true);
 		}
@@ -82,6 +81,7 @@ class PlayState extends MusicBeatState {
 				s.beatHit();
 			});
 		});
+	    playField.conductor.mapBPMChanges(SONG);
 	}
 
 	public var camSPEED:Float = 1;
@@ -194,7 +194,7 @@ class PlayState extends MusicBeatState {
 	public function playerDance():Void {
 		var anim:String = boyfriend.getAnimationName();
 		if (boyfriend.holdTimer > playField.conductor.stepLength * (0.0011 #if FLX_PITCH / inst.pitch #end) * boyfriend.singDuration
-			&& anim.startsWith('sing') && !anim.endsWith('miss'))
+			&& anim.startsWith('sing'))
 			boyfriend.dance();
 	}
 
@@ -221,6 +221,7 @@ class PlayState extends MusicBeatState {
 	}
 
 	public var uiGroup:FlxTypedGroup<FlxBasic> = new FlxTypedGroup<FlxBasic>();
+	
 
 	override public function update(elapsed:Float) {
 		camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, Math.exp(-elapsed * 4));
@@ -233,6 +234,13 @@ class PlayState extends MusicBeatState {
 			if (Math.abs(voices.time - inst.time) > 20)
 				voices.time = inst.time;
 		super.update(elapsed);
+		if(controls.justPressed.UI_LEFT && controls.justPressed.NOTE_DOWN)
+		{
+			inst.stop();
+			if(voices != null)
+				voices.stop();
+			FlxG.switchState(new CharacterEditorState(SONG.player2));
+		}
 	}
 
 	public function new() {

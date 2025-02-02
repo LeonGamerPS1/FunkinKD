@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://lime.software/project/1.0.2"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lime.software/project/1.0.2 http://lime.software/xsd/project-1.0.2.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://lime.software/project/1.0.2 http://lime.software/xsd/project-1.0.2.xsd">
 
 	<!-- _________________________ Application Settings _________________________ -->
 
@@ -11,7 +12,8 @@
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
-	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false" antialiasing="44" />
+	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false"
+		antialiasing="44" />
 
 
 	<window if="html5" resizable="false" />
@@ -27,9 +29,10 @@
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
-	<haxelib name="flixel-controls"/>
+	<haxelib name="flixel-controls" />
 	<haxelib name="polymod" />
-    <haxelib name="flixel-addons"/>
+	<haxelib name="flixel-addons" />
+	<haxelib name="flixel-ui" />
 
 	<!-- _______________________________ defines ______________________________ -->
 	<haxedef name="FLX_NO_MOUSE" if="mobile" />

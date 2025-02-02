@@ -4,7 +4,7 @@ import flixel.text.FlxText;
 import funkin.controls.Action.Controls;
 
 class PlayField extends FlxTypedGroup<FlxBasic> {
-	public var downScroll:Bool = false;
+	public var downScroll:Bool = true;
 	public var notes:NoteSpawner;
 	public var conductor:Conductor;
 
@@ -168,76 +168,86 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 						goodNoteHit(coolNote);
 			}
 		}
-		notes.forEachAlive(function(susNote:Note) {
-			if (susNote.sustainNote && susNote.canBeHit(conductor) && susNote.mustHit && susNote.parent.wasGoodHit && key[susNote.data])
-				goodNoteHit(susNote);
-		});
 	}
 
 	function goodNoteHit(coolNote:Note) {
 		var strum = playerStrums.members[coolNote.data];
-		if (coolNote.wasGoodHit)
-			return;
 
-		health += 0.04;
-		coolNote.wasGoodHit = true;
-		coolNote.wasHit = true;
-		playerStrums.members[coolNote.data].playAnim("confirm", true);
+		var _maxTime:Float = coolNote.time + coolNote.length + conductor.stepLength;
+		var _inHoldRange:Bool = coolNote.length > 0 && conductor.songPosition < _maxTime - conductor.stepLength * 2;
+
 		if (plrHitSignal != null)
-			plrHitSignal(coolNote.data, true);
-		if (!coolNote.sustainNote) {
+			plrHitSignal(coolNote.data, !coolNote.wasGoodHit);
+
+		if (!coolNote.wasGoodHit) {
+			coolNote.wasGoodHit = true;
+			coolNote.wasHit = true;
+
 			Fscore += 100.5;
 			score.text = 'Score: $Fscore';
-			destroyNote(coolNote);
+
+			health += 0.04;
+
+			strum.playAnim("confirm", true);
 		}
+
+		if (coolNote.wasGoodHit && _maxTime < conductor.songPosition)
+			destroyNote(coolNote);
 	}
 
 	public var oppHitSignal:(data:Int, ?playAnim:Bool) -> Void;
 	public var plrHitSignal:(data:Int, ?playAnim:Bool) -> Void;
 
 	override function update(elapsed:Float) {
-		super.update(elapsed);
-		iconP1.x = (healthBar.barCenter + (150 * iconP1.scale.x) / 2 - 150) + 50;
-		iconP2.x = (healthBar.barCenter - (150 * iconP1.scale.x) / 2) - 50;
-
-		notes.sort(FlxSort.byY, FlxSort.DESCENDING);
-		if (downScroll)
-			notes.sort(FlxSort.byY, FlxSort.ASCENDING);
-
 		conductor.songPosition = time;
 		keyPress();
 
-		notes.forEach(function(note) {
+		notes.forEach(function(note:Note) {
 			var strumGroup = note.mustHit ? playerStrums : oppStrums;
 			var strum:StrumNote = strumGroup.members[note.data];
+			note.strum = strum;
 
 			note.followStrumNote(strum, conductor, SONG.speed);
-			if (note.sustainNote)
-				note.clipToStrumNote(strum);
+			var _maxTime:Float = note.time + note.length + conductor.stepLength;
+			var _inHoldRange:Bool = note.length > 0 && conductor.songPosition < _maxTime - conductor.stepLength * 2;
 
-			if (!note.mustHit && note.wasGoodHit && !note.wasHit) {
-				note.wasGoodHit = true;
-				note.wasHit = true;
-
-				strum.playAnim("confirm", true);
-
-				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
+			if (!note.mustHit && note.wasGoodHit) {
 				if (oppHitSignal != null)
-					oppHitSignal(note.data, true);
+					oppHitSignal(note.data, !note.wasHit);
+				if (!note.wasHit) {
+					note.wasGoodHit = true;
+					note.wasHit = true;
 
-				if (!note.sustainNote)
-					destroyNote(note);
+					strum.playAnim("confirm", true);
+				}
+				strum.resetTimer = 50 / 1000;
+			}
+			if (note.wasGoodHit
+				&& strum.animation.curAnim.name != "confirm"
+				&& note.mustHit
+				&& note.sustain != null
+				&& !(_maxTime - (conductor.stepLength) < conductor.songPosition)) {
+				noteMiss(note.data);
+				destroyNote(note);
 				return;
 			}
 
-			if (conductor.songPosition - note.time > noteKillOffset) {
+			if (note.wasGoodHit && _maxTime < conductor.songPosition)
+				destroyNote(note);
+			if (conductor.songPosition - note.time - note.length > noteKillOffset && note.mustHit) {
 				if (note.mustHit && !note.ignoreNote && !note.wasGoodHit)
 					noteMiss(note.data);
 
 				note.active = note.visible = false;
+
 				destroyNote(note);
 			}
+			note.cameras = cameras;
 		});
+		super.update(elapsed);
+
+		iconP1.x = (healthBar.barCenter + (150 * iconP1.scale.x) / 2 - 150) + 50;
+		iconP2.x = (healthBar.barCenter - (150 * iconP1.scale.x) / 2) - 50;
 	}
 
 	function noteMiss(shit:Int) {
@@ -252,6 +262,14 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 
 	public function beatHit() {
 		noteKillOffset = Math.max(conductor.stepLength, 350 / SONG.speed);
+		notes.sort(FlxSort.byY, FlxSort.DESCENDING);
+		if (downScroll)
+			notes.sort(FlxSort.byY, FlxSort.ASCENDING);
+		if (SONG.sections[Math.floor(conductor.curStep / 16)] != null) {
+			if (SONG.sections[Math.floor(conductor.curStep / 16)].changeBPM) {
+				conductor.bpm = (SONG.sections[Math.floor(conductor.curStep / 16)].bpm);
+			};
+		}
 	}
 
 	public function stepHit() {

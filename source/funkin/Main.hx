@@ -10,8 +10,10 @@ class Main extends Sprite
 	{
 		super();
 		addChild(new FlxGame(0, 0, funkin.states.Title));
+		ClientPrefs.load();
 		PolymodHandler.init(FLIXEL);
 		WeekData.init();
+
 		var fpsVar:FPS = cast addChild(new FPS(10, 0, 0xFFFFFF));
 	
 	}

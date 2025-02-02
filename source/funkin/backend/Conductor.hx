@@ -3,11 +3,19 @@ package funkin.backend;
 import flixel.FlxBasic;
 import flixel.util.FlxSignal;
 
+typedef BPMChangeEvent = {
+	var stepTime:Int;
+	var songTime:Float;
+	var bpm:Float;
+}
+
 class Conductor extends FlxBasic {
 	public var songPosition:Float = 0;
 	public var bpm(default, set):Float = 100;
 	public var beatLength:Float;
 	public var stepLength:Float;
+
+	public var bpmChangeMap:Array<BPMChangeEvent> = [];
 
 	public var curBeat:Int = 0;
 	public var curStep:Int = 0;
@@ -34,8 +42,32 @@ class Conductor extends FlxBasic {
 		});
 	}
 
+	public function mapBPMChanges(song:SongData) {
+		bpmChangeMap = [];
+
+		var curBPM:Float = song.bpm;
+		var totalSteps:Int = 0;
+		var totalPos:Float = 0;
+		for (i in 0...song.sections.length)
+		{
+			if(song.sections[i].changeBPM && song.sections[i].bpm != curBPM)
+			{
+				curBPM = song.sections[i].bpm;
+				var event:BPMChangeEvent = {
+					stepTime: totalSteps,
+					songTime: totalPos,
+					bpm: curBPM
+				};
+				bpmChangeMap.push(event);
+			}
+
+			var deltaSteps:Int = 16;
+			totalSteps += deltaSteps;
+			totalPos += ((60 / curBPM) * 1000 / 4) * deltaSteps;
+		}
+	}
+
 	function set_bpm(value:Null<Float>):Null<Float> {
-	
 		bpm = value;
 		beatLength = (60 / bpm) * 1000;
 		stepLength = beatLength / 4;
@@ -44,7 +76,18 @@ class Conductor extends FlxBasic {
 	}
 
 	private inline function updateStep() {
-		curStep = Math.floor(songPosition / stepLength);
+		var lastChange:BPMChangeEvent = {
+			stepTime: 0,
+			songTime: 0,
+			bpm: 0
+		}
+		for (i in 0...bpmChangeMap.length)
+		{
+			if (songPosition >= bpmChangeMap[i].songTime)
+				lastChange = bpmChangeMap[i];
+		}
+
+		curStep = lastChange.stepTime +  Math.floor(songPosition / stepLength);
 	}
 
 	private inline function updateBeat() {

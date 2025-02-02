@@ -19,26 +19,28 @@ class School extends BaseStage {
 		bgStreet.antialiasing = false;
 
 		var widShit = Std.int(bgSky.width * PlayState.daPixelZoom);
-
-		var fgTrees:BGSprite = new BGSprite('weeb/weebTreesBack', repositionShit + 170, 130, 0.9, 0.9);
-		fgTrees.setGraphicSize(Std.int(widShit * 0.8));
-		fgTrees.updateHitbox();
-		add(fgTrees);
-		fgTrees.antialiasing = false;
-
 		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 380, -800);
-		bgTrees.frames = Paths.getPackerAtlas('weeb/weebTrees');
-		bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
-		bgTrees.animation.play('treeLoop');
-		bgTrees.scrollFactor.set(0.85, 0.85);
-		add(bgTrees);
-		bgTrees.antialiasing = false;
 
-		var treeLeaves:BGSprite = new BGSprite('weeb/petals', repositionShit, -40, 0.85, 0.85, ['PETALS ALL'], true);
-		treeLeaves.setGraphicSize(widShit);
-		treeLeaves.updateHitbox();
-		add(treeLeaves);
-		treeLeaves.antialiasing = false;
+		if (!ClientPrefs.save.lowQuality) {
+			var fgTrees:BGSprite = new BGSprite('weeb/weebTreesBack', repositionShit + 170, 130, 0.9, 0.9);
+			fgTrees.setGraphicSize(Std.int(widShit * 0.8));
+			fgTrees.updateHitbox();
+			add(fgTrees);
+			fgTrees.antialiasing = false;
+
+			bgTrees.frames = Paths.getPackerAtlas('weeb/weebTrees');
+			bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
+			bgTrees.animation.play('treeLoop');
+			bgTrees.scrollFactor.set(0.85, 0.85);
+			add(bgTrees);
+			bgTrees.antialiasing = false;
+
+			var treeLeaves:BGSprite = new BGSprite('weeb/petals', repositionShit, -40, 0.85, 0.85, ['PETALS ALL'], true);
+			treeLeaves.setGraphicSize(widShit);
+			treeLeaves.updateHitbox();
+			add(treeLeaves);
+			treeLeaves.antialiasing = false;
+		}
 
 		bgSky.setGraphicSize(widShit);
 		bgSchool.setGraphicSize(widShit);
@@ -50,9 +52,11 @@ class School extends BaseStage {
 		bgStreet.updateHitbox();
 		bgTrees.updateHitbox();
 
-		bgGirls = new BackgroundGirls(-100, 190);
-		bgGirls.scrollFactor.set(0.9, 0.9);
-		add(bgGirls);
+		if (!ClientPrefs.save.lowQuality) {
+			bgGirls = new BackgroundGirls(-100, 190);
+			bgGirls.scrollFactor.set(0.9, 0.9);
+			add(bgGirls);
+		}
 
 		var songName = PlayState.SONG.song.toLowerCase().replace(" ", "-");
 		switch (songName) {

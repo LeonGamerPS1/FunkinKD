@@ -33,6 +33,7 @@ class PolymodHandler
 
 	public static function init(?framework:Null<Framework>)
 	{
+		#if (!android)
 		#if sys // fix for crash on sys platforms
 		if (!sys.FileSystem.exists('./mods'))
 			sys.FileSystem.createDirectory('./mods');
@@ -57,6 +58,7 @@ class PolymodHandler
 		Polymod.registerAllScriptClasses();
 	
 		// forceReloadAssets();
+		#end
 	}
 
 	public static function createModRoot():Void

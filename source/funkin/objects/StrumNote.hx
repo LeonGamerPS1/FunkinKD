@@ -1,8 +1,8 @@
 package funkin.objects;
 
-import flixel.FlxSprite;
+import flixel.addons.effects.FlxSkewedSprite;
 
-class StrumNote extends FlxSprite {
+class StrumNote extends FlxSkewedSprite {
 	public static var directions:Array<String> = ["left", "down", "up", "right"];
 
 	public var texture(default, set):String;
@@ -22,6 +22,7 @@ class StrumNote extends FlxSprite {
 
 	public function playAnim(s:String, force:Bool = false) {
 		animation.play(s, force);
+
 		centerOffsets();
 		centerOrigin();
 	}

@@ -41,6 +41,9 @@ enum Action
 	@:inputs([FlxKey.ENTER, FlxKey.SPACE,A, FlxVirtualPadInputID.A])
 	UI_ACCEPT;
 
+	@:inputs([FlxKey.R, X])
+	UI_RESET;
+
 }
 
 class Controls extends FlxControls<Action> {}

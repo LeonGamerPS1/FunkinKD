@@ -50,6 +50,38 @@
             "looped": false,
             "x": 0,
             "y": 0
+        },
+        {
+            "name": "singLEFTmiss",
+            "prefix": "BF LEFT MISS instance 1",
+            "fps": 24,
+            "looped": false,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "name": "singDOWNmiss",
+            "prefix": "BF DOWN MISS instance 1",
+            "fps": 24,
+            "looped": false,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "name": "singUPmiss",
+            "prefix": "BF UP MISS instance 1",
+            "fps": 24,
+            "looped": false,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "name": "singRIGHTmiss",
+            "prefix": "BF RIGHT MISS instance 1",
+            "fps": 24,
+            "looped": false,
+            "x": 0,
+            "y": 0
         }
     ],
     "position": [

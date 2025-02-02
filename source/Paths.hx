@@ -177,12 +177,7 @@ class Paths
 
 	inline static public function image(key:String, ?library:String, ?allowGPU:Bool = true):Dynamic
 	{
-		if (Assets.exists(img(key, library != null ? library : null)))
-		{
-			var graphic:FlxGraphic = FlxGraphic.fromAssetKey(img(key, library != null ? library : null));
-			graphic.bitmap.disposeImage();
-			graphic.persist = true;
-		}
+		
 
 		return img(key, library != null ? library : null);
 	}
