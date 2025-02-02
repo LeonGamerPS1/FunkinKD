@@ -4,7 +4,7 @@ import flixel.text.FlxText;
 import funkin.controls.Action.Controls;
 
 class PlayField extends FlxTypedGroup<FlxBasic> {
-	public var downScroll:Bool = true;
+	public var downScroll:Bool = false;
 	public var notes:NoteSpawner;
 	public var conductor:Conductor;
 
