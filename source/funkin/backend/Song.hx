@@ -16,6 +16,7 @@ typedef SongData = {
 	var player2:String;
 	var gfVersion:String;
 	var stage:String;
+	var skin:String; // skin for strumlines n' notes
 }
 
 typedef Section = {

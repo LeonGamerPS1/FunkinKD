@@ -3,7 +3,6 @@ package funkin.states;
 import flixel.text.FlxText;
 import lime.app.Application;
 import flixel.effects.FlxFlicker;
-import funkin.modding.PolymodHandler;
 import funkin.backend.WeekFile.WSongMeta;
 import flixel.group.FlxSpriteGroup;
 import funkin.objects.HealthIcon;
@@ -15,6 +14,7 @@ class Weekbet extends Alphabet {
 
 	override function destroy() {
 		week = null;
+		song = null;
 		super.destroy();
 	}
 }

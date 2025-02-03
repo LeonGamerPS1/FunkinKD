@@ -20,7 +20,7 @@
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
 
-	<!-- _____________________________ Path Settings ____________________________ -->
+	<!-- __________________________ ___ Path Settings ____________________________ -->
 
 	<set name="BUILD_DIR" value="export" />
 	<source path="source" />

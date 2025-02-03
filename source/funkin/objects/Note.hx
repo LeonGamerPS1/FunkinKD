@@ -1,6 +1,7 @@
 package funkin.objects;
 
-class Note extends FlxSprite {
+class Note extends FlxSprite
+{
 	public static var noteScale(default, null):Float = 0.7;
 	public static var directions:Array<String> = ["purple", "blue", "green", "red"];
 
@@ -27,7 +28,8 @@ class Note extends FlxSprite {
 
 	public static var swagWidth:Float = (160 / 2) * 0.7;
 
-	public function canBeHit(conductor:Conductor):Bool {
+	public function canBeHit(conductor:Conductor):Bool
+	{
 		if (mustHit
 			&& time > conductor.songPosition - (Conductor.safeZoneOffset)
 			&& time < conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
@@ -36,7 +38,8 @@ class Note extends FlxSprite {
 			return false;
 	}
 
-	public function new(time:Float = 0, data:Int = 0, ?isPixel:Bool = false, ?prevNote:Note, ?sustainSpeed:Float = 1, ?conductor:Conductor) {
+	public function new(time:Float = 0, data:Int = 0, ?isPixel:Bool = false, ?prevNote:Note, ?sustainSpeed:Float = 1, ?conductor:Conductor)
+	{
 		super(0, -2000);
 
 		this.data = data;
@@ -50,15 +53,26 @@ class Note extends FlxSprite {
 		playAnim("arrow");
 	}
 
-	public function playAnim(s:String, force:Bool = false) {
+	public function playAnim(s:String, force:Bool = false)
+	{
 		animation.play(s, force);
 		centerOffsets();
 		centerOrigin();
 	}
 
-	function reloadNote(tex:String = "notes", isPixel:Bool, ?sustainSpeed:Float = 1) {
+	function reloadNote(tex:String = "notes", isPixel:Bool, ?sustainSpeed:Float = 1)
+	{
+		tex ??= "notes";
+		if(PlayState.SONG.skin != null && PlayState.SONG.skin != "")
+			tex = PlayState.SONG.skin;
 		this.isPixel = isPixel;
-
+		var prefix = isPixel ? "pixel/" : "";
+		var path = Paths.image('noteSkins/$prefix$tex');
+		if (!Assets.exists(path))
+		{
+			trace(' "$path" doesnt exist, Reverting skin back to default');
+			tex = "notes";
+		}
 		if (!isPixel)
 			loadDefaultNoteAnims(tex, sustainSpeed);
 		else
@@ -67,15 +81,17 @@ class Note extends FlxSprite {
 
 	var canDrawSustain:Bool = false;
 
-	override function update(elapsed:Float) {
+	override function update(elapsed:Float)
+	{
 		if (!mustHit)
 			if (!wasGoodHit && time <= conductor.songPosition)
 				wasGoodHit = true;
-		
+
 		super.update(elapsed);
 	}
 
-	function loadPixelNoteAnimations(tex:String, ?sustainSpeed:Float = 1) {
+	function loadPixelNoteAnimations(tex:String, ?sustainSpeed:Float = 1)
+	{
 		pixelPerfectPosition = true;
 		pixelPerfectRender = true;
 
@@ -88,7 +104,8 @@ class Note extends FlxSprite {
 		updateHitbox();
 	}
 
-	function loadDefaultNoteAnims(tex:String, ?sustainSpeed:Float = 1) {
+	function loadDefaultNoteAnims(tex:String, ?sustainSpeed:Float = 1)
+	{
 		frames = Paths.getSparrowAtlas('noteSkins/$tex');
 
 		animation.addByPrefix('arrow', '${directions[data % directions.length]}0', 24, false);
@@ -99,11 +116,12 @@ class Note extends FlxSprite {
 		updateHitbox();
 
 		antialiasing = true;
-		if(sustain != null)
+		if (sustain != null)
 			sustain.antialiasing = antialiasing;
 	}
 
-	function set_texture(value:String):String {
+	function set_texture(value:String):String
+	{
 		reloadNote(value, isPixel);
 		return texture = value;
 	}
@@ -112,8 +130,10 @@ class Note extends FlxSprite {
 	public var multAlpha:Float = 1;
 	public var sustain:Sustain;
 
-	public function followStrumNote(strum:StrumNote, conductor:Conductor, ?songSpeed:Float = 1) {
+	public function followStrumNote(strum:StrumNote, conductor:Conductor, ?songSpeed:Float = 1)
+	{
 		this.strum = strum;
+
 		if (x != strum.x + offsetX)
 			x = strum.x + offsetX;
 
@@ -123,26 +143,14 @@ class Note extends FlxSprite {
 		downscroll = strum.downScroll;
 	}
 
-	override function draw() {
-		if (sustain != null && downscroll)
-			canDrawSustain = (y > 0);
-		else
-			
-			canDrawSustain = true;
-
-			try {
-		if (sustain != null)
-			sustain.draw();
-	}
-	catch(e)
+	override function draw()
 	{
-		trace(e);
-	}
 		if (!wasGoodHit)
 			super.draw();
 	}
 
-	override function destroy() {
+	override function destroy()
+	{
 		if (sustain != null)
 			sustain.destroy();
 

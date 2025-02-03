@@ -4,6 +4,7 @@ import flixel.text.FlxText;
 import funkin.objects.MenuItem;
 import flixel.effects.FlxFlicker;
 
+@:build(funkin.macro.VersionMacro.getBuildNum())
 class MainMenu extends BaseState
 {
 	var items = ["story_mode", "freeplay", "options"];
@@ -14,7 +15,11 @@ class MainMenu extends BaseState
 	public var selectedSomethin:Bool = false;
 
 	public var magenta:FlxSprite;
+	public static var buildNum(get,default):Int = 0;
 
+	static  function get_buildNum():Int {
+		return buildNum;
+	}
 	override function create()
 	{
 		super.create();
@@ -56,7 +61,7 @@ class MainMenu extends BaseState
 		add(menuItems);
 		FlxG.camera.follow(camFollow, null, 0);
 
-		var versionShit:FlxText = new FlxText(0, FlxG.height - 20, 0, "Hyper Engine v0.2.0", 12);
+		var versionShit:FlxText = new FlxText(0, FlxG.height - 20, 0, "Funkin KD Build " + buildNum, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat('assets/font/bookantiqua_bold.ttf', 16, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK, true);
 		versionShit.antialiasing = true;
@@ -163,4 +168,5 @@ class MainMenu extends BaseState
 			}
 		});
 	}
+
 }

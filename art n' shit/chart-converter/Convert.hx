@@ -10,7 +10,7 @@ class Convert {
 	static function main() {
 		var result = Dialogs.open('Select LEGACY FNF/PSYCH 0.7.3 JSON For conversion.', [{ext: 'json', desc: ' Legacy Funkin\'\r // PSYCH 0.7.3 Format'},]);
 
-		var legacyJSON:SwagSong = cast haxe.Json.parse(File.read(result).readAll().toString().trim()).song;
+		var legacyJSON:SwagSong =  cast haxe.Json.parse(File.read(result).readAll().toString().trim()).song;
 		Sys.println("\nConverting SONG: " + legacyJSON.song + "\nDiff: " + getDiff(result));
 		var uhm:SongData = {
 			song: legacyJSON.song,
@@ -19,7 +19,8 @@ class Convert {
 			player1:legacyJSON.player1,
 			player2:legacyJSON.player2,
 		    gfVersion:legacyJSON.gfVersion,
-			sections: []
+			sections: [],
+			stage: Reflect.getProperty(legacyJSON,"stage")
 		};
      for(section in legacyJSON.notes)
       {
