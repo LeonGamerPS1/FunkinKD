@@ -15,6 +15,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 
 	public var SONG:SongData;
 	public var controls:Controls;
+	public var botplay:Bool = #if bplay true #else false #end;
 
 	public var noteKillOffset:Float = 350;
 	public var time:Float = 0;
@@ -82,7 +83,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		rating.borderSize = 2;
 		@:privateAccess
 		rating.updateDefaultFormat();
-		rating.addFormat(new FlxTextFormat(FlxColor.GRAY,false,false,FlxColor.BLACK),8,9);
+		rating.addFormat(new FlxTextFormat(FlxColor.GRAY, false, false, FlxColor.BLACK), 8, 9);
 		add(rating);
 
 		score.antialiasing = misses.antialiasing = rating.antialiasing = true;
@@ -102,6 +103,12 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		note.kill();
 		notes.remove(note, true);
 		note.destroy();
+		if(note.sustain != null)
+		{
+			note.sustain.kill();
+			note.sustain.destroy();
+			note.sustain = null;
+		}
 		note = null;
 	}
 
@@ -203,7 +210,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 	{
 		var strum = playerStrums.members[coolNote.data];
 
-		var _maxTime:Float = coolNote.time + coolNote.length + conductor.stepLength;
+		var _maxTime:Float = coolNote.time + coolNote.length;
 		var _inHoldRange:Bool = coolNote.length > 0 && conductor.songPosition < _maxTime - conductor.stepLength * 2;
 
 		if (plrHitSignal != null)
@@ -220,8 +227,11 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			strum.playAnim("confirm", true);
 		}
 
-		if (coolNote.wasGoodHit && _maxTime < conductor.songPosition)
+		if (coolNote.wasGoodHit && _maxTime < conductor.songPosition && !botplay)
+		{
+	
 			destroyNote(coolNote);
+		}
 	}
 
 	public var oppHitSignal:(data:Int, ?playAnim:Bool) -> Void;
@@ -230,7 +240,8 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 	override function update(elapsed:Float)
 	{
 		conductor.songPosition = time;
-		keyPress();
+		if (!botplay)
+			keyPress();
 
 		notes.forEach(function(note:Note)
 		{
@@ -239,7 +250,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			note.strum = strum;
 
 			note.followStrumNote(strum, conductor, SONG.speed);
-			var _maxTime:Float = note.time + note.length + conductor.stepLength;
+			var _maxTime:Float = note.time + note.length;
 			var _inHoldRange:Bool = note.length > 0 && conductor.songPosition < _maxTime - conductor.stepLength * 2;
 
 			if (!note.mustHit && note.wasGoodHit)
@@ -250,13 +261,22 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 				{
 					note.wasGoodHit = true;
 					note.wasHit = true;
+					strum.playAnim("confirm", true);
 				}
+
+				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
+			}
+			if (botplay && note.time <= conductor.songPosition && note.mustHit)
+			{
+				goodNoteHit(note);
+				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
 			}
 			if (note.wasGoodHit
 				&& strum.animation.curAnim.name != "confirm"
 				&& note.mustHit
 				&& note.sustain != null
-				&& !(_maxTime - (conductor.stepLength) < conductor.songPosition))
+				&& !(_maxTime - (conductor.stepLength * 2) < conductor.songPosition)
+				&& !botplay)
 			{
 				noteMiss(note.data);
 				destroyNote(note);
@@ -264,10 +284,14 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			}
 
 			if (note.wasGoodHit && _maxTime < conductor.songPosition)
+			{
+				if(note.sustain != null)
+			    strum.playAnim("static");
 				destroyNote(note);
+			}
 			if (conductor.songPosition - note.time - note.length > noteKillOffset && note.mustHit)
 			{
-				if (note.mustHit && !note.ignoreNote && !note.wasGoodHit)
+				if (note.mustHit && !note.ignoreNote && !note.wasGoodHit && !botplay)
 					noteMiss(note.data);
 
 				note.active = note.visible = false;

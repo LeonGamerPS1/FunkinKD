@@ -31,7 +31,7 @@ class HealthIcon extends FlxSprite
 			{
 				var path = Paths.img('icons/icon-' + newChar);
 				if (Assets.exists(Paths.img('icons/icon-' + newChar)))
-					loadGraphic(Paths.image('icons/icon-' + newChar), true, 150, 150);
+					loadGraphic(path, true, 150, 150);
 				else
 					loadGraphic(Paths.image('icons/icon-face'), true, 150, 150);
 

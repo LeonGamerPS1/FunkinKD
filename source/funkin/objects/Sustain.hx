@@ -3,7 +3,8 @@ package funkin.objects;
 import flixel.graphics.FlxGraphic;
 import flixel.addons.display.FlxTiledSprite;
 
-class Sustain extends FlxTiledSprite {
+class Sustain extends FlxTiledSprite
+{
 	public static var originWidth:Float = 50;
 	public static var scaleWidth:Float = originWidth * Note.noteScale;
 
@@ -21,7 +22,8 @@ class Sustain extends FlxTiledSprite {
 	public var tailEnd:CRSprite = null;
 	public var ay:Float = 0;
 
-	public function new(parent:Note) {
+	public function new(parent:Note)
+	{
 		super(null, scaleWidth, 0, false, true);
 		visible = true;
 		this.parent = parent;
@@ -30,12 +32,20 @@ class Sustain extends FlxTiledSprite {
 		tailEnd = new CRSprite();
 	}
 
-	public function init() {
-		var graph = FlxGraphic.fromAssetKey(Paths.image(!parent.isPixel ? "noteSkins/sustains" : "noteSkins/pixel/sustains"));
+	public function init()
+	{
+		var prefix = parent.isPixel ? 'noteSkins/pixel/' : 'noteSkins/';
+		var path = prefix + '${parent.texture}-sustains';
+
+		if (!Assets.exists(Paths.image(path)))
+			path = prefix + "notes-sustains";
+
+		var graph = FlxGraphic.fromAssetKey(Paths.image(path));
 		loadGraphic(graph);
 		tailEnd.loadGraphic(graph, true, Std.int(graph.width / 8), graph.height);
 		tailEnd.animation.add("idle", [
-			switch (parent.data) {
+			switch (parent.data)
+			{
 				case 0:
 					1;
 				case 1:
@@ -55,7 +65,8 @@ class Sustain extends FlxTiledSprite {
 		// graphic.bitmap.disposeImage();
 	}
 
-	override function destroy() {
+	override function destroy()
+	{
 		if (tailEnd != null)
 			tailEnd.destroy();
 		super.destroy();
@@ -66,23 +77,25 @@ class Sustain extends FlxTiledSprite {
 	 */
 	var firstDraw:Bool = true;
 
-	override function draw() {
+	override function draw()
+	{
 		var receptor:StrumNote = parent.strum;
-		if(receptor == null)
+		if (receptor == null)
 			return;
 		var isDownscroll:Bool = parent.downscroll;
 		// P = Parent // R = Receptor
-		var sustainPos:{
-			xP:Float,
-			yP:Float,
-			xR:Float,
-			yR:Float
-		} = {
-			xP: parent.x + ((parent.width - width) * 0.5),
-			yP: parent.y + (parent.height * 0.5),
-			xR: receptor.x + ((parent.width - width) * 0.5),
-			yR: receptor.y + (parent.height * 0.5),
-		}
+		var sustainPos:
+			{
+				xP:Float,
+				yP:Float,
+				xR:Float,
+				yR:Float
+			} = {
+				xP: parent.x + ((parent.width - width) * 0.5),
+				yP: parent.y + (parent.height * 0.5),
+				xR: receptor.x + ((parent.width - width) * 0.5),
+				yR: receptor.y + (parent.height * 0.5),
+			}
 		var sustainHeight:Float = (parent.length * (parent.scrollSpeed * 1 * 0.45));
 
 		x = sustainPos.xP;
@@ -93,7 +106,8 @@ class Sustain extends FlxTiledSprite {
 		if (isDownscroll)
 			ay = sustainPos.yP + parent.height / 2;
 		var clip:Float = sustainHeight;
-		if (parent.wasGoodHit) {
+		if (parent.wasGoodHit)
+		{
 			// Clipping Effect //
 			var lenDiff = (parent.length - (parent.conductor.songPosition - parent.time));
 			clip = FlxMath.bound(lenDiff * (parent.scrollSpeed * 0.45), -tailScaleHeight, sustainHeight);
@@ -106,18 +120,22 @@ class Sustain extends FlxTiledSprite {
 			}
 			var value:Float = sustainPos.yP - (isDownscroll ? height : 0);
 			y = FlxMath.bound(value, bound.low, bound.high);
-			if (clip < 0) {
+			if (clip < 0)
+			{
 				y += isDownscroll ? height : -height;
 				visible = false;
 			}
 
 			if (!isDownscroll)
 				scrollY = sustainPos.yP - y;
-		} else {
+		}
+		else
+		{
 			height = sustainHeight;
 		}
 
-		if (visible) {
+		if (visible)
+		{
 			cameras = parent.cameras;
 			super.draw();
 		}
@@ -127,18 +145,24 @@ class Sustain extends FlxTiledSprite {
 		tailEnd.flipY = isDownscroll;
 		tailEnd.alpha = alpha;
 
-		if (clip < 0) {
+		if (clip < 0)
+		{
 			var swagRect:FlxRect = tailEnd.clipRect;
 			if (swagRect == null)
 				swagRect = FlxRect.get(0, 0, isDownscroll ? tailEnd.frameWidth : tailEnd.width / tailEnd.scale.x, tailEnd.frameHeight);
 
-			if (isDownscroll) {
-				if (tailEnd.y + tailEnd.height >= sustainPos.yR) {
+			if (isDownscroll)
+			{
+				if (tailEnd.y + tailEnd.height >= sustainPos.yR)
+				{
 					swagRect.height = (sustainPos.yR - tailEnd.y) / tailEnd.scale.y;
 					swagRect.y = tailEnd.frameHeight - swagRect.height;
 				}
-			} else {
-				if (tailEnd.y <= sustainPos.yR) {
+			}
+			else
+			{
+				if (tailEnd.y <= sustainPos.yR)
+				{
 					swagRect.y = (sustainPos.yR - tailEnd.y) / tailEnd.scale.y;
 					swagRect.height = (tailEnd.height / tailEnd.scale.y) - swagRect.y;
 				}
@@ -150,11 +174,13 @@ class Sustain extends FlxTiledSprite {
 		tailEnd.draw();
 	}
 
-	override function update(elapsed:Float):Void {
+	override function update(elapsed:Float):Void
+	{
 		super.update(elapsed);
 	}
 
-	override function updateVerticesData():Void {
+	override function updateVerticesData():Void
+	{
 		if (graphic == null)
 			return;
 

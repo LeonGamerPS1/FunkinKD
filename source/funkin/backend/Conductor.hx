@@ -19,6 +19,10 @@ class Conductor extends FlxBasic {
 
 	public var curBeat:Int = 0;
 	public var curStep:Int = 0;
+
+	public var curStepDec:Float = 0;
+	public var curBeatDec:Float = 0;
+
 	public var lastBeat:Int = 0;
 	public var lastStep:Int = 0;
 
@@ -88,10 +92,12 @@ class Conductor extends FlxBasic {
 		}
 
 		curStep = lastChange.stepTime +  Math.floor(songPosition / stepLength);
+		curStepDec = (songPosition / 1000)*(bpm * 4/60);
 	}
 
 	private inline function updateBeat() {
 		curBeat = Math.floor(curStep / 4);
+		curBeatDec = curStepDec / 4;
 	}
 
 	override function update(elapsed:Float) {

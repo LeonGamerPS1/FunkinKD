@@ -27,7 +27,11 @@ class StrumNote extends FlxSkewedSprite
 		animation.play(s, force);
 
 		centerOffsets();
-		centerOrigin();
+		if(s == "confirm" && !isPixel)
+		{
+			offset.x -= 13;
+			offset.y -= 13;
+		}
 	}
 
 	function reloadNote(tex:String = "notes", isPixel:Bool)

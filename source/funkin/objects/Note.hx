@@ -1,5 +1,6 @@
 package funkin.objects;
 
+
 class Note extends FlxSprite
 {
 	public static var noteScale(default, null):Float = 0.7;
@@ -63,7 +64,7 @@ class Note extends FlxSprite
 	function reloadNote(tex:String = "notes", isPixel:Bool, ?sustainSpeed:Float = 1)
 	{
 		tex ??= "notes";
-		if(PlayState.SONG.skin != null && PlayState.SONG.skin != "")
+		if (PlayState.SONG.skin != null && PlayState.SONG.skin != "")
 			tex = PlayState.SONG.skin;
 		this.isPixel = isPixel;
 		var prefix = isPixel ? "pixel/" : "";
@@ -73,6 +74,8 @@ class Note extends FlxSprite
 			trace(' "$path" doesnt exist, Reverting skin back to default');
 			tex = "notes";
 		}
+		@:bypassAccessor
+		texture = tex;
 		if (!isPixel)
 			loadDefaultNoteAnims(tex, sustainSpeed);
 		else
@@ -122,6 +125,8 @@ class Note extends FlxSprite
 
 	function set_texture(value:String):String
 	{
+		texture = value;
+
 		reloadNote(value, isPixel);
 		return texture = value;
 	}
@@ -133,6 +138,7 @@ class Note extends FlxSprite
 	public function followStrumNote(strum:StrumNote, conductor:Conductor, ?songSpeed:Float = 1)
 	{
 		this.strum = strum;
+		songSpeed = FlxMath.roundDecimal(songSpeed,2);
 
 		if (x != strum.x + offsetX)
 			x = strum.x + offsetX;

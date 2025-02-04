@@ -260,6 +260,8 @@ class PlayState extends MusicBeatState {
 
 	function beatHit() {
 		characterBopper(playField.conductor.curBeat);
+		if(playField.botplay)
+			playerDance();
 
 		if (playField.conductor.curBeat % 4 == 0) {
 			camHUD.zoom += 0.04;
