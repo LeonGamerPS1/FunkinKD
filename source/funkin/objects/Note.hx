@@ -1,6 +1,5 @@
 package funkin.objects;
 
-
 class Note extends FlxSprite
 {
 	public static var noteScale(default, null):Float = 0.7;
@@ -138,7 +137,7 @@ class Note extends FlxSprite
 	public function followStrumNote(strum:StrumNote, conductor:Conductor, ?songSpeed:Float = 1)
 	{
 		this.strum = strum;
-		songSpeed = FlxMath.roundDecimal(songSpeed,2);
+		songSpeed = FlxMath.roundDecimal(songSpeed, 2);
 
 		if (x != strum.x + offsetX)
 			x = strum.x + offsetX;
@@ -153,6 +152,12 @@ class Note extends FlxSprite
 	{
 		if (!wasGoodHit)
 			super.draw();
+	}
+
+	public function setup(chartNote):Note
+	{
+		wasGoodHit = wasGoodHit = false;
+		return this;
 	}
 
 	override function destroy()
