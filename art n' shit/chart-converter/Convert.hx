@@ -42,7 +42,7 @@ class Convert
 				var data:Int = Std.int(sectionNote[1] % 4);
 				if (mustHit)
 					data += 4;
-				sectionB.notes.push({time: time, noteData: data, length: length});
+				sectionB.notes.push([time,data,length]);
 			}
 			uhm.sections.push(sectionB);
 		}

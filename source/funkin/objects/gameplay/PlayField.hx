@@ -49,7 +49,6 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		add(sustains);
 		add(oppStrums);
 		add(playerStrums);
-		
 
 		healthBar = new Bar(0, !downScroll ? FlxG.height - 100 : 100, 'healthBar', () ->
 		{
@@ -101,15 +100,12 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 	function destroyNote(note:Note)
 	{
 		note.kill();
-		notes.remove(note, true);
-		note.destroy();
-		if(note.sustain != null)
+		notes.remove(note);
+		if (note.sustain != null)
 		{
 			note.sustain.kill();
-			note.sustain.destroy();
-			note.sustain = null;
+			sustains.remove(note.sustain);
 		}
-		note = null;
 	}
 
 	var hitNotes:Array<Note> = [];
@@ -162,35 +158,10 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			{
 				if (daNote.canBeHit(conductor) && daNote.mustHit && !daNote.wasHit)
 				{
-					if (directions.contains(daNote.data))
-					{
-						for (coolNote in hitNotes)
-						{
-							if (coolNote.data == daNote.data && Math.abs(daNote.time - coolNote.time) < 10)
-							{ // if it's the same note twice at < 10ms distance, just delete it
-								// EXCEPT u cant delete it in this loop cuz it fucks with the collection lol
-								dumbNotes.push(daNote);
-								break;
-							}
-							else if (coolNote.data == daNote.data && daNote.time < coolNote.time)
-							{ // if daNote is earlier than existing note (coolNote), replace
-								hitNotes.remove(coolNote);
-								hitNotes.push(daNote);
-								trace("e");
-								break;
-							}
-						}
-					}
-					else
-					{
-						hitNotes.push(daNote);
-						directions.push(daNote.data);
-					}
+					hitNotes.push(daNote);
+					directions.push(daNote.data);
 				}
 			});
-
-			for (coolNote in dumbNotes)
-				destroyNote(coolNote);
 
 			hitNotes.sort((a, b) -> Std.int(a.time - b.time));
 			if (hitNotes.length > 0)
@@ -226,12 +197,6 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			health += 0.04;
 			strum.playAnim("confirm", true);
 		}
-
-		if (coolNote.wasGoodHit && _maxTime < conductor.songPosition && !botplay)
-		{
-	
-			destroyNote(coolNote);
-		}
 	}
 
 	public var oppHitSignal:(data:Int, ?playAnim:Bool) -> Void;
@@ -243,7 +208,8 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		if (!botplay)
 			keyPress();
 
-		notes.forEach(function(note:Note)
+		super.update(elapsed);
+		notes.forEachAlive(function(note:Note)
 		{
 			var strumGroup = note.mustHit ? playerStrums : oppStrums;
 			var strum:StrumNote = strumGroup.members[note.data];
@@ -261,10 +227,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 				{
 					note.wasGoodHit = true;
 					note.wasHit = true;
-					strum.playAnim("confirm", true);
 				}
-
-				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
 			}
 			if (botplay && note.time <= conductor.songPosition && note.mustHit)
 			{
@@ -276,23 +239,25 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 				&& note.mustHit
 				&& note.sustain != null
 				&& !(_maxTime - (conductor.stepLength * 2) < conductor.songPosition)
-				&& !botplay)
+				&& !botplay
+				&& !note.wasMissed)
 			{
 				noteMiss(note.data);
+				note.wasMissed = true;
 				destroyNote(note);
 				return;
 			}
 
 			if (note.wasGoodHit && _maxTime < conductor.songPosition)
-			{
-				if(note.sustain != null)
-			    strum.playAnim("static");
 				destroyNote(note);
-			}
+
 			if (conductor.songPosition - note.time - note.length > noteKillOffset && note.mustHit)
 			{
-				if (note.mustHit && !note.ignoreNote && !note.wasGoodHit && !botplay)
+				if (note.mustHit && !note.ignoreNote && !note.wasGoodHit && !botplay && !note.wasMissed)
+				{
 					noteMiss(note.data);
+					note.wasMissed = true;
+				}
 
 				note.active = note.visible = false;
 
@@ -300,7 +265,6 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			}
 			note.cameras = cameras;
 		});
-		super.update(elapsed);
 
 		iconP1.x = (healthBar.barCenter + (150 * iconP1.scale.x) / 2 - 150) + 50;
 		iconP2.x = (healthBar.barCenter - (150 * iconP1.scale.x) / 2) - 50;
@@ -322,9 +286,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 	public function beatHit()
 	{
 		noteKillOffset = Math.max(conductor.stepLength, 350 / SONG.speed);
-		notes.sort(FlxSort.byY, FlxSort.DESCENDING);
-		if (downScroll)
-			notes.sort(FlxSort.byY, FlxSort.ASCENDING);
+		
 		if (SONG.sections[Math.floor(conductor.curStep / 16)] != null)
 		{
 			if (SONG.sections[Math.floor(conductor.curStep / 16)].changeBPM)

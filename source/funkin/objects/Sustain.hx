@@ -27,7 +27,7 @@ class Sustain extends FlxTiledSprite
 		super(null, scaleWidth, 0, false, true);
 		visible = true;
 		this.parent = parent;
-		this.frames = parent.frames;
+	
 
 		tailEnd = new CRSprite();
 	}
@@ -42,6 +42,7 @@ class Sustain extends FlxTiledSprite
 
 		var graph = FlxGraphic.fromAssetKey(Paths.image(path));
 		loadGraphic(graph);
+		
 		tailEnd.loadGraphic(graph, true, Std.int(graph.width / 8), graph.height);
 		tailEnd.animation.add("idle", [
 			switch (parent.data)
@@ -201,5 +202,22 @@ class Sustain extends FlxTiledSprite
 
 		if (height <= 0)
 			graphicVisible = false;
+	}
+
+	override function kill()
+	{
+		super.kill();
+		tailEnd.kill();
+	}
+
+	public function setup(parent:Note):Sustain
+	{
+		this.parent = parent;
+		graphic = null;
+		revive();
+		tailEnd.revive();
+		init();
+
+		return this;
 	}
 }

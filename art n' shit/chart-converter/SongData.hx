@@ -16,12 +16,6 @@ typedef Section =
 	var bpm:Float;
 	var changeBPM:Bool;
 	var cameraFacePlayer:Bool;
-	var notes:Array<ChartNote>;
+	var notes:Array<Dynamic>;
 }
 
-typedef ChartNote =
-{
-	var time:Float;
-	var noteData:Int;
-	var length:Float;
-}
