@@ -16,8 +16,8 @@ class VersionMacro
         
 		#if (macro && !display)
 		var fields = Context.getBuildFields();
-		if(!FileSystem.exists("export.build"))
-			File.saveContent("export.build","0");
+		if(!FileSystem.exists("export/.build"))
+			File.saveContent("export/.build","0");
 		File.saveContent("export/.build",'${Std.parseInt(File.read("export/.build").readAll().toString()) + 1}');
 		File.saveContent("assets/buildNum.txt",'${Std.parseInt(File.read("export/.build").readAll().toString())}');
 
