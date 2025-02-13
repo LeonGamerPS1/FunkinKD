@@ -1,0 +1,15 @@
+{
+  "weekImage": "week2",
+  "weekBefore": "week1",
+  "displayText": "Roots",
+  "startUnlocked": true,
+  "order": 7,
+  "difficulties": ["Hard"],
+  "songs": [
+    {
+      "name": "Roots",
+      "freeplayIcon": "senpai",
+      "color": [34, 51, 68]
+    }
+  ]
+}

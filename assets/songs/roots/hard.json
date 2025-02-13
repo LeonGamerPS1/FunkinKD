@@ -1,0 +1,1144 @@
+{
+  "speed": 1.8,
+  "stage": "glitchSchool",
+  "player1": "bfGlitch",
+  "player2": "spiritCrazy",
+  "sections": [
+    { "notes": [], "bpm": 200, "changeBPM": true, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 150, "changeBPM": false, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 190, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 190, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 190, "changeBPM": false, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 190, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 190, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 190, "changeBPM": false, "cameraFacePlayer": true },
+    {
+      "notes": [
+        [9600, 0, 300],
+        [10050, 1, 300],
+        [10500, 3, 300]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [10950, 1, 300],
+        [11400, 0, 225],
+        [11700, 2, 150]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [12000, 0, 300],
+        [12450, 1, 300],
+        [12900, 3, 300]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [13350, 1, 300],
+        [13800, 0, 225],
+        [14100, 2, 150]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [14400, 0, 300],
+        [14850, 1, 300],
+        [15300, 3, 300]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [15750, 1, 300],
+        [16200, 0, 225],
+        [16500, 2, 150]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [16800, 0, 300],
+        [17250, 1, 300],
+        [17700, 3, 300]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [18150, 1, 300],
+        [18600, 3, 150],
+        [18900, 2, 150]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [19200, 4, 300],
+        [19650, 5, 300],
+        [20100, 7, 300]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [20550, 5, 300],
+        [21000, 4, 225],
+        [21300, 6, 150]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [21600, 4, 300],
+        [22050, 5, 300],
+        [22500, 7, 300]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [22950, 5, 300],
+        [23400, 4, 225],
+        [23700, 6, 150]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [24000, 4, 300],
+        [24450, 5, 300],
+        [24900, 7, 300]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [25350, 5, 300],
+        [25800, 4, 225],
+        [26100, 6, 150]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [26400, 4, 300],
+        [26850, 5, 300],
+        [27300, 7, 300]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [27750, 5, 300],
+        [28200, 7, 150],
+        [28500, 6, 225]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [28800, 0, 0],
+        [28950, 1, 0],
+        [29100, 3, 0],
+        [29250, 1, 0],
+        [29400, 2, 150],
+        [29700, 0, 0],
+        [29850, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [30000, 3, 0],
+        [30150, 0, 0],
+        [30300, 2, 0],
+        [30450, 0, 0],
+        [30600, 3, 150],
+        [30900, 2, 0],
+        [31050, 0, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [31200, 2, 150],
+        [31500, 0, 0],
+        [31650, 1, 0],
+        [31800, 3, 150],
+        [32100, 1, 150]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [32400, 0, 150],
+        [32700, 1, 0],
+        [32850, 3, 0],
+        [33000, 2, 0],
+        [33150, 1, 0],
+        [33300, 3, 0],
+        [33450, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [33600, 4, 0],
+        [33750, 5, 0],
+        [33900, 4, 0],
+        [34050, 6, 0],
+        [34200, 7, 0],
+        [34350, 4, 0],
+        [34500, 7, 0],
+        [34650, 5, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [34800, 7, 0],
+        [34950, 4, 0],
+        [35100, 6, 0],
+        [35400, 7, 0],
+        [35550, 6, 0],
+        [35250, 4, 0],
+        [35700, 4, 0],
+        [35850, 6, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [36000, 6, 150],
+        [36300, 4, 0],
+        [36450, 5, 0],
+        [36600, 7, 150],
+        [36900, 5, 150]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [37200, 4, 150],
+        [37500, 5, 0],
+        [38100, 7, 0],
+        [38250, 5, 0],
+        [37650, 7, 150],
+        [37950, 4, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [38400, 3, 750],
+        [38400, 7, 750],
+        [39300, 2, 0],
+        [39450, 1, 375],
+        [39450, 5, 375],
+        [39300, 6, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [40200, 7, 0],
+        [40050, 6, 0],
+        [40050, 2, 0],
+        [40200, 3, 0],
+        [40350, 6, 0],
+        [40500, 4, 0],
+        [40500, 0, 0],
+        [40650, 1, 75],
+        [40650, 5, 75]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [40950, 0, 0],
+        [40950, 4, 0],
+        [41550, 4, 0],
+        [41700, 6, 0],
+        [41550, 0, 0],
+        [41700, 2, 0],
+        [41850, 3, 0],
+        [41925, 0, 0],
+        [41100, 4, 0],
+        [41250, 3, 0],
+        [41400, 3, 0],
+        [41400, 7, 0],
+        [41250, 7, 0],
+        [41850, 7, 0],
+        [41925, 4, 0],
+        [41100, 0, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [42000, 2, 450],
+        [42000, 6, 450],
+        [42600, 3, 450],
+        [42600, 4, 450]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [43200, 0, 0],
+        [43350, 3, 0],
+        [43500, 1, 0],
+        [43650, 0, 0],
+        [43950, 1, 0],
+        [44100, 0, 0],
+        [44250, 3, 0],
+        [43200, 6, 450],
+        [43800, 3, 0],
+        [43800, 4, 450]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [44400, 1, 0],
+        [44550, 0, 0],
+        [44700, 3, 0],
+        [44850, 1, 0],
+        [45000, 2, 0],
+        [45150, 3, 0],
+        [45450, 3, 0],
+        [44400, 5, 450],
+        [45000, 7, 450]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [45600, 4, 0],
+        [45750, 5, 0],
+        [45900, 7, 0],
+        [46050, 4, 0],
+        [46200, 5, 0],
+        [46350, 7, 0],
+        [46500, 4, 0],
+        [46650, 5, 0],
+        [45600, 0, 0],
+        [45750, 1, 0],
+        [45900, 3, 0],
+        [46050, 0, 0],
+        [46200, 1, 0],
+        [46350, 3, 0],
+        [46500, 0, 0],
+        [46650, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [46800, 7, 0],
+        [46950, 7, 0],
+        [47100, 6, 0],
+        [47250, 4, 0],
+        [47700, 6, 150],
+        [47400, 7, 150],
+        [46800, 3, 0],
+        [46950, 3, 0],
+        [47100, 2, 0],
+        [47250, 0, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [48000, 0, 0],
+        [48150, 3, 0],
+        [48300, 0, 0],
+        [48450, 2, 0],
+        [48600, 0, 0],
+        [48750, 1, 0],
+        [48900, 3, 0],
+        [49050, 1, 0],
+        [48000, 5, 2325]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [49200, 0, 0],
+        [49350, 3, 0],
+        [49500, 0, 0],
+        [49650, 2, 0],
+        [49800, 0, 0],
+        [49950, 1, 0],
+        [50100, 3, 0],
+        [50250, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [50400, 4, 0],
+        [50550, 7, 0],
+        [50700, 4, 0],
+        [50850, 6, 0],
+        [51000, 4, 0],
+        [51150, 5, 0],
+        [51300, 7, 0],
+        [51450, 5, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [51600, 4, 0],
+        [51750, 7, 0],
+        [51900, 4, 0],
+        [52050, 6, 0],
+        [52200, 4, 0],
+        [52350, 5, 0],
+        [52500, 7, 0],
+        [52650, 5, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [52800, 0, 0],
+        [52950, 3, 0],
+        [53100, 0, 0],
+        [53250, 2, 0],
+        [53400, 0, 0],
+        [53550, 1, 0],
+        [53700, 3, 0],
+        [53850, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [54000, 0, 0],
+        [54150, 3, 0],
+        [54300, 0, 0],
+        [54450, 2, 0],
+        [54600, 0, 0],
+        [54750, 1, 0],
+        [54900, 3, 0],
+        [55050, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [55200, 4, 0],
+        [55350, 7, 0],
+        [55500, 4, 0],
+        [55650, 6, 0],
+        [55800, 4, 0],
+        [55950, 5, 0],
+        [56100, 7, 0],
+        [56250, 5, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [56400, 4, 0],
+        [56550, 7, 0],
+        [56700, 4, 0],
+        [56850, 6, 0],
+        [57000, 4, 0],
+        [57150, 5, 0],
+        [57300, 7, 0],
+        [57450, 5, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [57600, 0, 0],
+        [57750, 3, 0],
+        [57900, 0, 0],
+        [58050, 2, 0],
+        [58200, 0, 0],
+        [58350, 1, 0],
+        [58500, 3, 0],
+        [58650, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [58800, 0, 0],
+        [58950, 3, 0],
+        [59100, 0, 0],
+        [59250, 2, 0],
+        [59400, 0, 0],
+        [59550, 1, 0],
+        [59700, 3, 0],
+        [59850, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [60000, 4, 0],
+        [60150, 7, 0],
+        [60300, 4, 0],
+        [60450, 6, 0],
+        [60600, 4, 0],
+        [60750, 5, 0],
+        [60900, 7, 0],
+        [61050, 5, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [61200, 4, 0],
+        [61350, 7, 0],
+        [61500, 4, 0],
+        [61650, 6, 0],
+        [61800, 4, 0],
+        [61950, 5, 0],
+        [62100, 7, 0],
+        [62250, 5, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [62400, 0, 0],
+        [62550, 3, 0],
+        [62700, 0, 0],
+        [63450, 1, 0],
+        [62850, 1, 0],
+        [63000, 3, 0],
+        [63150, 2, 0],
+        [63300, 0, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [63600, 0, 0],
+        [63750, 3, 0],
+        [63900, 0, 0],
+        [64650, 1, 0],
+        [64050, 1, 0],
+        [64200, 3, 0],
+        [64350, 2, 0],
+        [64500, 0, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [64800, 4, 0],
+        [64950, 7, 0],
+        [65100, 4, 0],
+        [65850, 5, 0],
+        [65250, 5, 0],
+        [65400, 7, 0],
+        [65550, 6, 0],
+        [65700, 4, 0],
+        [64800, 0, 0],
+        [64950, 3, 0],
+        [65100, 0, 0],
+        [65250, 1, 0],
+        [65400, 3, 0],
+        [65550, 2, 0],
+        [65700, 0, 0],
+        [65850, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [66000, 4, 0],
+        [66150, 5, 0],
+        [66000, 0, 0],
+        [66150, 1, 0],
+        [66300, 4, 0],
+        [66300, 0, 0],
+        [66600, 4, 0],
+        [66675, 7, 0],
+        [66750, 5, 0],
+        [66600, 0, 0],
+        [66675, 3, 0],
+        [66750, 1, 0],
+        [66900, 6, 0],
+        [67050, 7, 0],
+        [66900, 2, 0],
+        [67050, 3, 0],
+        [66450, 6, 0],
+        [66450, 2, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [67200, 6, 750],
+        [67200, 2, 750],
+        [68100, 3, 0],
+        [68250, 1, 0],
+        [68100, 7, 0],
+        [68250, 5, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [68400, 2, 1575],
+        [68400, 6, 1575]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [70200, 4, 450],
+        [70200, 3, 450]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [71400, 1, 450],
+        [71400, 5, 450],
+        [70800, 7, 450],
+        [70800, 0, 450]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [72000, 2, 750],
+        [72000, 6, 750],
+        [72900, 7, 0],
+        [73050, 5, 0],
+        [72900, 3, 0],
+        [73050, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [73200, 6, 675],
+        [73200, 2, 675],
+        [74025, 4, 0],
+        [74025, 0, 0],
+        [74175, 2, 0],
+        [74175, 6, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [74400, 7, 0],
+        [74550, 5, 0],
+        [74400, 3, 0],
+        [74550, 1, 0],
+        [74700, 4, 750],
+        [74700, 0, 750]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [76200, 5, 450],
+        [76200, 1, 450],
+        [75600, 7, 375],
+        [75600, 0, 375]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [76800, 3, 0],
+        [76950, 0, 0],
+        [76800, 7, 0],
+        [76950, 4, 0],
+        [77550, 4, 0],
+        [77400, 7, 0],
+        [77400, 3, 0],
+        [77550, 0, 0],
+        [77100, 1, 150],
+        [77100, 5, 150],
+        [77775, 2, 75],
+        [77775, 6, 75]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [78000, 3, 0],
+        [78150, 0, 0],
+        [78000, 7, 0],
+        [78150, 4, 0],
+        [78750, 4, 0],
+        [78600, 7, 0],
+        [78600, 3, 0],
+        [78750, 0, 0],
+        [78300, 1, 150],
+        [78300, 5, 150],
+        [78975, 2, 75],
+        [78975, 6, 75]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [79200, 3, 0],
+        [79350, 0, 0],
+        [79200, 7, 0],
+        [79350, 4, 0],
+        [79500, 1, 150],
+        [79500, 5, 150],
+        [79800, 4, 1650],
+        [79800, 3, 1650]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    { "notes": [], "bpm": 190, "changeBPM": false, "cameraFacePlayer": false },
+    {
+      "notes": [
+        [81600, 6, 2250],
+        [81600, 2, 2250]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    { "notes": [], "bpm": 190, "changeBPM": false, "cameraFacePlayer": true },
+    {
+      "notes": [
+        [84000, 3, 1050],
+        [84000, 7, 1050]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [85800, 5, 525],
+        [85800, 1, 525],
+        [85200, 4, 450],
+        [85200, 3, 450]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [86400, 0, 0],
+        [86550, 2, 0],
+        [86700, 3, 0],
+        [86850, 1, 0],
+        [87000, 3, 150],
+        [87300, 0, 0],
+        [87450, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [87600, 0, 0],
+        [87750, 2, 0],
+        [87900, 3, 0],
+        [88050, 1, 0],
+        [88200, 3, 150],
+        [88500, 0, 0],
+        [88650, 1, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [88800, 2, 150],
+        [89250, 1, 0],
+        [89100, 3, 0],
+        [89400, 2, 150],
+        [89700, 0, 150]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [90000, 1, 150],
+        [90300, 0, 0],
+        [90450, 2, 0],
+        [90600, 3, 0],
+        [90750, 1, 0],
+        [90900, 2, 0],
+        [91050, 0, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [91200, 4, 0],
+        [91350, 7, 0],
+        [91500, 5, 0],
+        [91650, 4, 0],
+        [91800, 7, 0],
+        [91950, 6, 0],
+        [92100, 4, 0],
+        [92250, 5, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [92400, 6, 0],
+        [92550, 4, 0],
+        [92700, 5, 0],
+        [92850, 6, 0],
+        [93000, 4, 0],
+        [93150, 5, 0],
+        [93300, 6, 0],
+        [93450, 4, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [93600, 6, 150],
+        [94050, 5, 0],
+        [93900, 7, 0],
+        [94200, 6, 150],
+        [94500, 4, 150]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [94800, 5, 150],
+        [95100, 4, 0],
+        [95700, 6, 0],
+        [95250, 6, 150],
+        [95550, 4, 0],
+        [95850, 7, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [96000, 7, 750],
+        [96000, 3, 750],
+        [96900, 6, 0],
+        [97050, 5, 375],
+        [97050, 1, 375],
+        [96900, 2, 0]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [97800, 3, 0],
+        [97650, 2, 0],
+        [97650, 6, 0],
+        [97800, 7, 0],
+        [97950, 2, 0],
+        [98100, 0, 0],
+        [98175, 3, 0],
+        [98100, 4, 0],
+        [98175, 7, 0],
+        [98250, 5, 75],
+        [98250, 1, 75]
+      ],
+      "bpm": 190,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [98550, 0, 0],
+        [98550, 4, 0],
+        [99150, 4, 0],
+        [99300, 6, 0],
+        [99150, 0, 0],
+        [99300, 2, 0],
+        [99450, 3, 0],
+        [99525, 0, 0],
+        [98700, 4, 0],
+        [98850, 3, 0],
+        [99000, 3, 0],
+        [99000, 7, 0],
+        [98850, 7, 0],
+        [99450, 7, 0],
+        [99525, 4, 0],
+        [98700, 0, 0]
+      ],
+      "bpm": 196,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [99600, 2, 450],
+        [99600, 6, 450],
+        [100200, 3, 450],
+        [100200, 4, 450]
+      ],
+      "bpm": 196,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [100800, 0, 0],
+        [100950, 3, 0],
+        [101100, 1, 0],
+        [101250, 0, 0],
+        [101550, 1, 0],
+        [101700, 0, 0],
+        [101850, 3, 0],
+        [100800, 6, 450],
+        [101400, 3, 0],
+        [101400, 4, 450]
+      ],
+      "bpm": 198,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [102000, 1, 0],
+        [102150, 0, 0],
+        [102300, 3, 0],
+        [102450, 1, 0],
+        [102600, 2, 0],
+        [102750, 3, 0],
+        [103050, 3, 0],
+        [102000, 5, 450],
+        [102600, 7, 450]
+      ],
+      "bpm": 200,
+      "changeBPM": false,
+      "cameraFacePlayer": false
+    },
+    {
+      "notes": [
+        [103200, 4, 0],
+        [103350, 5, 0],
+        [103500, 7, 0],
+        [103650, 4, 0],
+        [103800, 5, 0],
+        [103950, 7, 0],
+        [104100, 4, 0],
+        [104250, 5, 0],
+        [103200, 0, 0],
+        [103350, 1, 0],
+        [103500, 3, 0],
+        [103650, 0, 0],
+        [103800, 1, 0],
+        [103950, 3, 0],
+        [104100, 0, 0],
+        [104250, 1, 0]
+      ],
+      "bpm": 200,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [104400, 7, 0],
+        [104550, 7, 0],
+        [104700, 6, 0],
+        [104850, 4, 0],
+        [105300, 6, 150],
+        [104400, 3, 0],
+        [104550, 3, 0],
+        [104700, 2, 0],
+        [104850, 0, 0],
+        [105000, 7, 150],
+        [105000, 3, 0],
+        [105150, 2, 0],
+        [105225, 1, 0],
+        [105300, 0, 0],
+        [105450, 0, 0]
+      ],
+      "bpm": 200,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    {
+      "notes": [
+        [105600, 5, 2325],
+        [105600, 1, 2325]
+      ],
+      "bpm": 200,
+      "changeBPM": false,
+      "cameraFacePlayer": true
+    },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": false },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true },
+    { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true }
+  ],
+  "gfVersion": null,
+  "bpm": 150,
+  "song": "Roots",
+  "skin": "notes-glitch"
+}

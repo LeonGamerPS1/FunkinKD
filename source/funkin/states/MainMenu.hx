@@ -127,7 +127,7 @@ class MainMenu extends BaseState
 							{
 								case 'story_mode':
 									FlxG.sound.music.stop();
-									FlxG.switchState(new PlayState());
+									FlxG.switchState(new StoryMode());
 
 								case "freeplay":
 									FlxG.switchState(new Freeplay());

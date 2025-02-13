@@ -6,12 +6,18 @@ class StrumNote extends FlxSkewedSprite
 {
 	public static var directions:Array<String> = ["left", "down", "up", "right"];
 
+	public var direction:Float = 90;
+
 	public var texture(default, set):String;
 	public var isPixel:Bool = false;
 
 	public var data:Int = 0;
 	public var resetTimer:Float = 0;
 	public var downScroll:Bool = false;
+	public var defaultX:Float = 0;
+	public var defaultY:Float = 0;
+	public var mustHit:Bool = false;
+	public var player:Int = 0;
 
 	public function new(data:Int = 0, isPixel:Bool = false)
 	{
@@ -27,11 +33,7 @@ class StrumNote extends FlxSkewedSprite
 		animation.play(s, force);
 
 		centerOffsets();
-		if(s == "confirm" && !isPixel)
-		{
-			offset.x -= 13;
-			offset.y -= 13;
-		}
+		centerOrigin();
 	}
 
 	function reloadNote(tex:String = "notes", isPixel:Bool)
@@ -60,8 +62,8 @@ class StrumNote extends FlxSkewedSprite
 	{
 		loadGraphic(Paths.image('noteSkins/pixel/$tex'), true, 17, 17);
 		animation.add('static', [data % 4], 12, false);
-		animation.add('pressed', [data % 4 + 4, data % 4 + 8], 24, false);
-		animation.add('confirm', confirm[data % confirm.length], 24, false);
+		animation.add('pressed', [data % 4 + 4, data % 4 + 8], 12, false);
+		animation.add('confirm', confirm[data % confirm.length], 12, false);
 		setGraphicSize(width * 6);
 		updateHitbox();
 	}

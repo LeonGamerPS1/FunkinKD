@@ -105,7 +105,7 @@ class Character extends FlxSprite {
 	}
 
 	function loadTexture(s:String = "") {
-		var tex = Paths.getSparrowAtlas(s);
+		var tex = Paths.getAtlas(s);
 		frames = tex;
 	}
 
@@ -119,8 +119,9 @@ class Character extends FlxSprite {
 			flipX = (json.flipX != isPlayer);
 		if (json.antialiasing != null)
 			antialiasing = json.antialiasing;
-		else
-			antialiasing = true;
+
+		if(json.position != null)
+			origin.set(json.position[0] - width / 2,json.position[1] - height);
 		updateHitbox();
 
 		curCharacter = json.name;

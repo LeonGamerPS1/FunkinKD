@@ -1,7 +1,6 @@
 package funkin;
 
-import haxe.ui.Toolkit;
-import funkin.modding.PolymodHandler;
+#if MOD import funkin.modding.PolymodHandler; #end
 import funkin.backend.WeekData;
 import funkin.debug.FPS;
 
@@ -10,12 +9,11 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
-		addChild(new FlxGame(0, 0, funkin.states.Title, 140, 140));
-	
+		addChild(new FlxGame(0, 0, funkin.states.Title, 200, 200));
 
-		PolymodHandler.init(FLIXEL);
+		#if MOD PolymodHandler.init(FLIXEL);#end
 		ClientPrefs.load();
-		Toolkit.init();
+
 		WeekData.init();
 		FlxG.mouse.load(Paths.image("cursor"), 0.5);
 

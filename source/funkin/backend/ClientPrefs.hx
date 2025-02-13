@@ -10,6 +10,8 @@ class SaveVars {
     public var middleScroll:Bool = false;
     public var disableCharacters:Bool = false;
 
+	public var iconScale:Float = 1.2;
+
 	public function new() {}
 }
 

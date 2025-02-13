@@ -28,10 +28,19 @@
 
 	<haxelib name="flixel" />
 	<haxelib name="flixel-controls" />
-	<haxelib name="polymod" />
+	<haxelib name="polymod" if="MOD" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="flixel-ui" />
-	<haxelib name="haxeui-flixel" />
+	<haxelib name="hscript-iris" />
+
+
+
+	<haxedef name="FM_ENGINE" value="Funkinkd"/>
+	<haxedef name="FM_ENGINE_VERSION" value="0.0.1"/>
+
+	<haxelib name="funkin-modchart" />
+	<haxeflag name="--macro" value="modchart.core.macros.Macro.includeFiles()"/>
+
 
 	<!-- _______________________________ defines ______________________________ -->
 	<haxedef name="FLX_NO_MOUSE" if="mobile" />

@@ -73,7 +73,7 @@ class Paths
 
 	inline static public function txt(key:String, ?library:String)
 	{
-		return getPath('data/$key.txt', TEXT, library);
+		return getPath('images/$key.txt', TEXT, library);
 	}
 
 	inline static public function week(key:String, ?library:String)
@@ -177,14 +177,22 @@ class Paths
 
 	inline static public function image(key:String, ?library:String, ?allowGPU:Bool = true):Dynamic
 	{
-		
-
 		return img(key, library != null ? library : null);
 	}
 
 	public static inline function getSparrowAtlas(key:String)
 	{
 		return FlxAtlasFrames.fromSparrow(image('$key'), xml('$key'));
+	}
+
+	public static function getAtlas(key:String)
+	{
+		if (Assets.exists(txt(key)))
+			return getPackerAtlas(key);
+		if (Assets.exists(xml('$key')))
+			return getSparrowAtlas(key);
+
+		return getSparrowAtlas(key);
 	}
 
 	inline static public function getPackerAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxAtlasFrames

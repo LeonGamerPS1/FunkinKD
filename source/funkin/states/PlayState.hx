@@ -1,10 +1,14 @@
 package funkin.states;
 
+import modchart.Manager;
+import haxe.io.Path;
+import funkin.modding.scripting.HscriptRuntime.HScriptRuntime;
 import funkin.objects.Character;
 import funkin.objects.gameplay.PlayField;
 
 class PlayState extends MusicBeatState
 {
+	public static var instance:PlayState;
 	public static var daPixelZoom(default, null):Float = 6;
 	public static var SONG:SongData;
 
@@ -16,6 +20,10 @@ class PlayState extends MusicBeatState
 
 	public var playField:PlayField;
 
+	public static var isStoryMode:Bool = false;
+	public static var weekDifficulty:String = "normal";
+	public static var weekSongs:Array<String> = [];
+
 	public var boyfriend:Character;
 	public var dad:Character;
 	public var girlfriend:Character;
@@ -24,19 +32,58 @@ class PlayState extends MusicBeatState
 	public var curStage:String = "";
 	public var defaultCamZoom:Null<Float> = 1;
 
+	public var scripts:Array<HScriptRuntime> = [];
+
 	override public function create()
 	{
+		instance = this;
+
 		if (SONG == null)
 			SONG = Song.parseSong();
 
 		parseStage();
+
+		var globalHXScripts = FileUtil.readDirectory("assets/scripts", 2).filter(function(ffe:String)
+		{
+			return ffe.contains(".hx");
+		});
+		var songHXScripts = FileUtil.readDirectory('assets/data/${SONG.song.toLowerCase().replace(" ", "-")}/', 3).filter(function(ffe:String)
+		{
+			return ffe.contains(".hx");
+		});
+		trace(globalHXScripts.length);
+
+		for (i in 0...globalHXScripts.length)
+		{
+			var file = "assets/scripts/" + globalHXScripts[i];
+			var doPush:Bool = !hsFileExists(file);
+
+			if (doPush)
+			{
+				var script:HScriptRuntime = new HScriptRuntime(file);
+				scripts.push(script);
+			}
+		}
+
+		for (i in 0...songHXScripts.length)
+		{
+			var file = 'assets/data/${SONG.song.toLowerCase().replace(" ", "-")}/' + songHXScripts[i];
+			var doPush:Bool = !hsFileExists(file);
+
+			if (doPush)
+			{
+				var script:HScriptRuntime = new HScriptRuntime(file);
+				scripts.push(script);
+			}
+		}
+
+		call("onCreate");
 		initChars();
 
 		camHUD = new FlxCamera();
 		camUnderlay = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 		camUnderlay.bgColor.alpha = 0;
-		bgColor = FlxColor.GRAY;
 
 		FlxG.cameras.add(camUnderlay, false);
 		FlxG.cameras.add(camHUD, false);
@@ -44,6 +91,7 @@ class PlayState extends MusicBeatState
 		playField = new PlayField(SONG, controls);
 		playField.cameras = [camHUD];
 		uiGroup.add(playField);
+
 		playField.iconP1.changeIcon(boyfriend.json.health_icon);
 		playField.iconP2.changeIcon(dad.json.health_icon);
 
@@ -57,8 +105,12 @@ class PlayState extends MusicBeatState
 		add(uiGroup);
 
 		inst = new FlxSound();
-		inst.loadEmbedded(Paths.inst(SONG.song));
+		inst.loadEmbedded(Paths.inst(SONG.song), false, false, endSong);
 
+		var modcharts:Manager = new Manager();
+		modcharts.addPlayfield();
+		add(modcharts);
+		
 		if (Assets.exists(Paths.voices(SONG.song)))
 		{
 			voices = new FlxSound();
@@ -85,7 +137,10 @@ class PlayState extends MusicBeatState
 				s.beatHit();
 			});
 		});
+		playField.conductor.onStepHit.add(() -> call('onStepHit'));
 		playField.conductor.mapBPMChanges(SONG);
+
+		call("onCreatePost");
 		startCountdown();
 	}
 
@@ -95,14 +150,35 @@ class PlayState extends MusicBeatState
 	public var camSPEED:Float = 1;
 	public var stageJson:StageFile;
 
+	function hsFileExists(scriptName:String)
+	{
+		var fileExists:Bool = false;
+
+		for (i in 0...scripts.length)
+		{
+			if (scripts[i] != null && scripts[i].scriptName == scriptName)
+				fileExists = true;
+		}
+		return fileExists;
+	}
+
+	function call(func:String, ?args:Array<Dynamic>)
+		for (script in scripts)
+			script.call(func, args != null ? args : []);
+
+	function set(variable:String, value:Dynamic)
+		for (script in scripts)
+			script.set(variable, value);
+
 	function parseStage()
 	{
 		// path ??= "stage";
 		if (SONG.stage == null || SONG.stage.length < 1)
 			SONG.stage = StageUtil.vanillaSongStage(Paths.formatSongName(SONG.song));
-		if (SONG.stage == null || SONG.stage.length < 1)
-			SONG.gfVersion = StageUtil.vanillaGF(SONG.stage);
+
 		curStage = SONG.stage;
+		if (SONG.gfVersion == null || SONG.stage.length < 1)
+			SONG.gfVersion = StageUtil.vanillaGF(SONG.stage);
 
 		if (Assets.exists('assets/stages/$curStage.json'))
 			stageJson = cast Json.parse(Assets.getText('assets/stages/$curStage.json'));
@@ -136,12 +212,27 @@ class PlayState extends MusicBeatState
 
 		isPixelStage = stageJson.isPixel == true;
 
-		switch curStage.toLowerCase()
+		startScriptNamed(curStage, "assets/stages/");
+
+		switch curStage
 		{
 			case "stage":
 				add(new funkin.objects.gameplay.stages.StageWeek1(this, true));
+			case "glitchSchool":
+				add(new funkin.objects.gameplay.stages.GlitchSchool(this, true));
 			case "school":
 				add(new funkin.objects.gameplay.stages.School(this, true));
+		}
+	}
+
+	function startScriptNamed(name:String = "", folder:String = "")
+	{
+		name += ".hx";
+		var doPush:Bool = !hsFileExists(Path.addTrailingSlash(folder) + name) && Assets.exists(folder + name, TEXT);
+		if (doPush)
+		{
+			var doodoo:HScriptRuntime = new HScriptRuntime(Path.addTrailingSlash(folder) + name);
+			scripts.push(doodoo);
 		}
 	}
 
@@ -157,7 +248,7 @@ class PlayState extends MusicBeatState
 
 	public var voices:FlxSound;
 
-	function startCharacterPos(char:Character, ?gfCheck:Bool = false)
+	inline function startCharacterPos(char:Character, ?gfCheck:Bool = false)
 	{
 		if (gfCheck && char.curCharacter.startsWith('gf'))
 		{ // IF DAD IS GIRLFRIEND, HE GOES TO HER POSITION
@@ -207,14 +298,14 @@ class PlayState extends MusicBeatState
 		openfl.system.System.gc();
 	}
 
-	public function playerDance():Void
+	inline public function playerDance():Void
 	{
 		var anim:String = boyfriend.getAnimationName();
 		if (boyfriend.holdTimer > playField.conductor.stepLength * (0.0011 #if FLX_PITCH / inst.pitch #end) * boyfriend.singDuration && anim.startsWith('sing'))
 			boyfriend.dance();
 	}
 
-	public function characterBopper(beat:Int):Void
+	inline public function characterBopper(beat:Int):Void
 	{
 		if (girlfriend != null
 			&& beat % Math.round(1 * girlfriend.danceEveryNumBeats) == 0
@@ -257,13 +348,15 @@ class PlayState extends MusicBeatState
 					startSong();
 			}
 		}
-
+		call('onUpdate', [elapsed]);
 		// add funny resync stuff:
 
 		if (inst.playing && voices != null)
 			if (Math.abs(voices.time - inst.time) > 20)
 				voices.time = inst.time;
 		super.update(elapsed);
+
+		call('onUpdatePost', [elapsed]);
 		if (controls.justPressed.UI_LEFT && controls.justPressed.UI_RESET)
 		{
 			inst.stop();
@@ -273,6 +366,8 @@ class PlayState extends MusicBeatState
 		}
 		if (controls.pressed.UI_UP && controls.justPressed.UI_RESET)
 			FlxG.switchState(new ChartingState());
+		if (playField.health == 0)
+			FlxG.switchState(new GameOver());
 	}
 
 	public function new()
@@ -282,8 +377,10 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.stop();
 	}
 
-	function beatHit()
+	inline function beatHit()
 	{
+		call('onBeatHit', []);
+
 		characterBopper(playField.conductor.curBeat);
 		if (playField.botplay)
 			playerDance();
@@ -435,6 +532,24 @@ class PlayState extends MusicBeatState
 			voices.play();
 	}
 
+	public function endSong()
+	{
+		weekSongs.remove(weekSongs[0]);
+
+		if (!isStoryMode)
+			FlxG.switchState(new Freeplay());
+		else
+		{
+			if (weekSongs.length > 0)
+			{
+				SONG = Song.parseSong(Paths.formatSongName(weekSongs[0]), weekDifficulty);
+				FlxG.resetState();
+			}
+			else
+				FlxG.switchState(new StoryMode());
+		}
+	}
+
 	var startTimer:FlxTimer;
 }
 
@@ -443,6 +558,7 @@ class StageUtil
 {
 	static function vanillaGF(s:String):String
 	{
+		trace(s);
 		switch (s)
 		{
 			case "school":

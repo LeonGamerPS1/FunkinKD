@@ -7,19 +7,15 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 
 class NoteSpawner extends FlxTypedGroup<Note>
 {
-	public var unspawnNotes:Array<funkin.backend.recycling.data.ChartNote> = [];
+	public var unspawnNotes:Array<Note> = [];
 	public var conductor:Conductor;
 	public var song:SongData;
-	public var sustainGroup:FlxTypedGroup<Sustain>;
 
-	public function new(conductor:Conductor, song:SongData, sustainGroup:FlxTypedGroup<Sustain>)
+	public function new(conductor:Conductor, song:SongData)
 	{
 		super();
 		this.conductor = conductor;
 		this.song = song;
-		this.sustainGroup = sustainGroup;
-		if (sustainGroup == null)
-			throw new haxe.exceptions.ArgumentException("sustainGroup", "Sustain group cannot be null.");
 	}
 
 	var spawnNotesAtOnce:Int = 22;
@@ -35,17 +31,9 @@ class NoteSpawner extends FlxTypedGroup<Note>
 				if (unspawnNotes[i].time - conductor.songPosition < 3000 / song.speed)
 				{
 					var preloadedNote = unspawnNotes[i];
-					var note = recycle(Note).setup(preloadedNote);
 
-					add(note);
-					note.conductor = conductor;
-
-					if (Math.floor(preloadedNote.length / conductor.stepLength) > 0)
-					{
-						var sustain:Sustain = sustainGroup.recycle(Sustain).setup(note);
-						note.sustain = sustain;
-						sustainGroup.add(sustain);
-					}
+					add(preloadedNote);
+					preloadedNote.conductor = conductor;
 
 					unspawnNotes.remove(unspawnNotes[i]);
 				}
@@ -64,22 +52,34 @@ class NoteSpawner extends FlxTypedGroup<Note>
 				var time:Float = sections[i].notes[ii][0];
 				var data:Int = Std.int(sections[i].notes[ii][1] % 4);
 				var length:Float = sections[i].notes[ii][2];
-
 				var goodHit:Bool = sections[i].notes[ii][1] > 3;
 
-				var preloadedNote:funkin.backend.recycling.data.ChartNote = {
-					time: time,
-					mustHit: goodHit,
-					length: length,
-					data: data,
-					pixel: PlayState.isPixelStage,
-					speed: song.speed
-				};
-				unspawnNotes.push(preloadedNote);
+				var oldNote:Note = null;
+				if (unspawnNotes[unspawnNotes.length - 1] != null)
+					oldNote = unspawnNotes[unspawnNotes.length - 1];
+
+				var note:Note = new Note(time, data, PlayState.isPixelStage, oldNote, song.speed, conductor);
+				note.mustHit = goodHit;
+				unspawnNotes.push(note);
+
+				if (length > 0)
+				{
+					for (susNote in 0...Math.floor(length / conductor.stepLength))
+					{
+						oldNote = unspawnNotes[unspawnNotes.length - 1];
+						var sustainTime = time + (conductor.stepLength * susNote) + (conductor.stepLength / song.speed);
+						var sustain:Note = new Note(sustainTime, data, note.isPixel, oldNote, song.speed, conductor, true);
+						sustain.parent = note;
+						sustain.mustHit = goodHit;
+						unspawnNotes.push(sustain);
+
+						if (PlayState.instance != null)
+							sustain.cameras = [PlayState.instance.camUnderlay];
+					}
+				}
 			}
 		}
 		unspawnNotes.sort(yessort);
-		
 	}
 
 	function yessort(Obj1, Obj2):Int

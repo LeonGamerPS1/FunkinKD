@@ -1,10 +1,9 @@
 package funkin.states;
 
-import haxe.ui.backend.flixel.UIState;
 import flixel.addons.ui.FlxUIState;
 import funkin.controls.Action.Controls;
 
-class BaseState extends UIState
+class BaseState extends FlxUIState
 {
 	var controls:Controls;
 
@@ -12,6 +11,6 @@ class BaseState extends UIState
 	{
 		super();
 		controls = new Controls("FUNKIN_CONTROLS");
-		FlxG.inputs.addUniqueType(controls);
+		FlxG.inputs.add(controls);
 	}
 }
