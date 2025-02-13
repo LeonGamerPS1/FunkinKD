@@ -52,8 +52,8 @@ class Funkinkd implements IAdapter
 	public function getCurrentBeat():Float // Current beat
 	{
 		var beat:Float = 0;
-		if (PlayState.instance != null)
-			beat = PlayState.instance.playField.conductor.curBeat;
+		if (PlayState.SONG != null)
+			beat = (getSongPosition() / 1000)*(PlayState.instance.playField.conductor.bpm/60);
 		return beat;
 	}
 
@@ -140,7 +140,7 @@ class Funkinkd implements IAdapter
 
 	// Options section
 	public function getHoldSubdivisions():Int // Hold resolution
-		return 2;
+		return 1;
 
 	public function getDownscroll():Bool // Get if it is downscroll
 		return ClientPrefs.save.downScroll;

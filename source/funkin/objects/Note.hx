@@ -59,6 +59,8 @@ class Note extends FlxSprite
 		reloadNote(texture, isPixel, sustainSpeed);
 		if (!isSustainNote)
 			playAnim("arrow");
+		else 
+			multAlpha = 0.6;
 	}
 
 	public function playAnim(s:String, force:Bool = false)
@@ -154,11 +156,11 @@ class Note extends FlxSprite
 
 		if (isSustainNote && prevNote != null)
 		{
-			animation.play('end');
+			playAnim('end');
 			updateHitbox();
 			if (prevNote != null && prevNote.isSustainNote)
 			{
-				prevNote.animation.play('hold');
+				prevNote.playAnim('hold');
 				prevNote.scale.y = 0.7 * (conductor.stepLength / 100 * 1.5 * sustainSpeed);
 				prevNote.updateHitbox();
 			}

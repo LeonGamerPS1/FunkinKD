@@ -108,9 +108,8 @@ class PlayState extends MusicBeatState
 		inst.loadEmbedded(Paths.inst(SONG.song), false, false, endSong);
 
 		var modcharts:Manager = new Manager();
-		modcharts.addPlayfield();
 		add(modcharts);
-		
+
 		if (Assets.exists(Paths.voices(SONG.song)))
 		{
 			voices = new FlxSound();

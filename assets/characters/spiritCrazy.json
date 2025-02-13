@@ -1,51 +1,51 @@
 {
-  "name": "bf-pixel",
-  "texture_path": "bfGlitch",
-  "health_icon": "bf-pixel",
+  "name": "spirit-crazy",
+  "texture_path": "spiritCrazy",
+  "health_icon": "spirit-pixel",
   "antialiasing": false,
   "pixelated": true,
   "health_colors": [128, 0, 128],
-  "flipX": true,
+  "flipX": false,
   "animations": [
     {
       "name": "idle",
-      "prefix": "BF IDLE instance 1",
+      "prefix": "idle spirit_",
       "fps": 24,
       "looped": false,
-      "x": 0,
-      "y": 0
+      "x": -218,
+      "y": -280
     },
     {
       "name": "singLEFT",
-      "prefix": "BF LEFT NOTE instance 1",
+      "prefix": "left_",
       "fps": 24,
       "looped": false,
-      "x": 0,
-      "y": 0
+      "x": -200,
+      "y": -280
     },
     {
       "name": "singDOWN",
-      "prefix": "BF DOWN NOTE instance 1",
+      "prefix": "spirit down_",
       "fps": 24,
       "looped": false,
-      "x": 0,
-      "y": 0
+      "x": 170,
+      "y": 110
     },
     {
       "name": "singUP",
-      "prefix": "BF UP NOTE instance 1",
+      "prefix": "up_",
       "fps": 24,
       "looped": false,
-      "x": 0,
-      "y": 0
+      "x": -220,
+      "y": -280
     },
     {
       "name": "singRIGHT",
-      "prefix": "BF RIGHT NOTE instance 1",
+      "prefix": "right_",
       "fps": 24,
       "looped": false,
-      "x": 0,
-      "y": 0
+      "x": -220,
+      "y": -280
     },
     {
       "name": "singLEFTmiss",
@@ -80,9 +80,9 @@
       "y": 0
     }
   ],
-  "position": [0, 350],
-  "camera_position": [50, -60],
+  "position": [-150, 100],
+  "camera_position": [0, 0],
   "scale": 6,
   "dancer": false,
-  "singDuration": 6
+  "singDuration": 4
 }

@@ -1138,7 +1138,7 @@
     { "notes": [], "bpm": 200, "changeBPM": false, "cameraFacePlayer": true }
   ],
   "gfVersion": null,
-  "bpm": 150,
+  "bpm": 200,
   "song": "Roots",
   "skin": "notes-glitch"
 }

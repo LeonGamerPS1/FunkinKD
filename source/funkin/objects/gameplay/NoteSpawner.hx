@@ -67,7 +67,7 @@ class NoteSpawner extends FlxTypedGroup<Note>
 					for (susNote in 0...Math.floor(length / conductor.stepLength))
 					{
 						oldNote = unspawnNotes[unspawnNotes.length - 1];
-						var sustainTime = time + (conductor.stepLength * susNote) + (conductor.stepLength / song.speed);
+						var sustainTime = time + (conductor.stepLength * susNote);
 						var sustain:Note = new Note(sustainTime, data, note.isPixel, oldNote, song.speed, conductor, true);
 						sustain.parent = note;
 						sustain.mustHit = goodHit;
