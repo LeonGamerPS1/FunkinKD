@@ -9,7 +9,7 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
-		addChild(new FlxGame(0, 0, funkin.states.Title, 200, 200));
+		addChild(new FlxGame(0, 0, funkin.states.Title));
 
 		#if MOD PolymodHandler.init(FLIXEL);#end
 		ClientPrefs.load();
