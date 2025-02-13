@@ -8,4 +8,5 @@ HSCRIPT: 2.5.0
 HSCRIPT-IRIS: 1.1.3
 Lime: 8.2.2
 openFL: 9.4.1
- 
+funkin-modchart: Git (https://github.com/TheoDevelops/FunkinModchart)
+
