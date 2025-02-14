@@ -59,7 +59,7 @@ class Note extends FlxSprite
 		reloadNote(texture, isPixel, sustainSpeed);
 		if (!isSustainNote)
 			playAnim("arrow");
-		else 
+		else
 			multAlpha = 0.6;
 	}
 
@@ -96,13 +96,17 @@ class Note extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		if (!mustHit)
+		{
 			if (!wasGoodHit && time <= conductor.songPosition)
 				if (!isSustainNote || (prevNote.wasGoodHit && !ignoreNote))
 					wasGoodHit = true;
-
-		if (!wasGoodHit && time <= conductor.songPosition + 50)
-			if (!isSustainNote || (prevNote.wasGoodHit && !ignoreNote))
-				botHit = true;
+		}
+		else
+		{
+			if (!wasGoodHit && time <= conductor.songPosition + 50)
+				if (!isSustainNote || (prevNote.wasGoodHit && !ignoreNote))
+					botHit = true;
+		}
 		super.update(elapsed);
 	}
 
@@ -133,7 +137,6 @@ class Note extends FlxSprite
 			playAnim("end");
 			updateHitbox();
 
-		
 			if (prevNote != null && prevNote.isSustainNote)
 			{
 				prevNote.playAnim("hold");

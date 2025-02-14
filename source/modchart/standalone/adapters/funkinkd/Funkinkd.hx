@@ -140,7 +140,7 @@ class Funkinkd implements IAdapter
 
 	// Options section
 	public function getHoldSubdivisions():Int // Hold resolution
-		return 1;
+		return 2;
 
 	public function getDownscroll():Bool // Get if it is downscroll
 		return ClientPrefs.save.downScroll;

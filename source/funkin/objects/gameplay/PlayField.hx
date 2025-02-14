@@ -1,6 +1,5 @@
 package funkin.objects.gameplay;
 
-
 import flixel.text.FlxText;
 import funkin.controls.Action.Controls;
 
@@ -99,8 +98,6 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		add(oppStrums);
 		add(notes);
 	}
-
-	
 
 	function destroyNote(note:Note)
 	{
@@ -217,8 +214,6 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		if (!botplay)
 			keyPress();
 
-	
-
 		super.update(elapsed);
 		notes.forEachAlive(function(note:Note)
 		{
@@ -237,6 +232,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 
 				note.wasGoodHit = true;
 				note.wasHit = true;
+
 				if (!note.isSustainNote)
 					destroyNote(note);
 			}
