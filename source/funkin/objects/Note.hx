@@ -3,8 +3,7 @@ package funkin.objects;
 import flixel.system.FlxAssets;
 import funkin.backend.recycling.data.ChartNote;
 
-class Note extends FlxSprite
-{
+class Note extends FlxSprite {
 	public static var noteScale(default, null):Float = 0.7;
 	public static var directions:Array<String> = ["purple", "blue", "green", "red"];
 
@@ -34,8 +33,7 @@ class Note extends FlxSprite
 	public var wasMissed:Bool = false;
 	public var multSpeed:Float = 1;
 
-	public function canBeHit(conductor:Conductor):Bool
-	{
+	public function canBeHit(conductor:Conductor):Bool {
 		if (mustHit
 			&& time > conductor.songPosition - (Conductor.safeZoneOffset)
 			&& time < conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
@@ -44,8 +42,7 @@ class Note extends FlxSprite
 			return false;
 	}
 
-	public function new(time:Float = 0, data:Int = 0, ?isPixel:Bool = false, ?prevNote:Note, ?sustainSpeed:Float = 1, ?conductor:Conductor, sus:Bool = false)
-	{
+	public function new(time:Float = 0, data:Int = 0, ?isPixel:Bool = false, ?prevNote:Note, ?sustainSpeed:Float = 1, ?conductor:Conductor, sus:Bool = false) {
 		super(0, -2000);
 
 		this.data = data;
@@ -60,26 +57,23 @@ class Note extends FlxSprite
 		if (!isSustainNote)
 			playAnim("arrow");
 		else
-			multAlpha = 0.6;
+			multAlpha = 0.7;
 	}
 
-	public function playAnim(s:String, force:Bool = false)
-	{
+	public function playAnim(s:String, force:Bool = false) {
 		animation.play(s, force);
 		centerOffsets();
 		centerOrigin();
 	}
 
-	function reloadNote(tex:String = "notes", isPixel:Bool, ?sustainSpeed:Float = 1)
-	{
+	function reloadNote(tex:String = "notes", isPixel:Bool, ?sustainSpeed:Float = 1) {
 		tex ??= "notes";
 		if (PlayState.SONG.skin != null && PlayState.SONG.skin != "")
 			tex = PlayState.SONG.skin;
 		this.isPixel = isPixel;
 		var prefix = isPixel ? "pixel/" : "";
-		var path = Paths.image('noteSkins/$prefix$tex');
-		if (!Assets.exists(path))
-		{
+		var path = Paths.img('noteSkins/$prefix$tex');
+		if (!Assets.exists(path)) {
 			trace(' "$path" doesnt exist, Reverting skin back to default');
 			tex = "notes";
 		}
@@ -93,16 +87,12 @@ class Note extends FlxSprite
 
 	var canDrawSustain:Bool = false;
 
-	override function update(elapsed:Float)
-	{
-		if (!mustHit)
-		{
+	override function update(elapsed:Float) {
+		if (!mustHit) {
 			if (!wasGoodHit && time <= conductor.songPosition)
 				if (!isSustainNote || (prevNote.wasGoodHit && !ignoreNote))
 					wasGoodHit = true;
-		}
-		else
-		{
+		} else {
 			if (!wasGoodHit && time <= conductor.songPosition + 50)
 				if (!isSustainNote || (prevNote.wasGoodHit && !ignoreNote))
 					botHit = true;
@@ -112,10 +102,8 @@ class Note extends FlxSprite
 
 	public var botHit = false;
 
-	function loadPixelNoteAnimations(tex:String, ?sustainSpeed:Float = 1)
-	{
-		if (!isSustainNote)
-		{
+	function loadPixelNoteAnimations(tex:String, ?sustainSpeed:Float = 1) {
+		if (!isSustainNote) {
 			loadGraphic(Paths.image('noteSkins/pixel/$tex'), true, 17, 17);
 
 			animation.add('arrow', [data % 4 + 4], 12, false);
@@ -123,9 +111,7 @@ class Note extends FlxSprite
 
 			antialiasing = false;
 			updateHitbox();
-		}
-		else
-		{
+		} else {
 			loadGraphic(Paths.image('noteSkins/pixel/${tex}ENDS'));
 			width = width / 4;
 			height = height / 5;
@@ -137,8 +123,7 @@ class Note extends FlxSprite
 			playAnim("end");
 			updateHitbox();
 
-			if (prevNote != null && prevNote.isSustainNote)
-			{
+			if (prevNote != null && prevNote.isSustainNote) {
 				prevNote.playAnim("hold");
 				prevNote.scale.y = 6 * (conductor.stepLength / 100 * 1.254 * sustainSpeed);
 				prevNote.updateHitbox();
@@ -146,8 +131,7 @@ class Note extends FlxSprite
 		}
 	}
 
-	function loadDefaultNoteAnims(tex:String, ?sustainSpeed:Float = 1)
-	{
+	function loadDefaultNoteAnims(tex:String, ?sustainSpeed:Float = 1) {
 		frames = Paths.getSparrowAtlas('noteSkins/$tex');
 
 		animation.addByPrefix('arrow', '${directions[data % directions.length]}0', 24, false);
@@ -157,12 +141,10 @@ class Note extends FlxSprite
 		setGraphicSize(width * 0.7);
 		updateHitbox();
 
-		if (isSustainNote && prevNote != null)
-		{
+		if (isSustainNote && prevNote != null) {
 			playAnim('end');
 			updateHitbox();
-			if (prevNote != null && prevNote.isSustainNote)
-			{
+			if (prevNote != null && prevNote.isSustainNote) {
 				prevNote.playAnim('hold');
 				prevNote.scale.y = 0.7 * (conductor.stepLength / 100 * 1.5 * sustainSpeed);
 				prevNote.updateHitbox();
@@ -172,8 +154,7 @@ class Note extends FlxSprite
 		antialiasing = true;
 	}
 
-	function set_texture(value:String):String
-	{
+	function set_texture(value:String):String {
 		texture = value;
 
 		reloadNote(value, isPixel);
@@ -191,8 +172,7 @@ class Note extends FlxSprite
 	public var copyAlpha:Null<Bool> = true;
 	public var isSustainNote:Bool = false;
 
-	public function followStrumNote(myStrum:StrumNote, conductor:Conductor, ?songSpeed:Float = 1)
-	{
+	public function followStrumNote(myStrum:StrumNote, conductor:Conductor, ?songSpeed:Float = 1) {
 		this.strum = myStrum;
 
 		songSpeed = FlxMath.roundDecimal(songSpeed, 2);
@@ -226,29 +206,23 @@ class Note extends FlxSprite
 
 	var glowing = false;
 
-	inline public function clipToStrumNote(myStrum:StrumNote)
-	{
-		var center:Float = myStrum.y + myStrum.height / 2;
+	inline public function clipToStrumNote(myStrum:StrumNote) {
+		var center:Float = myStrum.y + myStrum.height * 0.5;
 
 		if ((mustHit || !mustHit)
 			&& (wasGoodHit
-				|| ((prevNote.wasGoodHit || (prevNote.prevNote != null && prevNote.prevNote.wasGoodHit)) && !canBeHit(conductor))))
-		{
+				|| ((prevNote.wasGoodHit || (prevNote.prevNote != null && prevNote.prevNote.wasGoodHit)) && !canBeHit(conductor)))) {
 			var swagRect:FlxRect;
 
 			swagRect = FlxRect.get(0, 0, frameWidth, frameHeight);
 
-			if (myStrum.downScroll)
-			{
-				if (y - offset.y * scale.y + height >= center)
-				{
+			if (myStrum.downScroll) {
+				if (y - offset.y * scale.y + height >= center) {
 					swagRect.width = frameWidth;
 					swagRect.height = Std.int((center - y) / scale.y);
 					swagRect.y = Std.int(frameHeight - swagRect.height);
 				}
-			}
-			else if (y + offset.y * scale.y <= center)
-			{
+			} else if (y + offset.y * scale.y <= center) {
 				swagRect.y = (center - y) / scale.y;
 				swagRect.width = width / scale.x;
 				swagRect.height = (height / scale.y) - swagRect.y;
@@ -260,8 +234,7 @@ class Note extends FlxSprite
 	}
 }
 
-class BrightnessShader extends FlxShader
-{
+class BrightnessShader extends FlxShader {
 	@:glFragmentSource("
 	// Automatically converted with https://github.com/TheLeerName/ShadertoyToFlixel
 

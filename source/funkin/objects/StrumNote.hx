@@ -43,7 +43,7 @@ class StrumNote extends FlxSkewedSprite
 			tex = PlayState.SONG.skin;
 
 		var prefix = isPixel ? "pixel/" : "";
-		var path = Paths.image('noteSkins/$prefix$tex');
+		var path = Paths.img('noteSkins/$prefix$tex');
 		if (!Assets.exists(path))
 		{
 			trace(' "$path" doesnt exist, Reverting skin back to default');
