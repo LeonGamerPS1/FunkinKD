@@ -61,9 +61,8 @@ class School extends BaseStage {
 		var songName = PlayState.SONG.song.toLowerCase().replace(" ", "-");
 		switch (songName) {
 			case 'dreams-of-roses' | 'roses':
-				new FlxTimer().start(0.3, function(e) {
-					FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX'));
-				});
+				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX'));
+
 				if (bgGirls != null)
 					bgGirls.swapDanceType();
 		}

@@ -1,0 +1,20 @@
+{
+  "music": false,
+  "dialogue": [
+    {
+      "portrait": "senpai-angry",
+      "text": "Not bad for an ugly worm.",
+      "isDad": true
+    },
+    {
+      "portrait": "senpai-angry",
+      "text": "But this time I'll rip your nuts off right after your girlfriend finishes gargling mine.",
+      "isDad": true
+    },
+    {
+      "portrait": "bfPixel",
+      "text": "Bop beep be be skdoo bep",
+      "isDad": false
+    }
+  ]
+}

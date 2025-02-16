@@ -136,7 +136,7 @@ class PlayState extends MusicBeatState {
 		call("onCreatePost");
 
 		switch (Paths.formatSongName(SONG.song)) {
-			case "senpai":
+			case "senpai" | "roses":
 				startDialogue(Paths.formatSongName(SONG.song), startCountdown);
 			// startCountdown();
 			default:
@@ -427,10 +427,6 @@ class PlayState extends MusicBeatState {
 		var swagCounter:Int = 0;
 
 		startTimer = new FlxTimer().start(playField.conductor.beatLength / 1000, function(tmr:FlxTimer) {
-			dad.dance();
-			girlfriend.dance();
-			boyfriend.playAnim('idle');
-
 			var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
 			introAssets.set('default', ['ready', "set", "go"]);
 			introAssets.set('school', ['pixelUI/ready-pixel', 'pixelUI/set-pixel', 'pixelUI/date-pixel']);

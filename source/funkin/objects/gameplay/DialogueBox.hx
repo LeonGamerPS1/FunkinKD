@@ -17,10 +17,12 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite> {
 		this.finishCB = finishCB;
 		this.dialogueJSON = dialogueJSON;
 
-		alpha = 0;
-		FlxTween.tween(this, {alpha: 1}, 0.5);
+		alpha = 0.7;
+		FlxTween.tween(this, {alpha: 1}, 0.2);
+		FlxG.camera.snapToTarget();
 
 		sound = new FlxSound();
+		if(dialogueJSON.music == true)
 		sound.loadEmbedded(Paths.music('Lunchbox'), true);
 		sound.play();
 		FlxG.sound.list.add(sound);
@@ -62,6 +64,7 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite> {
 
 	function nextDialog():Void {
 		curLine++;
+		FlxG.sound.play(Paths.sound("clickText"));
 
 		if (curLine > dialogueJSON.dialogue.length - 1) {
 			FlxTween.tween(this, {alpha: 0}, 1, {onComplete: end});
@@ -78,8 +81,8 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite> {
 	}
 
 	var lastDad = false;
+
 	function dialogueChars(char:String, isDad:Bool = false) {
-	
 		if (isDad) {
 			if (portraitDad == null)
 				portraitDad = new FlxSprite(-20, 40);
@@ -93,8 +96,8 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite> {
 			if (lastDad != isDad)
 				portraitDad.animation.play('enter', true);
 			else
-				portraitDad.animation.play('enter', true,false,7);
-			add(portraitDad);
+				portraitDad.animation.play('enter', true, false, 7);
+			insert(members.indexOf(box), portraitDad);
 
 			portraitDad.visible = true;
 			if (portraitBoyfriend != null)
@@ -110,12 +113,12 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite> {
 			portraitBoyfriend.setGraphicSize(Std.int(portraitBoyfriend.width * PlayState.daPixelZoom * 0.9));
 			portraitBoyfriend.updateHitbox();
 			portraitBoyfriend.scrollFactor.set();
-			add(portraitBoyfriend);
+			insert(members.indexOf(box), portraitBoyfriend);
 
 			if (lastDad != isDad)
 				portraitBoyfriend.animation.play('enter', true);
 			else
-				portraitBoyfriend.animation.play('enter', true,false,7);
+				portraitBoyfriend.animation.play('enter', true, false, 7);
 
 			portraitBoyfriend.visible = true;
 			portraitDad.visible = false;
@@ -162,6 +165,7 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite> {
 
 typedef DialogueFile = {
 	var dialogue:Array<DialogueLine>;
+	var music:Null<Bool>;
 }
 
 typedef DialogueLine = {
