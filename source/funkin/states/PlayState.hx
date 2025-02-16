@@ -2,8 +2,6 @@ package funkin.states;
 
 import haxe.Constraints;
 import funkin.objects.gameplay.DialogueBox;
-import funkin.objects.gameplay.DialogueBox.DialogueFile;
-import funkin.objects.gameplay.DialogueBox;
 #if modchart
 import modchart.Manager;
 #end
@@ -337,6 +335,7 @@ class PlayState extends MusicBeatState {
 		if (inst.playing && voices != null)
 			if (Math.abs(voices.time - inst.time) > 20)
 				voices.time = inst.time;
+
 		super.update(elapsed);
 
 		call('onUpdatePost', [elapsed]);
@@ -376,6 +375,10 @@ class PlayState extends MusicBeatState {
 		characterBopper(playField.conductor.curBeat);
 		if (playField.botplay)
 			playerDance();
+
+		for (note in playField.notes)
+			if (note.isSustainNote)
+				note.cameras = [camUnderlay];
 
 		if (playField.conductor.curBeat % 4 == 0) {
 			camHUD.zoom += 0.04;

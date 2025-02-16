@@ -227,4 +227,11 @@ class Paths {
 		file = getPath('fonts/$key.ttf', FONT, library);
 		return file;
 	}
+
+	inline static public function fontotf(key:String, ?library:String):String {
+		var file:String = "";
+
+		file = getPath('fonts/$key.otf', FONT, library);
+		return file;
+	}
 }

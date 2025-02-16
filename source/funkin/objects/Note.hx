@@ -206,7 +206,7 @@ class Note extends FlxSprite {
 
 	var glowing = false;
 
-	inline public function clipToStrumNote(myStrum:StrumNote) {
+	public function clipToStrumNote(myStrum:StrumNote) {
 		var center:Float = myStrum.y + myStrum.height * 0.5;
 
 		if ((mustHit || !mustHit)
