@@ -206,6 +206,13 @@ class Note extends FlxSprite {
 
 	var glowing = false;
 
+	override function set_clipRect(rect:FlxRect):FlxRect {
+		clipRect = rect;
+		if (frames != null)
+			frame = frames.frames[animation.frameIndex];
+		return clipRect = rect;
+	}
+
 	public function clipToStrumNote(myStrum:StrumNote) {
 		var center:Float = myStrum.y + myStrum.height * 0.5;
 
