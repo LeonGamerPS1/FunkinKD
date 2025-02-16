@@ -192,7 +192,6 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 
 			note.followStrumNote(strum, conductor, SONG.speed);
 
-
 			if (note.mustHit && botplay && !note.wasGoodHit) {
 				if (note.time <= conductor.songPosition
 					|| note.isSustainNote
@@ -214,14 +213,10 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 				note.wasGoodHit = true;
 				note.wasHit = true;
 
-				strum.playAnim("confirm", true);
-				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
-
 				if (!note.isSustainNote)
 					destroyNote(note);
 			}
 
-			
 			if (conductor.songPosition - note.time > noteKillOffset) {
 				if (note.mustHit && !note.ignoreNote && !note.wasGoodHit && !botplay && !note.wasMissed) {
 					noteMiss(note.data);
