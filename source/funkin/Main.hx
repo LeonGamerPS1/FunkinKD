@@ -1,6 +1,6 @@
 package funkin;
 
-#if MOD import funkin.modding.PolymodHandler; #end
+import funkin.modding.PolymodHandler;
 import funkin.backend.WeekData;
 import funkin.debug.FPS;
 
@@ -11,7 +11,7 @@ class Main extends Sprite
 		super();
 		addChild(new FlxGame(0, 0, funkin.states.Title));
 
-		#if MOD PolymodHandler.init(FLIXEL);#end
+		PolymodHandler.init(FLIXEL);
 		ClientPrefs.load();
 
 		WeekData.init();

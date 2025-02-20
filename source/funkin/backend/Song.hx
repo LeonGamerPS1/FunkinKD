@@ -26,6 +26,8 @@ typedef Section =
 	var changeBPM:Bool;
 	var cameraFacePlayer:Bool;
 	var notes:Array<Dynamic>;
+
+	@:optional var altSection:Null<Bool>;
 }
 
 class Song

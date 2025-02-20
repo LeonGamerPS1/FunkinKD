@@ -60,7 +60,7 @@ class HealthIcon extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		var mult:Float = FlxMath.lerp(lerpScale, scale.x, Math.exp(-elapsed * 50));
+		var mult:Float = FlxMath.lerp(lerpScale, scale.x, Math.exp(-elapsed * 22));
 		scale.set(mult, mult);
 		updateHitbox();
 		super.update(elapsed);

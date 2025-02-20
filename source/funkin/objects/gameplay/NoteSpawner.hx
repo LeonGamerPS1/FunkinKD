@@ -5,12 +5,15 @@ import funkin.backend.Conductor;
 import funkin.backend.Song.Section;
 import flixel.group.FlxGroup.FlxTypedGroup;
 
-class NoteSpawner extends FlxTypedGroup<Note> {
+class NoteSpawner extends FlxTypedGroup<Note>
+{
 	public var unspawnNotes:Array<Note> = [];
 	public var conductor:Conductor;
 	public var song:SongData;
+	public var sustainGroup:FlxTypedGroup<Sustain>;
 
-	public function new(conductor:Conductor, song:SongData) {
+	public function new(conductor:Conductor, song:SongData)
+	{
 		super();
 		this.conductor = conductor;
 		this.song = song;
@@ -18,12 +21,16 @@ class NoteSpawner extends FlxTypedGroup<Note> {
 
 	var spawnNotesAtOnce:Int = 22;
 
-	override function update(elapsed:Float) {
+	override function update(elapsed:Float)
+	{
 		super.update(elapsed);
 
-		for (i in 0...spawnNotesAtOnce) {
-			if (unspawnNotes[i] != null) {
-				if (unspawnNotes[i].time - conductor.songPosition < 3000 / song.speed) {
+		for (i in 0...spawnNotesAtOnce)
+		{
+			if (unspawnNotes[i] != null)
+			{
+				if (unspawnNotes[i].time - conductor.songPosition < 3000 / song.speed)
+				{
 					var preloadedNote = unspawnNotes[i];
 
 					add(preloadedNote);
@@ -35,9 +42,12 @@ class NoteSpawner extends FlxTypedGroup<Note> {
 		}
 	}
 
-	public function genSong(sections:Array<Section>) {
-		for (i in 0...sections.length) {
-			for (ii in 0...sections[i].notes.length) {
+	public function genSong(sections:Array<Section>)
+	{
+		for (i in 0...sections.length)
+		{
+			for (ii in 0...sections[i].notes.length)
+			{
 				if (sections[i].notes[ii][3] < 0)
 					continue;
 				var time:Float = sections[i].notes[ii][0];
@@ -51,27 +61,23 @@ class NoteSpawner extends FlxTypedGroup<Note> {
 
 				var note:Note = new Note(time, data, PlayState.isPixelStage, oldNote, song.speed, conductor);
 				note.mustHit = goodHit;
+				note.altNote = (sections[i].altSection == true);
+				note.length = length;
+				note.scrollSpeed = song.speed;
 				unspawnNotes.push(note);
 
-				if (length > 0) {
-					for (susNote in 0...Math.floor(length / conductor.stepLength)) {
-						oldNote = unspawnNotes[unspawnNotes.length - 1];
-						var sustainTime = time + (conductor.stepLength * susNote) + (conductor.stepLength / song.speed);
-						var sustain:Note = new Note(sustainTime, data, note.isPixel, oldNote, song.speed, conductor, true);
-						sustain.parent = note;
-						sustain.mustHit = goodHit;
-						unspawnNotes.push(sustain);
-
-						if (PlayState.instance != null)
-							sustain.cameras = [PlayState.instance.camUnderlay];
-					}
+				if(length > 0)
+				{
+					note.sustain = new Sustain(note);
+					sustainGroup.add(note.sustain);
 				}
 			}
 		}
 		unspawnNotes.sort(yessort);
 	}
 
-	function yessort(Obj1, Obj2):Int {
+	function yessort(Obj1, Obj2):Int
+	{
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.time, Obj2.time);
 	}
 }

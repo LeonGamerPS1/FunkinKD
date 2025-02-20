@@ -32,6 +32,8 @@ class Convert
 				cameraFacePlayer: section.mustHitSection,
 				notes: [],
 			}
+			if(section.altAnim != null)
+				sectionB.altSection = section.altAnim;
 			for (sectionNote in section.sectionNotes)
 			{
 				var time:Float = sectionNote[0];

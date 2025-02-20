@@ -138,6 +138,7 @@ class Freeplay extends MusicBeatState {
 				try {
 					var parsedSongName:String = Paths.formatSongName(curSelected.text);
 					PlayState.SONG = Song.parseSong(parsedSongName, curDiff.toLowerCase());
+					PlayState.weekDifficulty = curDiff;
 					PlayState.isStoryMode = false;
 					for (i in 0...items.length) {
 						FlxTween.tween(items.members[i].offset, {x: items.members[i].width}, 0.9);

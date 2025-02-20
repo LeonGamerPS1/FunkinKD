@@ -44,6 +44,9 @@ enum Action
 	@:inputs([FlxKey.R, X])
 	UI_RESET;
 
+	@:inputs([FlxKey.SEVEN])
+	CHART;
+
 }
 
 class Controls extends FlxControls<Action> {}

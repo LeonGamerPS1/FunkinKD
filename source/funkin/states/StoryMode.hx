@@ -16,6 +16,7 @@ class StoryMode extends BaseState
 	var txtTracklist:FlxText;
 
 	public var curSel:Int = 0;
+	public var CS1:Int = 0;
 
 	function changeSel(add:Int = 0)
 	{
@@ -31,19 +32,30 @@ class StoryMode extends BaseState
 		for (item in grpWeekText.members)
 		{
 			item.targetY = bullShit - curSel;
-
 			bullShit++;
-
 			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
 
 			if (item.targetY == 0)
 				item.alpha = 1;
 		}
 		txtTracklist.text += arrayToNewLines(get_curSelected().week.songs);
 
-
+		changeDiff();
 	}
+
+	public function changeDiff(add:Int = 0)
+	{
+		CS1 += add;
+		if (CS1 > get_curSelected().week.difficulties.length - 1)
+			CS1 = 0;
+		if (CS1 < 0)
+			CS1 = get_curSelected().week.difficulties.length - 1;
+		curDiff = get_curSelected().week.difficulties[CS1];
+		sprDifficulty.loadGraphic(Paths.image("menudifficulties/" + curDiff.toLowerCase()));
+		FlxG.sound.play(Paths.sound('scrollMenu'));
+	}
+
+	var curDiff:String = "Normal";
 
 	function arrayToNewLines(arr:Array<WSongMeta>)
 	{
@@ -56,9 +68,7 @@ class StoryMode extends BaseState
 	}
 
 	function get_curSelected()
-	{
 		return grpWeekText.members[curSel];
-	}
 
 	override function update(elapsed:Float)
 	{
@@ -68,18 +78,24 @@ class StoryMode extends BaseState
 		if (controls.justPressed.UI_UP)
 			changeSel(-1);
 
-        if(controls.justPressed.UI_ACCEPT)
-        {
-            var songArray:Array<WSongMeta> = get_curSelected().week.songs;
-            var arrayOfStrings:Array<String> = [];
-            for (index => value in songArray) {
-                arrayOfStrings.push(value.name);
-            }
-            PlayState.weekSongs = arrayOfStrings;
-            PlayState.isStoryMode = true;
-            PlayState.SONG = Song.parseSong(Paths.formatSongName(PlayState.weekSongs[0]));
-            FlxG.switchState(new PlayState());
-        }
+		if (controls.justPressed.UI_RIGHT)
+			changeDiff(1);
+		if (controls.justPressed.UI_LEFT)
+			changeDiff(-1);
+
+		if (controls.justPressed.UI_ACCEPT)
+		{
+			var songArray:Array<WSongMeta> = get_curSelected().week.songs;
+			var arrayOfStrings:Array<String> = [];
+			for (index => value in songArray)
+				arrayOfStrings.push(value.name);
+
+			PlayState.weekSongs = arrayOfStrings;
+			PlayState.weekDifficulty = curDiff;
+			PlayState.isStoryMode = true;
+			PlayState.SONG = Song.parseSong(Paths.formatSongName(PlayState.weekSongs[0]), curDiff.toLowerCase());
+			FlxG.switchState(new PlayState());
+		}
 	}
 
 	override function create()
@@ -107,11 +123,9 @@ class StoryMode extends BaseState
 		difficultySelectors.add(leftArrow);
 
 		sprDifficulty = new FlxSprite(leftArrow.x + 130, leftArrow.y);
-		sprDifficulty.frames = ui_tex;
-		sprDifficulty.animation.addByPrefix('easy', 'EASY');
-		sprDifficulty.animation.addByPrefix('normal', 'NORMAL');
-		sprDifficulty.animation.addByPrefix('hard', 'HARD');
-		sprDifficulty.animation.play('easy');
+		sprDifficulty.loadGraphic(Paths.image("menudifficultys/" + curDiff.toLowerCase()));
+
+		changeDiff();
 
 		rightArrow = new FlxSprite(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
 		rightArrow.frames = ui_tex;
@@ -121,7 +135,7 @@ class StoryMode extends BaseState
 		difficultySelectors.add(rightArrow);
 
 		txtTracklist = new FlxText(FlxG.width * 0.05, bg.x + bg.height + 100, 0, "Tracks", 32);
-		txtTracklist.setFormat(null,32,FlxColor.WHITE,LEFT);
+		txtTracklist.setFormat(null, 32, FlxColor.WHITE, LEFT);
 		txtTracklist.font = Paths.font("vcr");
 		txtTracklist.color = 0xFFe55777;
 		add(txtTracklist);

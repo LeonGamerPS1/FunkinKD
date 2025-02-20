@@ -6,9 +6,9 @@ class StrumLine extends FlxTypedSpriteGroup<StrumNote>
 
 	public function new(downScroll:Bool, ?player:Bool = false)
 	{
-		var targetX:Float = Note.swagWidth * 1.5;
+		var targetX:Float = 50 + (Note.swagWidth / 4);
 		if (player)
-			targetX =  50 + (FlxG.width / 2 + (Note.swagWidth / 2));
+			targetX =  50 + (FlxG.width / 2) + (Note.swagWidth / 2);
 
 		super(targetX, downScroll ? FlxG.height - 150 : 50);
 		this.player = player;

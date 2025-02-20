@@ -70,7 +70,7 @@ class StrumNote extends FlxSkewedSprite
 
 	function loadDefaultNoteAnims(tex:String)
 	{
-		frames = Paths.getSparrowAtlas('noteSkins/$tex');
+		frames = Paths.getAtlas('noteSkins/$tex');
 
 		animation.addByPrefix('static', 'arrow${directions[data % directions.length].toUpperCase()}', 24, false);
 		animation.addByPrefix('pressed', '${directions[data % directions.length]} press', 24, false);

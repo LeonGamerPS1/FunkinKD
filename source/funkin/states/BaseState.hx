@@ -12,5 +12,10 @@ class BaseState extends FlxUIState
 		super();
 		controls = new Controls("FUNKIN_CONTROLS");
 		FlxG.inputs.add(controls);
+		#if hl
+		hl.Gc.major();
+		#elseif cpp
+		cpp.vm.Gc.run(true);
+		#end
 	}
 }
