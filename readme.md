@@ -5,7 +5,7 @@
 ### Geokureli - Flixel-Controls Library
 ### FunkinCrew - Da original fnf game!! go check it out
 
-# if i forgot anyone, go ahead and make an issue/pr with a list of ones i forgot to credit :3
+if i forgot anyone, go ahead and make an issue/pr with a list of ones i forgot to credit :3
 
 
 
