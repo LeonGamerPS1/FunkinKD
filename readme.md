@@ -1,10 +1,11 @@
 
-### Credits
-Sword352 - Tiled Sustain Class and OffsetSprite from Eternal Engine (I borrowed it def)
-TheRealJake_12 - FileUtil class (yeah so thanks now I don't need to use FileSystem.readDirectory :3)
-Geokureli - Flixel-Controls Library
-FunkinCrew - Da original fnf game!! go check it out
-## if i forgot anyone, go ahead and make an issue/pr with a list of ones i forgot to credit :3
+## Credits
+### Sword352 - Tiled Sustain Class and OffsetSprite from Eternal Engine (I borrowed it def)
+### TheRealJake_12 - FileUtil class (yeah so thanks now I don't need to use FileSystem.readDirectory :3)
+### Geokureli - Flixel-Controls Library
+### FunkinCrew - Da original fnf game!! go check it out
+
+# if i forgot anyone, go ahead and make an issue/pr with a list of ones i forgot to credit :3
 
 
 
