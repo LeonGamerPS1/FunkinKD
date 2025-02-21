@@ -1,11 +1,11 @@
 package funkin.objects.gameplay;
 
+import openfl.system.System;
 import flixel.util.FlxStringUtil;
 import flixel.text.FlxText;
 import funkin.controls.Action.Controls;
 
-class PlayField extends FlxTypedGroup<FlxBasic>
-{
+class PlayField extends FlxTypedGroup<FlxBasic> {
 	public var downScroll:Bool = false;
 	public var notes:NoteSpawner;
 	public var conductor:Conductor;
@@ -32,9 +32,9 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 	public var Imisses:Int = 0;
 	public var Fscore:Float = 0;
 
-	public function new(SONG:SongData, controls:Controls)
-	{
+	public function new(SONG:SongData, controls:Controls) {
 		super();
+		this.downScroll = ClientPrefs.save.downScroll;
 		this.SONG = SONG;
 		this.controls = controls;
 
@@ -49,8 +49,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			for (member in strumline.members)
 				strumLineNotes.add(member);
 
-		healthBar = new Bar(0, !downScroll ? FlxG.height - 100 : 100, 'healthBar', () ->
-		{
+		healthBar = new Bar(0, !downScroll ? FlxG.height - 100 : 100, 'healthBar', () -> {
 			return health;
 		}, 0, 2);
 		healthBar.setColors(FlxColor.RED, FlxColor.LIME);
@@ -92,10 +91,8 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		add(notes);
 	}
 
-	function destroyNote(note:Note)
-	{
-		if (note.sustain != null)
-		{
+	function destroyNote(note:Note) {
+		if (note.sustain != null) {
 			note.sustain.kill();
 			sustains.remove(note.sustain, true);
 			note.sustain.destroy();
@@ -105,14 +102,14 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		notes.remove(note, true);
 		note.destroy();
 		note = null;
+		System.gc();
 	}
 
 	var hitNotes:Array<Note> = [];
 	var directions:Array<Int> = [];
 	var dumbNotes:Array<Note> = [];
 
-	function keyPress()
-	{
+	function keyPress() {
 		hitNotes = []; // notes that can be hit
 		directions = []; // directions that the player is able to hit
 		dumbNotes = []; // notes to fuck off and kill later
@@ -135,36 +132,29 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			controls.pressed.NOTE_UP,
 			controls.pressed.NOTE_RIGHT,
 		];
-		playerStrums.forEach(function(strumNote)
-		{
+		playerStrums.forEach(function(strumNote) {
 			if (keyP[strumNote.data] && strumNote.animation.curAnim.name != "confirm")
 				strumNote.playAnim("pressed", true);
 			if (keyR[strumNote.data])
 				strumNote.playAnim("static");
 		});
 
-		notes.forEachAlive(function(note)
-		{
-			if (note.mustHit && note.canBeHit(conductor))
-			{
+		notes.forEachAlive(function(note) {
+			if (note.mustHit && note.canBeHit(conductor)) {
 				hitNotes.push(note);
 				hitNotes.sort((a, b) -> Std.int(a.time - b.time));
 			}
 		});
-		if (keyP.contains(true))
-		{
-			notes.forEachAlive(function(daNote:Note)
-			{
-				if (daNote.canBeHit(conductor) && daNote.mustHit && !daNote.wasHit)
-				{
+		if (keyP.contains(true)) {
+			notes.forEachAlive(function(daNote:Note) {
+				if (daNote.canBeHit(conductor) && daNote.mustHit && !daNote.wasHit) {
 					hitNotes.push(daNote);
 					directions.push(daNote.data);
 				}
 			});
 
 			hitNotes.sort((a, b) -> Std.int(a.time - b.time));
-			if (hitNotes.length > 0)
-			{
+			if (hitNotes.length > 0) {
 				for (shit in 0...keyP.length) // if a direction is hit that shouldn't be
 					if (keyP[shit] && !directions.contains(shit))
 						noteMiss(shit);
@@ -176,8 +166,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		}
 	}
 
-	function goodNoteHit(coolNote:Note)
-	{
+	function goodNoteHit(coolNote:Note) {
 		var strum = playerStrums.members[coolNote.data];
 
 		var _maxTime:Float = coolNote.time + coolNote.length;
@@ -186,8 +175,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		if (plrHitSignal != null)
 			plrHitSignal(coolNote, !coolNote.wasHit);
 
-		if (!coolNote.wasGoodHit)
-		{
+		if (!coolNote.wasGoodHit) {
 			coolNote.wasGoodHit = true;
 			coolNote.wasHit = true;
 
@@ -196,8 +184,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 			strum.playAnim("confirm", true);
 		}
 
-		if (tick)
-		{
+		if (tick) {
 			strum.playAnim("confirm", true);
 			plrHitSignal(coolNote, true);
 			health += 0.04;
@@ -211,8 +198,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 	public var tick = false;
 	public var strumLineNotes:FlxTypedGroup<StrumNote> = new FlxTypedGroup<StrumNote>();
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		conductor.songPosition = time;
 		if (!botplay)
 			keyPress();
@@ -220,40 +206,35 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		super.update(elapsed);
 		score.text = 'Score: $Fscore | Misses : $Imisses';
 		score.screenCenter(X);
-		notes.forEachAlive(function(note:Note)
-		{
+		notes.forEachAlive(function(note:Note) {
 			var strumGroup = note.mustHit ? playerStrums : oppStrums;
 			var strum:StrumNote = strumGroup.members[note.data];
 			note.strum = strum;
 
 			note.followStrumNote(strum, conductor, SONG.speed);
-			var _maxTime:Float = note.time + note.length;
-			var _inHoldRange:Bool = note.length > 0 && conductor.songPosition < _maxTime - conductor.stepLength * 2;
 
-			if (!note.mustHit && note.wasGoodHit)
-			{
+			var _maxTime:Float = note.time + note.length;
+			// var _inHoldRange:Bool = note.length > 0 && conductor.songPosition < _maxTime - conductor.stepLength * 2;
+
+			if (!note.mustHit && note.wasGoodHit) {
 				if (oppHitSignal != null)
 					oppHitSignal(note, !note.wasHit);
-				if (!note.wasHit)
-				{
+				if (!note.wasHit) {
 					note.wasGoodHit = true;
 					note.wasHit = true;
 					strum.playAnim("confirm", true);
 				}
 				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
-				if (tick && note.sustain != null)
-				{
+				if (tick && note.sustain != null) {
 					oppHitSignal(note, true);
 					strum.playAnim("confirm", true);
 				}
 			}
-			if (botplay && note.time <= conductor.songPosition && note.mustHit)
-			{
+			if (botplay && note.time <= conductor.songPosition && note.mustHit) {
 				goodNoteHit(note);
 				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
 			}
-			if (tick && note.sustain != null && note.mustHit && note.wasGoodHit && strum.animation.curAnim.name == "confirm" && !botplay)
-			{
+			if (tick && note.sustain != null && note.mustHit && note.wasGoodHit && strum.animation.curAnim.name == "confirm" && !botplay) {
 				plrHitSignal(note, tick);
 				strum.playAnim("confirm", tick);
 			}
@@ -261,14 +242,12 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 				&& strum.animation.curAnim.name != "confirm"
 				&& note.mustHit
 				&& note.sustain != null
-				&& !(_maxTime - (conductor.stepLength) < conductor.songPosition))
-			{
+				&& !(_maxTime - (conductor.stepLength) < conductor.songPosition)) {
 				destroyNote(note);
 				return;
 			}
 
-			if (note.tooLate && note.mustHit && !note.glowing)
-			{
+			if (note.tooLate && note.mustHit && !note.glowing) {
 				note.glowing = true;
 				trace("weed");
 				FlxTween.color(note, 0.2, note.color, FlxColor.GRAY);
@@ -278,8 +257,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 
 			if (note.wasGoodHit && _maxTime < conductor.songPosition)
 				destroyNote(note);
-			if (conductor.songPosition - note.time - note.length > noteKillOffset)
-			{
+			if (conductor.songPosition - note.time - note.length > noteKillOffset) {
 				if (note.mustHit && !note.ignoreNote && !note.wasGoodHit && note.mustHit)
 					noteMiss(note.data);
 
@@ -297,8 +275,7 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		tick = false;
 	}
 
-	function noteMiss(shit:Int)
-	{
+	function noteMiss(shit:Int) {
 		health -= 0.04;
 		FlxG.sound.play(Paths.soundRandom("missnote", 1, 3), 0.5);
 		Imisses++;
@@ -306,36 +283,29 @@ class PlayField extends FlxTypedGroup<FlxBasic>
 		missCallback(shit);
 	}
 
-	public dynamic function missCallback(shit:Int)
-	{
-	}
+	public dynamic function missCallback(shit:Int) {}
 
-	public function beatHit()
-	{
+	public function beatHit() {
 		noteKillOffset = Math.max(conductor.stepLength, 350 / SONG.speed);
 
 		notes.sort(FlxSort.byY, FlxSort.DESCENDING);
 		if (downScroll)
 			notes.sort(FlxSort.byY, FlxSort.ASCENDING);
 
-		if (SONG.sections[Math.floor(conductor.curStep / 16)] != null)
-		{
-			if (SONG.sections[Math.floor(conductor.curStep / 16)].changeBPM)
-			{
+		if (SONG.sections[Math.floor(conductor.curStep / 16)] != null) {
+			if (SONG.sections[Math.floor(conductor.curStep / 16)].changeBPM) {
 				conductor.bpm = (SONG.sections[Math.floor(conductor.curStep / 16)].bpm);
 			};
 		}
 	}
 
-	public function stepHit()
-	{
+	public function stepHit() {
 		iconP1.stepHit(conductor.curStep);
 		iconP2.stepHit(conductor.curStep);
 		tick = true;
 	}
 
-	function set_health(value:Float):Float
-	{
+	function set_health(value:Float):Float {
 		value = FlxMath.bound(value, 0, 2);
 		health = value;
 		return value;

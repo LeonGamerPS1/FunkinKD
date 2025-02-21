@@ -11,7 +11,7 @@
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
-	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false" antialiasing="44" />
+	<window width="1280" height="720" fps="64" background="#000000" hardware="true" vsync="false" antialiasing="44" />
 
 
 	<window if="html5" resizable="false" />
