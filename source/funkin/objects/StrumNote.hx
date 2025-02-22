@@ -86,7 +86,6 @@ class StrumNote extends FlxSkewedSprite {
 
 			if (resetTimer < 0.0001) {
 				playAnim("static", true);
-				trace("reset");
 				resetTimer = 0;
 			}
 		}
