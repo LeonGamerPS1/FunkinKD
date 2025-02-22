@@ -74,7 +74,7 @@ class Conductor extends FlxBasic {
 	function set_bpm(value:Null<Float>):Null<Float> {
 		bpm = value;
 		beatLength = (60 / bpm) * 1000;
-		stepLength = beatLength / 4;
+		stepLength = Math.abs(beatLength / 4);
 
 		return bpm = value;
 	}

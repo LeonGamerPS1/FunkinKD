@@ -2,8 +2,7 @@ package funkin.objects;
 
 import flixel.addons.effects.FlxSkewedSprite;
 
-class StrumNote extends FlxSkewedSprite
-{
+class StrumNote extends FlxSkewedSprite {
 	public static var directions:Array<String> = ["left", "down", "up", "right"];
 
 	public var direction:Float = 90;
@@ -19,8 +18,7 @@ class StrumNote extends FlxSkewedSprite
 	public var mustHit:Bool = false;
 	public var player:Int = 0;
 
-	public function new(data:Int = 0, isPixel:Bool = false)
-	{
+	public function new(data:Int = 0, isPixel:Bool = false) {
 		super();
 		this.data = data;
 		this.isPixel = isPixel;
@@ -28,24 +26,21 @@ class StrumNote extends FlxSkewedSprite
 		playAnim("static");
 	}
 
-	public function playAnim(s:String, force:Bool = false)
-	{
+	public function playAnim(s:String, force:Bool = false) {
 		animation.play(s, force);
 
 		centerOffsets();
 		centerOrigin();
 	}
 
-	function reloadNote(tex:String = "notes", isPixel:Bool)
-	{
+	function reloadNote(tex:String = "notes", isPixel:Bool) {
 		this.isPixel = isPixel;
 		if (PlayState.SONG.skin != null && PlayState.SONG.skin != "")
 			tex = PlayState.SONG.skin;
 
 		var prefix = isPixel ? "pixel/" : "";
 		var path = Paths.img('noteSkins/$prefix$tex');
-		if (!Assets.exists(path))
-		{
+		if (!Assets.exists(path)) {
 			trace(' "$path" doesnt exist, Reverting skin back to default');
 			tex = "notes";
 		}
@@ -58,18 +53,16 @@ class StrumNote extends FlxSkewedSprite
 
 	var confirm = [[12, 16], [13, 17], [14, 18], [15, 19]];
 
-	function loadPixelNoteAnimations(tex:String = "notes")
-	{
+	function loadPixelNoteAnimations(tex:String = "notes") {
 		loadGraphic(Paths.image('noteSkins/pixel/$tex'), true, 17, 17);
 		animation.add('static', [data % 4], 12, false);
-		animation.add('pressed', [data % 4 + 4, data % 4 + 8], 24, false);
-		animation.add('confirm', confirm[data % confirm.length], 24, false);
+		animation.add('pressed', [data % 4 + 4, data % 4 + 8], 12, false);
+		animation.add('confirm', confirm[data % confirm.length], 12, false);
 		setGraphicSize(width * 6);
 		updateHitbox();
 	}
 
-	function loadDefaultNoteAnims(tex:String)
-	{
+	function loadDefaultNoteAnims(tex:String) {
 		frames = Paths.getAtlas('noteSkins/$tex');
 
 		animation.addByPrefix('static', 'arrow${directions[data % directions.length].toUpperCase()}', 24, false);
@@ -81,23 +74,21 @@ class StrumNote extends FlxSkewedSprite
 		antialiasing = true;
 	}
 
-	function set_texture(value:String):String
-	{
+	function set_texture(value:String):String {
 		reloadNote(value, isPixel);
 		return texture = value;
 	}
 
-	override function update(elapsed:Float):Void
-	{
-		if (resetTimer > 0)
-		{
+	override function update(elapsed:Float):Void {
+		super.update(elapsed);
+		if (resetTimer != 0) {
 			resetTimer -= elapsed;
-			if (resetTimer < 0)
-			{
+
+			if (resetTimer < 0.0001) {
 				playAnim("static", true);
+				trace("reset");
 				resetTimer = 0;
 			}
 		}
-		super.update(elapsed);
 	}
 }

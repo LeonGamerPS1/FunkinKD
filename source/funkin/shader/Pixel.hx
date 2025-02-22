@@ -1,9 +1,10 @@
-package funkin.graphics.shaders;
+package funkin.shader;
 
-class Pixel extends FlxShader
-{
-	@:glFragmentSource("
-   // Automatically converted with https://github.com/TheLeerName/ShadertoyToFlixel
+import flixel.system.FlxAssets;
+
+class Pixel extends FlxAssets.FlxShader {
+    @:glFragmentSource("
+      // Automatically converted with https://github.com/TheLeerName/ShadertoyToFlixel
 
 #pragma header
 
@@ -73,8 +74,4 @@ void main() {
 	mainImage(gl_FragColor, openfl_TextureCoordv*openfl_TextureSize);
 }
     ")
-	public function new()
-	{
-		super();
-	}
 }

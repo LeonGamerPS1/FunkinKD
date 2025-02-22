@@ -65,8 +65,8 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 		iconP1.y = iconP2.y = healthBar.y - 80;
 
 		score = new FlxText(healthBar.leftBar.x, healthBar.y + 45, 0, "Score: ?");
-		score.setFormat(Paths.font("vcr"), 20, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
-		score.borderSize = 3;
+		score.setFormat(Paths.font("vcr"), 18, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+		score.borderSize = 1;
 		add(score);
 
 		var infoText = new FlxText(0, FlxG.height - 25, 0, '${SONG.song} - ${PlayState.weekDifficulty} | FunkinKD v0.0.1');
@@ -179,7 +179,9 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 			coolNote.wasGoodHit = true;
 			coolNote.wasHit = true;
 
-			Fscore += 100.5;
+			if (!botplay) {
+				popUpScore(coolNote);
+			}
 			health += 0.04;
 			strum.playAnim("confirm", true);
 		}
@@ -193,6 +195,10 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 			destroyNote(coolNote);
 	}
 
+	function popUpScore(coolNote:Note) {
+		var diff:Float = Math.abs(conductor.songPosition - coolNote.time);
+	}
+
 	public var oppHitSignal:(note:Note, ?p:Bool) -> Void;
 	public var plrHitSignal:(note:Note, ?p:Bool) -> Void;
 	public var tick = false;
@@ -204,7 +210,10 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 			keyPress();
 
 		super.update(elapsed);
-		score.text = 'Score: $Fscore | Misses : $Imisses';
+		if (!botplay)
+			score.text = 'Score: $Fscore | Misses : $Imisses';
+		else
+			score.text = 'BOTPLAY';
 		score.screenCenter(X);
 		notes.forEachAlive(function(note:Note) {
 			var strumGroup = note.mustHit ? playerStrums : oppStrums;
@@ -224,11 +233,12 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 					note.wasHit = true;
 					strum.playAnim("confirm", true);
 				}
-				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
-				if (tick && note.sustain != null) {
+				if (tick && note.sustain != null && strum.resetTimer > 0) {
 					oppHitSignal(note, true);
 					strum.playAnim("confirm", true);
 				}
+				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
+				
 			}
 			if (botplay && note.time <= conductor.songPosition && note.mustHit) {
 				goodNoteHit(note);

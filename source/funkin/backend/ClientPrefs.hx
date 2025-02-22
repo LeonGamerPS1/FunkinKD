@@ -32,6 +32,10 @@ class SaveVars {
 	 */
 	public var fps:Int = 64;
 
+	public var sickWindow:Float = 45;
+	public var goodWindow:Float = 90;
+	public var badWindow:Float = 135;
+
 	public function new() {}
 }
 
