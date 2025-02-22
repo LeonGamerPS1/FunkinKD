@@ -32,7 +32,6 @@ class Sustain extends TiledSprite {
 		updateHitbox();
 
 		setGraphicSize(width * 6);
-		scale.x = 5;
 		setTail('end');
 		updateHitbox();
 	}
@@ -51,7 +50,7 @@ class Sustain extends TiledSprite {
 		antialiasing = true;
 	}
 
-	override function update(elapsed:Float) {
+	override function draw() {
 		var length:Float = parent.length;
 
 		if (parent.wasGoodHit)
@@ -62,14 +61,16 @@ class Sustain extends TiledSprite {
 
 		setPosition(parent.x + ((parent.width - width) * 0.5), parent.y + (parent.height * 0.5));
 
-		
-        y = parent.y + parent.height * 0.5;
-		alpha = parent.alpha * 0.6;
+		y = parent.y + parent.height * 0.5;
+		alpha = parent.alpha * 0.7;
+
 		if (parent.downscroll) {
 			y -= height;
 			flipY = true;
+		} else {
+			flipY = false;
 		}
 
-		super.update(elapsed);
+		super.draw();
 	}
 }

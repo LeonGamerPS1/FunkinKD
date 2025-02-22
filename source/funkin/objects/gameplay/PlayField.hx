@@ -49,6 +49,14 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 			for (member in strumline.members)
 				strumLineNotes.add(member);
 
+		notes = new NoteSpawner(conductor, SONG);
+		notes.sustainGroup = sustains;
+
+		add(playerStrums);
+		add(oppStrums);
+		add(sustains);
+		add(notes);
+
 		healthBar = new Bar(0, !downScroll ? FlxG.height - 100 : 100, 'healthBar', () -> {
 			return health;
 		}, 0, 2);
@@ -62,7 +70,7 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 		add(iconP1);
 		add(iconP2);
 
-		iconP1.y = iconP2.y = healthBar.y - 80;
+		iconP1.y = iconP2.y = healthBar.y - 75;
 
 		score = new FlxText(healthBar.leftBar.x, healthBar.y + 45, 0, "Score: ?");
 		score.setFormat(Paths.font("vcr"), 18, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
@@ -82,13 +90,6 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 
 		conductor.onBeatHit.add(beatHit);
 		conductor.onStepHit.add(stepHit);
-		notes = new NoteSpawner(conductor, SONG);
-		notes.sustainGroup = sustains;
-
-		add(playerStrums);
-		add(oppStrums);
-		add(sustains);
-		add(notes);
 	}
 
 	function destroyNote(note:Note) {
@@ -179,9 +180,9 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 			coolNote.wasGoodHit = true;
 			coolNote.wasHit = true;
 
-			if (!botplay) {
+			if (!botplay)
 				popUpScore(coolNote);
-			}
+
 			health += 0.04;
 			strum.playAnim("confirm", true);
 		}
@@ -196,8 +197,49 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 	}
 
 	function popUpScore(coolNote:Note) {
-		var diff:Float = Math.abs(conductor.songPosition - coolNote.time);
+		var diff:Float = Math.abs(coolNote.time - conductor.songPosition);
+
+		var rating = "?";
+		if (diff < ClientPrefs.save.sickWindow)
+			rating = "sick";
+		else if (diff < ClientPrefs.save.goodWindow)
+			rating = "good";
+		else if (diff < ClientPrefs.save.badWindow)
+			rating = "bad";
+		else
+			rating = "shit";
+
+		coolNote.rating = rating;
+		if (PlayState.instance != null)
+			@:privateAccess
+			PlayState.instance.call('goodNoteHit', [coolNote.time, coolNote.data, coolNote.length, notes.members.indexOf(coolNote)]);
+		if (popupSprite == null)
+			popupSprite = new FlxSprite(0, 0, Paths.image('ratings/$rating' + (PlayState.isPixelStage ? '-pixel' : "")));
+
+		add(popupSprite);
+		popupSprite.loadGraphic(Paths.image('ratings/$rating' + (PlayState.isPixelStage ? '-pixel' : "")));
+		popupSprite.alpha = 1;
+		popupSprite.antialiasing = !PlayState.isPixelStage;
+		if (PlayState.isPixelStage) {
+			popupSprite.setGraphicSize(popupSprite.width * PlayState.daPixelZoom);
+			popupSprite.updateHitbox();
+		}
+		popupSprite.screenCenter();
+		popupSprite.x -= popupSprite.width / 2;
+		FlxTween.cancelTweensOf(popupSprite);
+
+		popupSprite.acceleration.set();
+		popupSprite.velocity.set();
+
+		popupSprite.acceleration.y = 550;
+		popupSprite.velocity.y -= FlxG.random.int(140, 175);
+		popupSprite.velocity.x -= FlxG.random.int(0, 10);
+		FlxTween.tween(popupSprite, {alpha: 0}, conductor.stepLength * 5.4 / 1000);
+
+		Fscore += Rating.scoreAddfromRating(rating);
 	}
+
+	public var popupSprite:FlxSprite;
 
 	public var oppHitSignal:(note:Note, ?p:Bool) -> Void;
 	public var plrHitSignal:(note:Note, ?p:Bool) -> Void;
@@ -209,12 +251,12 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 		if (!botplay)
 			keyPress();
 
-		super.update(elapsed);
 		if (!botplay)
 			score.text = 'Score: $Fscore | Misses : $Imisses';
 		else
 			score.text = 'BOTPLAY';
 		score.screenCenter(X);
+		super.update(elapsed);
 		notes.forEachAlive(function(note:Note) {
 			var strumGroup = note.mustHit ? playerStrums : oppStrums;
 			var strum:StrumNote = strumGroup.members[note.data];
@@ -238,7 +280,6 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 					strum.playAnim("confirm", true);
 				}
 				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
-				
 			}
 			if (botplay && note.time <= conductor.songPosition && note.mustHit) {
 				goodNoteHit(note);

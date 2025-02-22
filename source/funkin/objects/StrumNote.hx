@@ -81,6 +81,7 @@ class StrumNote extends FlxSkewedSprite {
 
 	override function update(elapsed:Float):Void {
 		super.update(elapsed);
+
 		if (resetTimer != 0) {
 			resetTimer -= elapsed;
 

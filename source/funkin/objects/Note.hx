@@ -32,11 +32,12 @@ class Note extends FlxSprite {
 	public var wasMissed:Bool = false;
 	public var multSpeed:Float = 1;
 	public var sustain:Sustain;
+	public var rating:String = "?";
 
 	public function canBeHit(conductor:Conductor):Bool {
 		if (mustHit
 			&& time > conductor.songPosition - (Conductor.safeZoneOffset)
-			&& time < conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
+			&& time < conductor.songPosition + (Conductor.safeZoneOffset))
 			return true;
 		else
 			return false;
