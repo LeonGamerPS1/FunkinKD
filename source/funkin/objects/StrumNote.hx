@@ -56,8 +56,8 @@ class StrumNote extends FlxSkewedSprite {
 	function loadPixelNoteAnimations(tex:String = "notes") {
 		loadGraphic(Paths.image('noteSkins/pixel/$tex'), true, 17, 17);
 		animation.add('static', [data % 4], 12, false);
-		animation.add('pressed', [data % 4 + 4, data % 4 + 8], 12, false);
-		animation.add('confirm', confirm[data % confirm.length], 12, false);
+		animation.add('pressed', [data % 4 + 4, data % 4 + 8], 24, false);
+		animation.add('confirm', confirm[data % confirm.length], 24, false);
 		setGraphicSize(width * 6);
 		updateHitbox();
 	}

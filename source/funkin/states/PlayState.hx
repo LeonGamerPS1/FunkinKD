@@ -38,6 +38,8 @@ class PlayState extends MusicBeatState {
 	public var scripts:Array<HScriptRuntime> = [];
 
 	override public function create() {
+		
+		super.create();
 		instance = this;
 
 		if (SONG == null)
@@ -95,7 +97,6 @@ class PlayState extends MusicBeatState {
 		for (char in [boyfriend, dad, girlfriend])
 			char.Conductor = playField.conductor;
 
-		super.create();
 
 		genSong(SONG.sections);
 		add(uiGroup);
@@ -146,14 +147,18 @@ class PlayState extends MusicBeatState {
 		playField.conductor.mapBPMChanges(SONG);
 
 		call("onCreatePost");
+		for(i in 0...100)
+			update(1 / 60);
 
-		switch (Paths.formatSongName(SONG.song)) {
-			case "senpai" | "roses":
-				startDialogue(Paths.formatSongName(SONG.song), startCountdown);
-			// startCountdown();
-			default:
-				startCountdown();
-		}
+		new FlxTimer().start(0.5, function(e) {
+			switch (Paths.formatSongName(SONG.song)) {
+				case "senpai" | "roses":
+					startDialogue(Paths.formatSongName(SONG.song), startCountdown);
+				// startCountdown();
+				default:
+					startCountdown();
+			}
+		});
 	}
 
 	private var startingSong:Bool = false;

@@ -32,9 +32,17 @@ class SaveVars {
 	 */
 	public var fps:Int = 64;
 
+	/** The Sick Hit Window (In MS.)**/
 	public var sickWindow:Float = 45;
+
+	/** The Good Hit Window (In MS.)**/
 	public var goodWindow:Float = 90;
+
+	/** The Bad Hit Window (In MS.)**/
 	public var badWindow:Float = 135;
+
+	/** The maximum amount of NoteSplashes that can appear before another one that is alive gets reset and idk set up??**/
+	public var maxSplashes:Int = 4;
 
 	public function new() {}
 }
@@ -63,7 +71,6 @@ class ClientPrefs {
 
 	// Saves the Options/Prefs to FlxG.save.data to load at game startup.
 	public static function saveToFlixel() {
-		for (saveElement in Reflect.fields(save))
-			Reflect.setProperty(FlxG.save.data, saveElement, Reflect.getProperty(saveElement, saveElement));
+		FlxG.save.data.save = save;
 	}
 }

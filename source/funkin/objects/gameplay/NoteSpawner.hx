@@ -17,7 +17,7 @@ class NoteSpawner extends FlxTypedGroup<Note> {
 		this.song = song;
 	}
 
-	var spawnNotesAtOnce:Int = 22;
+	var spawnNotesAtOnce:Int = 2;
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
@@ -27,7 +27,7 @@ class NoteSpawner extends FlxTypedGroup<Note> {
 				if (unspawnNotes[i].time - conductor.songPosition < 3000 / song.speed) {
 					var preloadedNote = unspawnNotes[i];
 
-					if(preloadedNote.sustain != null)
+					if (preloadedNote.sustain != null)
 						preloadedNote.sustain.visible = true;
 					add(preloadedNote);
 					preloadedNote.conductor = conductor;

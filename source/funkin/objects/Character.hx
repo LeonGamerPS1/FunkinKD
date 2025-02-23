@@ -117,11 +117,13 @@ class Character extends FlxSprite {
 			scale.set(json.scale, json.scale);
 		if (json.flipX != null)
 			flipX = (json.flipX != isPlayer);
-		if (json.antialiasing != null)
-			antialiasing = json.antialiasing;
+		if (json.antialiasing == null)
+			json.antialiasing = true; // makes it antialias if the character json doesn't specify wether it should or not
 
-		if(json.position != null)
-			origin.set(json.position[0] - width / 2,json.position[1] - height);
+		antialiasing = json.antialiasing;
+
+		if (json.position != null)
+			origin.set(json.position[0] - width / 2, json.position[1] - height);
 		updateHitbox();
 
 		curCharacter = json.name;

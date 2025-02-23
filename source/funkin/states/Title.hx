@@ -1,5 +1,10 @@
 package funkin.states;
 
+import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
+import flixel.graphics.FlxGraphic;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.transition.TransitionData;
+import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.display.FlxBackdrop;
 
 class Title extends MusicBeatState {
@@ -35,7 +40,6 @@ class Title extends MusicBeatState {
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
 
-
 		logoBl = new FlxSprite(-150, -100);
 		logoBl.frames = Paths.getSparrowAtlas('title/logoBumpin');
 		logoBl.antialiasing = true;
@@ -48,6 +52,21 @@ class Title extends MusicBeatState {
 		add(titleText);
 		super.create();
 		FlxG.camera.flash();
+
+		var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
+		diamond.persist = true;
+		diamond.destroyOnNoUse = false;
+
+		FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32},
+			new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
+		FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32},
+			new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
+
+		transIn = FlxTransitionableState.defaultTransIn;
+		transOut = FlxTransitionableState.defaultTransOut;
+
+		FlxTransitionableState.defaultTransIn.cameraMode = NEW;
+		FlxTransitionableState.defaultTransOut.cameraMode = NEW;
 	}
 
 	public var danceLeft(get, null):Bool;

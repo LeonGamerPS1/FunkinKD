@@ -52,10 +52,15 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 		notes = new NoteSpawner(conductor, SONG);
 		notes.sustainGroup = sustains;
 
+		add(sustains);
 		add(playerStrums);
 		add(oppStrums);
-		add(sustains);
 		add(notes);
+
+		noteSplashes = new FlxTypedGroup<NoteSplash>(ClientPrefs.save.maxSplashes);
+		add(noteSplashes);
+
+		setupSplash();
 
 		healthBar = new Bar(0, !downScroll ? FlxG.height - 100 : 100, 'healthBar', () -> {
 			return health;
@@ -90,6 +95,16 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 
 		conductor.onBeatHit.add(beatHit);
 		conductor.onStepHit.add(stepHit);
+	}
+
+	/**
+	 * Spawns a NoteSplash.
+	 * @param id  The NoteData of the Splash.
+	 * @param strum The StrumNote the splash should Position itself to (if null, it will go to 0,0).
+	 */
+	public function setupSplash(id:Int = 0, ?strum:StrumNote) {
+		var splash:NoteSplash = noteSplashes.recycle(NoteSplash).setup(id, strum);
+		noteSplashes.add(splash);
 	}
 
 	function destroyNote(note:Note) {
@@ -180,8 +195,7 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 			coolNote.wasGoodHit = true;
 			coolNote.wasHit = true;
 
-			if (!botplay)
-				popUpScore(coolNote);
+			popUpScore(coolNote);
 
 			health += 0.04;
 			strum.playAnim("confirm", true);
@@ -190,7 +204,6 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 		if (tick) {
 			strum.playAnim("confirm", true);
 			plrHitSignal(coolNote, true);
-			health += 0.04;
 		}
 		if (coolNote.wasGoodHit && _maxTime < conductor.songPosition)
 			destroyNote(coolNote);
@@ -236,15 +249,23 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 		popupSprite.velocity.x -= FlxG.random.int(0, 10);
 		FlxTween.tween(popupSprite, {alpha: 0}, conductor.stepLength * 5.4 / 1000);
 
+		if(!botplay)
 		Fscore += Rating.scoreAddfromRating(rating);
+
+		if (rating == "sick")
+			setupSplash(coolNote.data, coolNote.strum);
 	}
 
 	public var popupSprite:FlxSprite;
 
 	public var oppHitSignal:(note:Note, ?p:Bool) -> Void;
 	public var plrHitSignal:(note:Note, ?p:Bool) -> Void;
-	public var tick = false;
+	public var tick(get, null):Bool;
 	public var strumLineNotes:FlxTypedGroup<StrumNote> = new FlxTypedGroup<StrumNote>();
+
+	public function get_tick():Bool {
+		return (conductor != null && conductor.curStep % 2 == 0);
+	}
 
 	override function update(elapsed:Float) {
 		conductor.songPosition = time;
@@ -321,10 +342,20 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 
 		iconP1.x = FlxMath.lerp((healthBar.barCenter + (150 * iconP1.scale.x) / 2 - 150) + 50, iconP1.x, 0.1);
 		iconP2.x = FlxMath.lerp((healthBar.barCenter - (150 * iconP2.scale.x) / 2) - 50, iconP2.x, 0.1);
-		iconP1.origin.y = 0;
-		iconP2.origin.y = 0;
-		tick = false;
+
+		if (healthBar.percent < 20) {
+			iconP1.animation.curAnim.curFrame = 1;
+			iconP2.animation.curAnim.curFrame = 0;
+		} else if (healthBar.percent > 80) {
+			iconP2.animation.curAnim.curFrame = 1;
+			iconP1.animation.curAnim.curFrame = 0;
+		} else {
+			iconP2.animation.curAnim.curFrame = 0;
+			iconP1.animation.curAnim.curFrame = 0;
+		}
 	}
+
+	public var noteSplashes:FlxTypedGroup<NoteSplash>;
 
 	function noteMiss(shit:Int) {
 		health -= 0.04;
@@ -353,7 +384,6 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 	public function stepHit() {
 		iconP1.stepHit(conductor.curStep);
 		iconP2.stepHit(conductor.curStep);
-		tick = true;
 	}
 
 	function set_health(value:Float):Float {

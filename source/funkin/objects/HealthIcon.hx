@@ -6,16 +6,15 @@ class HealthIcon extends FlxSprite {
 	 */
 	public var sprTracker:FlxSprite;
 
-
 	/**
 	 * Name of the Icon's Character.
 	 */
 	public var char:String = '';
+
 	/**
 	 * If the icon belongs to the Player or not.
 	 */
 	public var isPlayer:Bool = false;
-
 
 	/**
 	 * 
@@ -41,14 +40,16 @@ class HealthIcon extends FlxSprite {
 		if (newChar != char) {
 			if (animation.getByName(newChar) == null) {
 				var path = Paths.img('icons/icon-' + newChar);
-				if (Assets.exists(Paths.img('icons/icon-' + newChar)))
-					loadGraphic(path, true, 150, 150);
-				else
-					loadGraphic(Paths.image('icons/icon-face'), true, 150, 150);
+				if (!Assets.exists(Paths.img('icons/icon-' + newChar))) {
+					path = Paths.img('icons/icon-face');
+				}
+
+				loadGraphic(path);
+				loadGraphic(path, true, Std.int(width / 2), Std.int(height));
 
 				animation.add(newChar, [0, 1], 0, false, isPlayer);
-				iconOffsets[0] = (width - 150) / 2;
-				iconOffsets[1] = (width - 150) / 2;
+				iconOffsets[0] = (width - height) / 2;
+				iconOffsets[1] = (width - height) / 2;
 				updateHitbox();
 			}
 			animation.play(newChar);
@@ -59,19 +60,17 @@ class HealthIcon extends FlxSprite {
 	/**
 	 * The Scale the Icon should lerp to after bopping/scale changed.
 	 */
-
 	var lerpScale:Float = 1;
 
 	/**
 	 * The Amount of Steps it takes until the Icon Bops.
 	 */
-
 	var bopSteps:Int = 4;
+
 	/**
 	 * The Scale/Size the Icon should be every time it bops.
 	 */
 	var bopScale:Float = 1.2;
-
 
 	/**
 	 * The Step Hit function.
@@ -88,7 +87,7 @@ class HealthIcon extends FlxSprite {
 	}
 
 	override function update(elapsed:Float) {
-		var mult:Float = FlxMath.lerp(lerpScale, scale.x, Math.exp(-elapsed * 22));
+		var mult:Float = FlxMath.lerp(lerpScale, scale.x, Math.exp(-elapsed * 8));
 		scale.set(mult, mult);
 		updateHitbox();
 		super.update(elapsed);

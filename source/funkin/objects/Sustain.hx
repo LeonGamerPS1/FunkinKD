@@ -57,7 +57,7 @@ class Sustain extends TiledSprite {
 			length -= parent.conductor.songPosition - parent.time;
 
 		var expectedHeight:Float = (length * 0.45 * parent.scrollSpeed);
-		this.height = Math.max(expectedHeight, 0);
+		this.height = Math.max(expectedHeight + tailHeight(), 0);
 
 		setPosition(parent.x + ((parent.width - width) * 0.5), parent.y + (parent.height * 0.5));
 
