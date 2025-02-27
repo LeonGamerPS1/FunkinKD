@@ -47,9 +47,23 @@ class Paths {
 		return 'assets/$file';
 	}
 
+	public static var bitmapCache:Map<String, FlxGraphic> = new Map();
+
 	inline static public function cacheBitmap(key:String, ?library:String) {
-		var path = img(key, library);
-		return path;
+		var path = img(key);
+		if (bitmapCache.exists(path))
+			return bitmapCache.get(path);
+		if (Assets.exists(path)) {
+			var bitmap:BitmapData = BitmapData.fromBytes(Assets.getBytes(path));
+			bitmap.disposeImage();
+
+			var graphic = FlxGraphic.fromBitmapData(bitmap);
+			graphic.destroyOnNoUse = false;
+			graphic.persist = true;
+			bitmapCache.set(path, graphic);
+			return graphic;
+		}
+		return null;
 	}
 
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String) {

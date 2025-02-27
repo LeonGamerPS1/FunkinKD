@@ -51,7 +51,7 @@ class Title extends MusicBeatState {
 		add(fatRamEater);
 		add(titleText);
 		super.create();
-		FlxG.camera.flash();
+		//FlxG.camera.flash();
 
 		var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 		diamond.persist = true;
@@ -99,7 +99,7 @@ class Title extends MusicBeatState {
 	}
 
 	function yay() {
-		FlxG.camera.flash(FlxColor.WHITE, 1, null, true);
+		//FlxG.camera.flash(FlxColor.WHITE, 1, null, true);
 		FlxG.sound.play(Paths.sound('confirmMenu'), 1);
 		titleText.animation.play('press');
 		new FlxTimer().start(1, function(tmr:FlxTimer) {

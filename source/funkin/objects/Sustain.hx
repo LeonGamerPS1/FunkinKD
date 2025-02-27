@@ -53,11 +53,11 @@ class Sustain extends TiledSprite {
 	override function draw() {
 		var length:Float = parent.length;
 
-		if (parent.wasGoodHit)
+		if (parent.wasGoodHit && !parent.inEditor)
 			length -= parent.conductor.songPosition - parent.time;
 
 		var expectedHeight:Float = (length * 0.45 * parent.scrollSpeed);
-		this.height = Math.max(expectedHeight + tailHeight(), 0);
+		this.height = Math.max(expectedHeight, 0);
 
 		setPosition(parent.x + ((parent.width - width) * 0.5), parent.y + (parent.height * 0.5));
 

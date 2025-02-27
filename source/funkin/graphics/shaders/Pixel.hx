@@ -54,7 +54,7 @@ uniform int iFrame;
 uniform vec4 iMouse;
 uniform vec4 iDate;
 
-#define PIXEL_SIZE 7
+#define PIXEL_SIZE 5
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {

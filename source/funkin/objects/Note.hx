@@ -33,6 +33,7 @@ class Note extends FlxSprite {
 	public var multSpeed:Float = 1;
 	public var sustain:Sustain;
 	public var rating:String = "?";
+	public var noteType:String = "";
 
 	public function canBeHit(conductor:Conductor):Bool {
 		if (mustHit
@@ -130,8 +131,9 @@ class Note extends FlxSprite {
 		}
 	}
 
+	public var inEditor:Bool = false;
 	override function draw() {
-		if (!wasGoodHit || !wasHit)
+		if ((!wasGoodHit || !wasHit) || inEditor)
 			super.draw();
 	}
 

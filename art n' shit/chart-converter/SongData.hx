@@ -1,5 +1,4 @@
-typedef SongData =
-{
+typedef SongData = {
 	var song:String;
 	var bpm:Float;
 	var speed:Float;
@@ -11,12 +10,20 @@ typedef SongData =
 	var stage:String;
 }
 
-typedef Section =
-{
+typedef Section = {
 	var bpm:Float;
 	var changeBPM:Bool;
 	var cameraFacePlayer:Bool;
 	var notes:Array<Dynamic>;
+	@:optional var events:Array<SwagEvent>;
 
 	@:optional var altSection:Null<Bool>;
+}
+
+typedef SwagEvent = {
+	var name:String;
+	var time:Float;
+
+	@:optional var val1:String;
+	@:optional var val2:String;
 }

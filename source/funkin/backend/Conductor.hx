@@ -52,10 +52,8 @@ class Conductor extends FlxBasic {
 		var curBPM:Float = song.bpm;
 		var totalSteps:Int = 0;
 		var totalPos:Float = 0;
-		for (i in 0...song.sections.length)
-		{
-			if(song.sections[i].changeBPM && song.sections[i].bpm != curBPM)
-			{
+		for (i in 0...song.sections.length) {
+			if (song.sections[i].changeBPM && song.sections[i].bpm != curBPM) {
 				curBPM = song.sections[i].bpm;
 				var event:BPMChangeEvent = {
 					stepTime: totalSteps,
@@ -85,14 +83,13 @@ class Conductor extends FlxBasic {
 			songTime: 0,
 			bpm: 0
 		}
-		for (i in 0...bpmChangeMap.length)
-		{
+		for (i in 0...bpmChangeMap.length) {
 			if (songPosition >= bpmChangeMap[i].songTime)
 				lastChange = bpmChangeMap[i];
 		}
 
-		curStep = lastChange.stepTime +  Math.floor(songPosition / stepLength);
-		curStepDec = (songPosition / 1000)*(bpm * 4/60);
+		curStep = lastChange.stepTime + Math.floor((songPosition - lastChange.songTime) / stepLength);
+		curStepDec = lastChange.stepTime + (songPosition / stepLength);
 	}
 
 	private inline function updateBeat() {
@@ -109,4 +106,7 @@ class Conductor extends FlxBasic {
 		if (lastStep != curStep)
 			onStepHit.dispatch();
 	}
+
+	public function changeBPM(f:Float)
+		bpm = f;
 }

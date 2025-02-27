@@ -51,6 +51,7 @@ class HScriptRuntime
 		interp.variables.set('StringTools', StringTools);
 		interp.variables.set('math', MathWrapper);
         execute(Assets.getText(path));
+		trace("loaded script: " + '"$path"');
 
 	}
 
