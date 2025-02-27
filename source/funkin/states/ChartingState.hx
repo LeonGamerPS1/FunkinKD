@@ -716,7 +716,7 @@ class ChartingState extends MusicBeatState {
 
 			if (daSus > 0) {
 				var sustainVis:ChartSustain = new ChartSustain(note, gridBG, daSus);
-				curRenderedSustains.add(sustainVis); // sustain notes go brr chart
+				curRenderedSustains.add(sustainVis); // sustains go brrr
 			}
 			note.data = daNoteInfo; // the sustains freak out with the tiling if notedata is above 4 and note deletion kinda breaks if i remove this line
 		}
