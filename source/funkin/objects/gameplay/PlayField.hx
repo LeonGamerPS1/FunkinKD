@@ -314,7 +314,7 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 				}
 				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
 			}
-			if (botplay && note.time <= conductor.songPosition && note.mustHit && !note.ignoreNote) {
+			if (botplay && note.time <= conductor.songPosition && note.mustHit && !note.hitCausesMiss) {
 				goodNoteHit(note);
 				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
 			}
@@ -338,7 +338,7 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 			if (note.wasGoodHit && _maxTime < conductor.songPosition)
 				destroyNote(note);
 			if (conductor.songPosition - note.time - note.length > noteKillOffset) {
-				if (note.mustHit && !note.ignoreNote && !note.wasGoodHit && note.mustHit)
+				if (note.mustHit && !note.ignoreNote && !note.wasGoodHit && note.mustHit && !note.hitCausesMiss)
 					noteMiss(note.data);
 
 				note.active = note.visible = false;

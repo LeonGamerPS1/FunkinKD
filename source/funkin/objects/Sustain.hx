@@ -51,8 +51,13 @@ class Sustain extends TiledSprite {
 		antialiasing = true;
 	}
 
+
+
 	override function draw() {
 		var length:Float = parent.length;
+		if(shader != parent.shader)
+			shader = parent.shader;
+
 
 		if (parent.wasGoodHit && !parent.inEditor)
 			length -= parent.conductor.songPosition - parent.time;
