@@ -44,6 +44,14 @@ class SaveVars {
 	/** The maximum amount of NoteSplashes that can appear before another one that is alive gets reset and idk set up??**/
 	public var maxSplashes:Int = 4;
 
+	/**
+	 * Note Color: the color of the notes. (HSV)
+	 * 0: Hue
+	 * 1: Saturation
+	 * 2: Value
+	 */
+	public var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
+
 	public function new() {}
 }
 

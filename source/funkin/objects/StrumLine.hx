@@ -3,7 +3,7 @@ package funkin.objects;
 class StrumLine extends FlxTypedSpriteGroup<StrumNote> {
 	public var player:Bool = false;
 
-	public function new(downScroll:Bool, ?player:Bool = false) {
+	public function new(downScroll:Bool = false, ?player:Bool = false) {
 		var targetX:Float = 50 + (Note.swagWidth / 4);
 		if (player)
 			targetX = 50 + (FlxG.width / 2) + (Note.swagWidth / 2);

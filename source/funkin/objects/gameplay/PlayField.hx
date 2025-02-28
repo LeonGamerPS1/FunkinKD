@@ -183,6 +183,12 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 	}
 
 	function goodNoteHit(coolNote:Note) {
+		if(coolNote.hitCausesMiss)
+		{
+			noteMiss(coolNote.data % 4);
+			destroyNote(coolNote);
+			return;
+		}
 		var strum = playerStrums.members[coolNote.data];
 
 		var _maxTime:Float = coolNote.time + coolNote.length;
@@ -267,8 +273,9 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 
 	public var popupSprite:FlxSprite;
 
-	public var oppHitSignal:(note:Note, ?p:Bool) -> Void;
-	public var plrHitSignal:(note:Note, ?p:Bool) -> Void;
+	public var oppHitSignal:(note:Note, ?p:Bool) -> Void = function(n:Note, ?n:Bool) {};
+	public var plrHitSignal:(note:Note, ?p:Bool) -> Void = function(n:Note, ?n:Bool) {};
+
 	public var tick:Bool = false;
 	public var strumLineNotes:FlxTypedGroup<StrumNote> = new FlxTypedGroup<StrumNote>();
 
@@ -307,7 +314,7 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 				}
 				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
 			}
-			if (botplay && note.time <= conductor.songPosition && note.mustHit) {
+			if (botplay && note.time <= conductor.songPosition && note.mustHit && !note.ignoreNote) {
 				goodNoteHit(note);
 				strum.resetTimer = conductor.stepLength * 1.5 / 1000;
 			}
@@ -326,14 +333,6 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 				&& !(_maxTime - (conductor.stepLength) < conductor.songPosition)) {
 				destroyNote(note);
 				return;
-			}
-
-			if (note.tooLate && note.mustHit && !note.glowing) {
-				note.glowing = true;
-				trace("weed");
-				FlxTween.color(note, 0.2, note.color, FlxColor.GRAY);
-				if (note.sustain != null)
-					FlxTween.color(note.sustain, 0.2, note.sustain.color, FlxColor.GRAY);
 			}
 
 			if (note.wasGoodHit && _maxTime < conductor.songPosition)

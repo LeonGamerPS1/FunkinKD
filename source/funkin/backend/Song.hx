@@ -40,6 +40,7 @@ typedef SwagEvent = {
 
 class Song {
 	public static inline function parseSong(songName:String = "high-school-conflict", diff:String = "normal") {
+		diff = diff.toLowerCase();
 		var song:SongData = cast Json.parse(Assets.getText(Paths.json('$songName/$diff')).trim().replace("\n", ""));
 
 		return song;

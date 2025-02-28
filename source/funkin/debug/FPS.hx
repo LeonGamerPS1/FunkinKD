@@ -38,8 +38,8 @@ class FPS extends TextField
 
 	inline static function getTotalMemory():Int
 	{
-		#if (windows && cpp)
-		return openfl.system.System.totalMemory;
+		#if (cpp)
+		return backend.WindowsData.obtainRAM();
 		#else
 		return openfl.system.System.totalMemory;
 		#end

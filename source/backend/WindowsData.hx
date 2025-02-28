@@ -24,7 +24,7 @@ class WindowsData
 		unsigned long long allocatedRAM = 0;
 		GetPhysicallyInstalledSystemMemory(&allocatedRAM);
 
-		return (allocatedRAM / 1024);
+		return (allocatedRAM);
 	")
 	#elseif linux
 	@:functionCode('

@@ -41,18 +41,19 @@ class NoteSpawner extends FlxTypedGroup<Note> {
 	public function genSong(sections:Array<Section>) {
 		for (i in 0...sections.length) {
 			for (ii in 0...sections[i].notes.length) {
-				if (sections[i].notes[ii][3] < 0)
+				if (sections[i].notes[ii][1] < 0)
 					continue;
 				var time:Float = sections[i].notes[ii][0];
 				var data:Int = Std.int(sections[i].notes[ii][1] % 4);
-				var length:Float = sections[i].notes[ii][2];
+				var length:Float = sections[i].notes[ii][2] is String ? 0 : sections[i].notes[ii][2];
+				var noteType:String = sections[i].notes[ii][3] != null ? sections[i].notes[ii][3] : "normal";
 				var goodHit:Bool = sections[i].notes[ii][1] > 3;
 
 				var oldNote:Note = null;
 				if (unspawnNotes[unspawnNotes.length - 1] != null)
 					oldNote = unspawnNotes[unspawnNotes.length - 1];
 
-				var note:Note = new Note(time, data, PlayState.isPixelStage, oldNote, song.speed, conductor);
+				var note:Note = new Note(time, data, PlayState.isPixelStage, oldNote, song.speed, conductor, noteType);
 				note.mustHit = goodHit;
 				note.altNote = (sections[i].altSection == true);
 				note.length = length;

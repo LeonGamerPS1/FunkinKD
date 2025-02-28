@@ -1,5 +1,7 @@
 package funkin.objects;
 
+import flixel.graphics.FlxGraphic;
+
 class Sustain extends TiledSprite {
 	var parent:Note;
 
@@ -21,10 +23,9 @@ class Sustain extends TiledSprite {
 		var tex = parent.texture;
 		var data = parent.data;
 
-		loadGraphic(Paths.image('noteSkins/pixel/${tex}ENDS'));
-		width = width / 4;
-		height = height / 5;
-		loadGraphic(Paths.image('noteSkins/pixel/${tex}ENDS'), true, 7, 6);
+		var graphic:FlxGraphic = Paths.image('noteSkins/pixel/${tex}ENDS');
+
+		loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 2));
 
 		animation.add('hold', [data], 12, false);
 		animation.add('end', [data + 4], 12, false);
