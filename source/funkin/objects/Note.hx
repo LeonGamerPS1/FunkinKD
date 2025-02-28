@@ -57,7 +57,6 @@ class Note extends FlxSprite {
 		this.conductor = conductor;
 		texture = "notes";
 
-		reloadNote(texture, isPixel, sustainSpeed);
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 		noteType = nt;
@@ -242,10 +241,11 @@ class Note extends FlxSprite {
 		switch (value) {
 			case 'hurt':
 				ignoreNote = mustHit;
-				reloadNote("rednotes", isPixel);
-				colorSwap.hue = 0;
-				colorSwap.saturation = 0;
-				colorSwap.brightness = 0;
+				texture = "rednotes";
+
+				colorSwap.hue = 50;
+				colorSwap.saturation = 20;
+				colorSwap.brightness = 10;
 
 				hitCausesMiss = true;
 

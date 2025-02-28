@@ -6,6 +6,6 @@ class ChartSustain extends Sustain {
 
 		setGraphicSize(parent.width / 3);
 		updateHitbox();
-		height = FlxMath.remapToRange(daSus, 0, parent.conductor.stepLength * 16, 0, gridBG.height) - (gridBG.height / 16);
+		height = FlxMath.remapToRange(daSus, 0, parent.conductor.stepLength * 16, 0, gridBG.height);
 	}
 }
