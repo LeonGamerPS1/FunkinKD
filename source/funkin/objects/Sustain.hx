@@ -53,6 +53,8 @@ class Sustain extends TiledSprite {
 
 
 
+	static public var colArray:Array<FlxColor> = [FlxColor.PURPLE, FlxColor.BLUE, FlxColor.GREEN, FlxColor.RED];
+
 	override function draw() {
 		var length:Float = parent.length;
 		if(shader != parent.shader)
@@ -65,7 +67,7 @@ class Sustain extends TiledSprite {
 		var expectedHeight:Float = (length * 0.45 * parent.scrollSpeed);
 		this.height = Math.max(expectedHeight, 0);
 
-		setPosition(parent.x + ((parent.width - width) * 0.5), parent.y + (parent.height * 0.5));
+		setPosition(parent.x + ((parent.width - width) * 0.5), parent.y + (Note.swagWidth * 0.5));
 
 		y = parent.y + parent.height * 0.5;
 		alpha = parent.alpha * 0.7;

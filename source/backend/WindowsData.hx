@@ -1,5 +1,7 @@
 package backend;
 
+import backend.WindowsCPPEnum;
+
 #if windows
 @:buildXml('
 <target id="haxe">
@@ -17,8 +19,7 @@ package backend;
 #elseif linux
 @:headerCode("#include <stdio.h>")
 #end
-class WindowsData
-{
+class WindowsData {
 	#if windows
 	@:functionCode("
 		unsigned long long allocatedRAM = 0;
@@ -48,8 +49,7 @@ class WindowsData
     	return -1;
 	')
 	#end
-	public static function obtainRAM()
-	{
+	public static function obtainRAM() {
 		return 0;
 	}
 
@@ -63,16 +63,23 @@ class WindowsData
         UpdateWindow(window);
     ')
 	@:noCompletion
-	public static function _setWindowColorMode(mode:Int)
-	{
+	public static function _setWindowColorMode(mode:Int) {}
+
+	@:functionCode('
+
+       std::cerr << "Title: " << title << std::endl;
+
+        return -1;
+     
+    ')
+	public static function message_box(title:String, message:String, icon:MessageBoxIcon) {
+		return 0;
 	}
 
-	public static function setWindowColorMode(mode:WindowColorMode)
-	{
+	public static function setWindowColorMode(mode:WindowColorMode) {
 		var darkMode:Int = cast(mode, Int);
 
-		if (darkMode > 1 || darkMode < 0)
-		{
+		if (darkMode > 1 || darkMode < 0) {
 			trace("WindowColorMode Not Found...");
 
 			return;
@@ -86,13 +93,10 @@ class WindowsData
 	SetWindowLong(window, GWL_EXSTYLE, GetWindowLong(window, GWL_EXSTYLE) ^ WS_EX_LAYERED);
 	')
 	@:noCompletion
-	public static function _setWindowLayered()
-	{
-	}
+	public static function _setWindowLayered() {}
 
 	@:functionCode('
         HWND window = GetActiveWindow();
-
 		float a = alpha;
 
 		if (alpha > 1) {
@@ -101,7 +105,6 @@ class WindowsData
 		if (alpha < 0) {
 			a = 0;
 		}
-
        	SetLayeredWindowAttributes(window, 0, (255 * (a * 100)) / 100, LWA_ALPHA);
 
     ')
@@ -110,15 +113,13 @@ class WindowsData
 	 * ! MAKE SURE TO CALL CppAPI._setWindowLayered(); BEFORE RUNNING THIS
 	 * @param alpha 
 	 */
-	public static function setWindowAlpha(alpha:Float)
-	{
+	public static function setWindowAlpha(alpha:Float) {
 		return alpha;
 	}
 	#end
 }
 
-@:enum abstract WindowColorMode(Int)
-{
+@:enum abstract WindowColorMode(Int) {
 	var DARK:WindowColorMode = 1;
 	var LIGHT:WindowColorMode = 0;
 }

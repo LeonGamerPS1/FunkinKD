@@ -352,6 +352,9 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 		iconP1.x = FlxMath.lerp((healthBar.barCenter + (150 * iconP1.scale.x) / 2 - 150) + 50, iconP1.x, 0.1);
 		iconP2.x = FlxMath.lerp((healthBar.barCenter - (150 * iconP2.scale.x) / 2) - 50, iconP2.x, 0.1);
 
+		iconP1.origin.y = 0;
+		iconP2.origin.y = 0;
+
 		if (healthBar.percent < 20) {
 			iconP1.animation.curAnim.curFrame = 1;
 			iconP2.animation.curAnim.curFrame = 0;

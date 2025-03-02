@@ -1,0 +1,12 @@
+package backend;
+
+enum abstract MessageBoxIcon(Int) {
+	final MB_ICONEXCLAMATION = 0x00000030;
+	final MB_ICONWARNING = 0x00000030;
+	final MB_ICONINFORMATION = 0x00000040;
+	final MB_ICONASTERISK = 0x00000040;
+	final MB_ICONQUESTION = 0x00000020;
+	final MB_ICONSTOP = 0x00000010;
+	final MB_ICONERROR = 0x00000010;
+	final MB_ICONHAND = 0x00000010;
+}

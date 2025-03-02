@@ -55,7 +55,7 @@ class NoteSpawner extends FlxTypedGroup<Note> {
 
 				var note:Note = new Note(time, data, PlayState.isPixelStage, oldNote, song.speed, conductor, noteType);
 				note.mustHit = goodHit;
-				note.altNote = (sections[i].altSection == true);
+				note.altNote = (sections[i].altSection == true || note.altNote);
 				note.length = length;
 				note.scrollSpeed = song.speed;
 				unspawnNotes.push(note);

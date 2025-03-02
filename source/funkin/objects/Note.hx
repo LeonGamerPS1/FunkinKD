@@ -40,7 +40,7 @@ class Note extends FlxSprite {
 	public function canBeHit(conductor:Conductor):Bool {
 		if (mustHit
 			&& time > conductor.songPosition - (Conductor.safeZoneOffset)
-			&& time < conductor.songPosition + (Conductor.safeZoneOffset))
+			&& time < conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
 			return true;
 		else
 			return false;
@@ -72,9 +72,9 @@ class Note extends FlxSprite {
 
 	public var hitCausesMiss:Bool = false;
 
-	function reloadNote(tex:String = "notes", isPixel:Bool, ?sustainSpeed:Float = 1) {
+	function reloadNote(tex:String = "notes", isPixel:Bool, ?sustainSpeed:Float = 1, ?force:Bool = false) {
 		tex ??= "notes";
-		if (PlayState.SONG.skin != null && PlayState.SONG.skin != "")
+		if (PlayState.SONG.skin != null && PlayState.SONG.skin != "" && !force)
 			tex = PlayState.SONG.skin;
 		this.isPixel = isPixel;
 		var prefix = isPixel ? "pixel/" : "";
@@ -91,6 +91,7 @@ class Note extends FlxSprite {
 			loadDefaultNoteAnims(tex, sustainSpeed);
 		else
 			loadPixelNoteAnimations(tex, sustainSpeed);
+		return tex;
 	}
 
 	var canDrawSustain:Bool = false;
@@ -173,8 +174,7 @@ class Note extends FlxSprite {
 	function set_texture(value:String):String {
 		texture = value;
 
-		reloadNote(value, isPixel);
-		return texture = value;
+		return reloadNote(value, isPixel);
 	}
 
 	public var offsetY:Float = 0;
@@ -239,17 +239,20 @@ class Note extends FlxSprite {
 		noteSplashBrt = colorSwap.brightness;
 
 		switch (value) {
-			case 'hurt':
+			case "Hurt Note":
 				ignoreNote = mustHit;
+
+				reloadNote("rednotes", isPixel, 1, true);
+				@:bypassAccessor
 				texture = "rednotes";
 
-				colorSwap.hue = 50;
-				colorSwap.saturation = 20;
-				colorSwap.brightness = 10;
+				colorSwap.hue = 0;
+				colorSwap.saturation = 0;
+				colorSwap.brightness = 0;
 
 				hitCausesMiss = true;
-
-				return value;
+			case "Alt Note":
+				altNote = true;
 		}
 
 		return value;

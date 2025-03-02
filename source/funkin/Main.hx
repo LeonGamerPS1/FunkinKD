@@ -1,5 +1,7 @@
 package funkin;
 
+import funkin.backend.ClientPrefs.SaveVars;
+import lime.app.Application;
 import funkin.modding.PolymodHandler;
 import funkin.backend.WeekData;
 import funkin.debug.FPS;
