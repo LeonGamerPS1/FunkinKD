@@ -183,8 +183,7 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 	}
 
 	function goodNoteHit(coolNote:Note) {
-		if(coolNote.hitCausesMiss)
-		{
+		if (coolNote.hitCausesMiss) {
 			noteMiss(coolNote.data % 4);
 			destroyNote(coolNote);
 			return;
@@ -365,16 +364,21 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 			iconP2.animation.curAnim.curFrame = 0;
 			iconP1.animation.curAnim.curFrame = 0;
 		}
+		frames++;
 	}
 
 	public var noteSplashes:FlxTypedGroup<NoteSplash>;
 
-	function noteMiss(shit:Int) {
-		health -= 0.04;
-		FlxG.sound.play(Paths.soundRandom("missnote", 1, 3), 0.5);
-		Imisses++;
+	var frames:Int = 1;
 
-		missCallback(shit);
+	function noteMiss(shit:Int) {
+		if (frames > 10) {
+			health -= 0.04;
+			FlxG.sound.play(Paths.soundRandom("missnote", 1, 3), 0.5);
+			Imisses++;
+
+			missCallback(shit);
+		}
 	}
 
 	public dynamic function missCallback(shit:Int) {}
@@ -403,5 +407,11 @@ class PlayField extends FlxTypedGroup<FlxBasic> {
 		value = FlxMath.bound(value, 0, 2);
 		health = value;
 		return value;
+	}
+
+	public function scrollFactor(factor:Int = 1) {
+		for (member in members.keyValueIterator())
+			if (member.value is FlxSprite)
+				cast(member.value, FlxSprite).scrollFactor.set(factor);
 	}
 }

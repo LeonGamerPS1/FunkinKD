@@ -25,7 +25,6 @@ class ChartSustain extends TiledSprite {
 	function pixel() {
 		var tex = parent.texture;
 		var data = parent.data;
-		trace(tex);
 
 		var graphic:FlxGraphic = Paths.image('noteSkins/pixel/${tex}ENDS');
 		loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 2));
@@ -33,7 +32,7 @@ class ChartSustain extends TiledSprite {
 		animation.add('hold', [data], 12, false);
 		animation.add('end', [data + 4], 12, false);
 		playAnimation("hold");
-		
+
 		setGraphicSize(width * 6);
 		updateHitbox();
 		setTail('end');

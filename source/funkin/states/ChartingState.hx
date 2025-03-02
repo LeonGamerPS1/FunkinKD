@@ -1,5 +1,6 @@
 package funkin.states;
 
+import flixel.addons.display.FlxBackdrop;
 import funkin.objects.StrumLine;
 import funkin.substates.EditorPlayState;
 import funkin.objects.ChartSustain;
@@ -91,6 +92,11 @@ class ChartingState extends MusicBeatState {
 
 	override function create() {
 		curSection = lastSection;
+
+		var bg:FlxBackdrop = new FlxBackdrop(Paths.image("menu/menuBG"));
+		bg.color = FlxColor.GRAY;
+		bg.scrollFactor.set(0.3, 0.3);
+		add(bg);
 
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
 		add(gridBG);
@@ -579,15 +585,8 @@ class ChartingState extends MusicBeatState {
 		}
 
 		if (!typingShit.hasFocus) {
-			if (FlxG.keys.justPressed.SPACE) {
-				if (FlxG.sound.music.playing) {
-					FlxG.sound.music.pause();
-					vocals.pause();
-				} else {
-					vocals.play();
-					FlxG.sound.music.play();
-				}
-			}
+			if (FlxG.keys.justPressed.SPACE)
+				pause();
 
 			if (FlxG.keys.justPressed.R) {
 				if (FlxG.keys.pressed.SHIFT)
@@ -655,8 +654,21 @@ class ChartingState extends MusicBeatState {
 
 		if (FlxG.keys.justPressed.F1)
 			help.visible = !help.visible;
-		if (FlxG.keys.justPressed.ESCAPE)
-			FlxG.switchState(new EditorPlayState(_song));
+		if (FlxG.keys.justPressed.ESCAPE) {
+			FlxG.sound.music.pause();
+			vocals.pause();
+			openSubState(new EditorPlayState(_song, conductor.songPosition));
+		}
+	}
+
+	function pause() {
+		if (FlxG.sound.music.playing) {
+			FlxG.sound.music.pause();
+			vocals.pause();
+		} else {
+			vocals.play();
+			FlxG.sound.music.play();
+		}
 	}
 
 	public inline function playStrumAnim(note:Note) {
