@@ -51,15 +51,12 @@ class Sustain extends TiledSprite {
 		antialiasing = true;
 	}
 
-
-
 	static public var colArray:Array<FlxColor> = [FlxColor.PURPLE, FlxColor.BLUE, FlxColor.GREEN, FlxColor.RED];
 
 	override function draw() {
 		var length:Float = parent.length;
-		if(shader != parent.shader)
+		if (shader != parent.shader)
 			shader = parent.shader;
-
 
 		if (parent.wasGoodHit && !parent.inEditor)
 			length -= parent.conductor.songPosition - parent.time;

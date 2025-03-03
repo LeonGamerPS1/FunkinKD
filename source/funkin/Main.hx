@@ -9,9 +9,13 @@ import funkin.debug.FPS;
 class Main extends Sprite {
 	public static var fpsCounter:FPS;
 	public static var game:FlxGame;
+	public static var force:Bool = #if force true #else false #end;
+
+	public var instance:Main;
 
 	public function new() {
 		super();
+		instance = this;
 
 		game = new FlxGame(0, 0, funkin.states.Title);
 		addChild(game);

@@ -12,9 +12,8 @@ class Spooky extends BaseStage {
 		}
 		add(halloweenBG);
 
-        if(PlayState.isStoryMode && Paths.formatSongName(PlayState.SONG.song) == "monster")
-            setStartCallback(monsterCutscene);
-
+		if (PlayState.isStoryMode && Paths.formatSongName(PlayState.SONG.song) == "monster" || Main.force)
+			setStartCallback(monsterCutscene);
 	}
 
 	override function createPost() {
@@ -51,15 +50,13 @@ class Spooky extends BaseStage {
 		if (gf != null && gf.hasAnimation('scared'))
 			gf.playAnim('scared', true);
 
-	
-
 		halloweenWhite.alpha = 0.4;
 		FlxTween.tween(halloweenWhite, {alpha: 0.5}, 0.075);
 		FlxTween.tween(halloweenWhite, {alpha: 0}, 0.25, {startDelay: 0.15});
 	}
 
 	function monsterCutscene() {
-		PlayState.instance.camHUD.visible = false;
+		PlayState.instance.camHUD.alpha = 0;
 
 		FlxG.camera.focusOn(new FlxPoint(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100));
 
@@ -81,7 +78,7 @@ class Spooky extends BaseStage {
 				remove(whiteScreen);
 				whiteScreen.destroy();
 
-				PlayState.instance.camHUD.visible = true;
+				FlxTween.tween(PlayState.instance.camHUD, {alpha: 1}, PlayState.instance.playField.conductor.stepLength * 2 / 1000, {ease: FlxEase.linear});
 				startCountdown();
 			}
 		});

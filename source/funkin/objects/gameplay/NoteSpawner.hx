@@ -38,12 +38,9 @@ class NoteSpawner extends FlxTypedGroup<Note> {
 		}
 	}
 
-
 	public function genSong(sections:Array<Section>, ?spawnTime:Float = -1000) {
 		for (i in 0...sections.length) {
 			for (ii in 0...sections[i].notes.length) {
-				if (sections[i].notes[ii][1] < 0)
-					continue;
 				var time:Float = sections[i].notes[ii][0];
 				var data:Int = Std.int(sections[i].notes[ii][1] % 4);
 				var length:Float = sections[i].notes[ii][2] is String ? 0 : sections[i].notes[ii][2];
