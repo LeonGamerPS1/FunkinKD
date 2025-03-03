@@ -61,9 +61,6 @@ class TiledSprite extends OffsetSprite
 		var frame:FlxFrame = frames.frames[anim.frames[0]];
 		_tailFrame = frame.copyTo(_tailFrame);
 
-		_tailFrame.sourceSize.y -= 2;
-		_tailFrame.frame.height -= 2;
-		_tailFrame.frame.y += 2;
 	}
 
 	@:inheritDoc(flixel.FlxSprite.getScreenBounds)
@@ -243,13 +240,6 @@ class TiledSprite extends OffsetSprite
 		if (v == null)
 			return v;
 
-		if (_frame != null)
-		{
-			// texture bleeding gap workaround
-			_frame.sourceSize.y -= 2;
-			_frame.frame.height -= 2;
-			_frame.frame.y += 1;
-		}
 
 		if (v != oldFrame)
 		{

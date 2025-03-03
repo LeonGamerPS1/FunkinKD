@@ -38,7 +38,6 @@ class PlayState extends MusicBeatState {
 	public var scripts:Array<HScriptRuntime> = [];
 
 	override public function create() {
-		
 		super.create();
 		instance = this;
 
@@ -97,7 +96,6 @@ class PlayState extends MusicBeatState {
 		for (char in [boyfriend, dad, girlfriend])
 			char.Conductor = playField.conductor;
 
-
 		genSong(SONG.sections);
 		add(uiGroup);
 
@@ -140,17 +138,32 @@ class PlayState extends MusicBeatState {
 		}
 		playField.conductor.onBeatHit.add(function() {
 			stagesFunc(function(s:BaseStage) {
+				s.curBeat = playField.conductor.curBeat;
+
 				s.beatHit();
 			});
 		});
 		playField.conductor.onStepHit.add(() -> call('onStepHit'));
+		playField.conductor.onStepHit.add(stepHit);
 		playField.conductor.mapBPMChanges(SONG);
 
 		call("onCreatePost");
-		for(i in 0...100)
+		stagesFunc((s)-> s.createPost());
+		for (i in 0...100)
 			update(1 / 60);
 
-		new FlxTimer().start(0.5, function(e) {
+		startCallback();
+	}
+
+	public function stepHit() {
+		stagesFunc(function(s:BaseStage) {
+			s.curStep = playField.conductor.curStep;
+			s.stepHit();
+		});
+	}
+
+	dynamic public function startCallback() {
+		new FlxTimer().start(0.1, function(e) {
 			switch (Paths.formatSongName(SONG.song)) {
 				case "senpai" | "roses":
 					startDialogue(Paths.formatSongName(SONG.song), startCountdown);
@@ -230,6 +243,8 @@ class PlayState extends MusicBeatState {
 				add(new funkin.objects.gameplay.stages.StageWeek1(this, true));
 			case "glitchSchool":
 				add(new funkin.objects.gameplay.stages.GlitchSchool(this, true));
+			case "spooky":
+				add(new funkin.objects.gameplay.stages.Spooky(this, true));
 			case "school":
 				add(new funkin.objects.gameplay.stages.School(this, true));
 		}
@@ -594,6 +609,8 @@ class StageUtil {
 				return 'schoolEvil';
 			case 'ugh' | 'guns' | 'stress':
 				return 'tank';
+			default:
+				return 'stage';
 		}
 		return 'stage';
 	}
