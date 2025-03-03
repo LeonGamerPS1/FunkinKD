@@ -23,7 +23,7 @@ typedef CharacterData = {
 typedef AnimationData = {
 	var name:String;
 	var prefix:String;
-	var fps:Int;
+	var fps:Null<Int>;
 	var looped:Bool;
 	var x:Float;
 	var y:Float;
@@ -59,11 +59,11 @@ class Character extends FlxSprite {
 		this.isPlayer = isPlayer;
 		curCharacter = charName;
 
-		if (Assets.exists('assets/characters/$charName.json'))
-			json = parseShit('assets/characters/$charName.json');
-		else
-			json = fallback();
+		var path = 'assets/characters/$charName.json';
+		if (!Assets.exists(path))
+			path = 'assets/characters/dad.json';
 
+		json = parseShit(path);
 		if (json.dancer != null)
 			dancer = json.dancer;
 		if (json.health_colors != null)
@@ -75,7 +75,15 @@ class Character extends FlxSprite {
 		if (json.camera_position != null)
 			camera_position = json.camera_position;
 
-		loadTexture('characters/${json.texture_path}');
+		var tex_path = 'characters/${json.texture_path}';
+
+		if (Assets.exists(Paths.img('${json.texture_path}'))) // compatibility with fucky psych character paths
+			tex_path = json.texture_path;
+
+		if (!Assets.exists(Paths.img(tex_path)))
+			tex_path = 'characters/dad';
+
+		loadTexture(tex_path);
 		regenOffsets(isPlayer);
 		if (FlxG.save.data.characters == false)
 			kill();
@@ -131,7 +139,8 @@ class Character extends FlxSprite {
 		for (i in 0...json.animations.length) {
 			var animationMeta = json.animations[i];
 			if (animationMeta.indices != null && animationMeta.indices.length > 0)
-				animation.addByIndices(animationMeta.name, animationMeta.prefix, animationMeta.indices, "", 24, animationMeta.looped);
+				animation.addByIndices(animationMeta.name, animationMeta.prefix, animationMeta.indices, "",
+					animationMeta.fps != null ? animationMeta.fps : 24, animationMeta.looped);
 			else
 				animation.addByPrefix(animationMeta.name, animationMeta.prefix, animationMeta.fps, animationMeta.looped);
 			offsetMap[animationMeta.name] = [animationMeta.x, animationMeta.y];
